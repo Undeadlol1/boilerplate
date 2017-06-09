@@ -1,0 +1,23 @@
+.NavBar {
+	z-index: 1;
+	width: 100%;
+	.NavBar__home-link {
+		color: rgb(48, 48, 48);
+	}
+	.NavBar__avatar {
+		margin-top: 3px;
+	}
+
+	.LoginLogoutButton {
+		margin-top: 5.5px;
+	}
+}
+
+.NavBar--sticky {
+	top: 0;
+	position: fixed;
+}
+
+.NavBar--hidden {
+	display: none;
+}

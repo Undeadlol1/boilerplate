@@ -1,0 +1,6 @@
+  --reporter dot
+  --ui bdd
+  --no-exit
+  --watch
+  --no-exit
+  --require mocha-clean

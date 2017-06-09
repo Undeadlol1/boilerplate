@@ -1,0 +1,23 @@
+export default {
+    login: 'войти',
+    logout: 'выйти',
+    search: 'поиск',
+    profile: 'профиль',
+    about: 'о проекте',
+    cancel: 'Отмена',
+    submit: 'Отправить',
+    name_cant_be_empty: "Имя не может быть пустым",
+    please_login: 'Пожалуйста, войдите',
+    url_cant_be_empty: "Url не может быть пустым",
+    this_mood_already_exists: 'Настроение с таким именем уже существует!',
+    something_wrong_with_this_url: 'Что-то не так с этим url',
+    error_accured: 'Произошла ошибка!',
+    add_something: 'Добавить что-нибудь',
+    add_your_own_mood: 'Создать настроение!',
+    choose_your_language: 'Выберите ваш язык',
+    currently_zero_content_here: 'Пока контента нет',
+    
+    page_not_found: 'Страница не найдена',
+    list_is_empty: 'Список пуст',
+    this_video_already_exists_please_no_duplicates: 'Это видео уже добавлено! Пожалуйста, не добавляйте дубликатов.',
+}

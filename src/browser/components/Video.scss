@@ -1,0 +1,24 @@
+.Video {
+	height: 100vh;
+	overflow: hidden;
+	position: initial;
+	// new
+	// position: static;
+	// background-color: black;
+	// z-index: -11212121212;
+	h1 {
+		top: 50%;
+		left: 50%;
+		color: white;
+		position: fixed;
+		transform: translate(-50%, -50%);
+	}
+}
+.Video__controls {
+	top: 50%;
+	width: 100%;
+	height: 30%;
+	z-index: 2223;
+	display: block;
+	position: fixed;
+}

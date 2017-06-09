@@ -1,0 +1,23 @@
+export default {
+    login: 'login',
+    logout: 'logout',
+    profile: 'profile',
+    about: 'about',
+    search: 'search',
+    cancel: 'Cancel',
+    submit: 'Submit',
+    name_cant_be_empty: "Name can't be empty",
+    please_login: 'Please login',
+    url_cant_be_empty: "Url can't be empty",
+    this_mood_already_exists: 'This mood already exist!',
+    something_wrong_with_this_url: 'Something wrong with this url',
+    add_something: 'Add something',
+    error_accured: 'Error accured!',
+    add_your_own_mood: 'Add your own mood!',
+    choose_your_language: 'Choose your language',
+    currently_zero_content_here: 'Currently zero content here',
+    
+    page_not_found: 'Page not found',
+    list_is_empty: 'List is empty',
+    this_video_already_exists_please_no_duplicates: 'This video already added! Please don\'t add duplicates.',
+}
