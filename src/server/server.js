@@ -24,6 +24,8 @@ import createLocaleMiddleware from 'express-locale';
 import RateLimiter from 'express-rate-limit'
 import exphbs from 'express-handlebars'
 
+// this comment is a mergin test, delete afterwards
+
 const RedisStore = require('connect-redis')(session)
 const cache = require('express-redis-cache')();
 
