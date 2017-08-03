@@ -1,21 +1,27 @@
 /*
-    dependencies    
+    dependencies
 */
 @import "~normalize.css/normalize.css";
 @import "~font-awesome/css/font-awesome.min.css";
 @import '~react-redux-toastr/src/styles/index.scss';
 /*
-    app    
+    app
 */
-@import "./pages/IndexPage.scss";
+@import "./pages/IndexPage/IndexPage.scss";
 @import "./pages/MoodPage.scss";
+@import "./pages/UserPage.scss";
 @import "./components/NavBar.scss";
 @import "./components/Video.scss";
 @import "./components/Loading.scss";
 @import "./components/Sidebar.scss";
-@import "./components/Decision.scss";
 @import "./components/MoodsList.scss";
 @import "./components/LoginDialog.scss";
+@import "./components/PageWrapper.scss";
+@import "./components/NodesInsert.scss";
+@import "./components/YoutubeVideos.scss";
+@import "./components/Decision/Decision.scss";
+@import "./components/WelcomeCard/WelcomeCard.scss";
+@import "./components/ShareButton/ShareButton.scss";
 /*
     common styles
 */

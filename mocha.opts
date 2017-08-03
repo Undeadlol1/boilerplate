@@ -1,6 +1,12 @@
-  --reporter dot
+  --reporter nyan
   --ui bdd
   --no-exit
   --watch
   --no-exit
+  --timeout 5000
+  --prof
   --require mocha-clean
+  --bail
+  --require babel-register
+  --require babel-polyfill
+  --require source-map-support/register

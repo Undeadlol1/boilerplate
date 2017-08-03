@@ -1,0 +1,19 @@
+{
+    "NODE_ENV": "test",
+    "APP_NAME": "MooD",
+    "URL": "http://127.0.0.1:3000/",
+    "API_URL": "http://127.0.0.1:3000/api/",
+    "PORT": "3000",
+    "SESSION_KEY": "keyboard cat",
+    "DB_HOST": "127.0.0.1",
+    "DB_PORT": "3306",
+    "DB_USER": "root",
+    "DB_PASS": "",
+    "DB_NAME": "database_development",
+    "DB_DIALECT": "mysql",
+    "VK_ID": "5202075",
+    "VK_SECRET": "QjVr1JLVAXfVmZDJ6ws9",
+    "TWITTTER_ID": "L9moQHoGeNq7Gz25RRmuBNeg3",
+    "TWITTER_SECRET": "D15EvlV55IfCsGnsydRi5I9QAISzkYykKOO0rCqnowDfiUmwGZ",
+    "YOUTUBE_KEY": "AIzaSyAHOfkKqTfstb3V_YVOVKTzye9Gb2Sl4Tw"
+}

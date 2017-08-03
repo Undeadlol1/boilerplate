@@ -16,52 +16,52 @@ const users = [
     {
         username: 'sabinochka',
         password: "kakashechka",
-        image   : faker.image.imageUrl(),        
+        email   : "sabinochka@gmail.com",
     },
     {
         username: 'sabzero',
         password: "pisulechka",
-        image   : faker.image.imageUrl(),        
+        email   : "sabzero@gmail.com",
     },
     {
         username: 'pupsik',
         password: "volosatiy",
-        image   : faker.image.imageUrl(),        
+        email   : "pupsik@gmail.com",
     },
     {
         username: 'pechenusha',
         password: "sladenykaya",
-        image   : faker.image.imageUrl(),        
+        email   : "pechenusha@gmail.com",
     },
     {
         username: 'karamelka',
         password: "sladenykaya",
-        image   : faker.image.imageUrl(),        
+        email   : "karamelka@gmail.com",
     },
     {
         username: 'dominikana',
         password: "sladenykaya",
-        image   : faker.image.imageUrl(),        
+        email   : "dominikana@gmail.com",
     },
     {
         username: 'slezki',
         password: "sladenykaya",
-        image   : faker.image.imageUrl(),        
+        email   : "slezki@gmail.com",
     },
     {
         username: 'penisy',
         password: "sladenykaya",
-        image   : faker.image.imageUrl(),        
+        email   : "penisy@gmail.com",
     },
     {
         username: 'kavabanga',
         password: "sladenykaya",
-        image   : faker.image.imageUrl(),        
+        email   : "kavabanga@gmail.com",
     },
     {
         username: 'kadzima',
         password: "sladenykaya",
-        image   : faker.image.imageUrl(),        
+        email   : "kadzima@gmail.com",
     },
 ]
 

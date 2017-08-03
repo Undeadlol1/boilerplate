@@ -1,0 +1,1 @@
+export { default, PageName } from './PageName.jsx'

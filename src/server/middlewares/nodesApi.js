@@ -1,34 +1,52 @@
-import { Node, Mood, Decision, User } from '../data/models'
-import { mustLogin } from '../services/permissions'
-import { parseUrl } from '../../shared/parsers'
-import { YOUTUBE_KEY } from '../../../config'
-import { assignIn as extend } from 'lodash'
-import sequelize from "sequelize"
 import { Router } from "express"
+import sequelize from "sequelize"
+import extend from 'lodash/assignIn'
+import { parseUrl } from 'shared/parsers'
+import { mustLogin } from 'server/services/permissions'
+import { Node, Mood, Decision, User } from 'server/data/models'
+import { normalizeRating } from 'server/data/controllers/NodesController'
+import { updatePositionAndViews } from 'server/data/controllers/DecisionsController'
+import { findHighestRatingNode, findRandomNode, findRandomNodes } from 'server/data/controllers/NodesController'
 
 // routes
 export default Router()
 
-  // TODO: rework to query instead of params
-  // get node for async validation in node adding form
-  .get('/validate/:MoodId/:contentId', async function(req, res) {
+  .get('/:moodSlug/', async function(req, res) {
+    const { moodSlug } = req.params
     try {
-      const { MoodId, contentId } = req.params
-
-      if (!contentId || !MoodId) return res.boom.badRequest('invalid query')
-
-      const node = await Node.findOne({
-                          raw: true,
-                          where: { MoodId, contentId },
-                        })
-      res.json(node || {})
+      // validate params
+      if (!moodSlug) return res.status(400).end('mood slug is required')
+      // const MoodId = await Mood.findIdBySlug(moodSlug)
+      Mood
+      .findIdBySlug(moodSlug)
+      // find nodes
+      .then(MoodId => findRandomNodes(MoodId))
+      // respond
+      .then(nodes => res.json(nodes || []))
     } catch (error) {
       console.error(error);
       res.boom.internal(error)
     }
   })
 
-  .get('/:moodSlug/:nodeId?', async function({ params, user }, res) {
+  // get node for async validation in node adding form
+  .get('/validate/:MoodId/:contentId', async function(req, res) {
+    const { params } = req
+    try {
+      // validate params
+      if (!params.MoodId) return res.status(400).end('mood id is required')
+      if (!params.contentId) return res.status(400).end('content id is required')
+      // find node
+      Node.findOne({where: params})
+      // respond
+      .then(node => res.json(node || {}))
+    } catch (error) {
+      console.error(error);
+      res.boom.internal(error)
+    }
+  })
+
+  .get('/deprecated/:moodSlug/:nodeId?', async function({ params, user }, res) {
     /*
       If user is NOT logged in:
         1. Show highest rated Node
@@ -37,153 +55,60 @@ export default Router()
       If user IS logged in:
         1.
     */
-    
+
     try {
 
       let response
 
       const UserId = await user && user.id
       const MoodId = await Mood.findIdBySlug(params.moodSlug)
-      const previousNode = params.nodeId
+      const previousNode = await params.nodeId
                               ? await Node.findById(params.nodeId)
                               : null
+      if (!MoodId) return res.status(404).send('mood not found')
 
-      if (!MoodId) return res.boom.notFound()
+      // see function comment (hover over it)
+      if (previousNode) await normalizeRating(previousNode)
 
       /* USER IS NOT LOGGED IN */
       // if (!UserId) {
-        if(previousNode) {
-          /*
-            after migrating ratings to decimal point (in order to make them unique),
-            not all of them changed properly.
-            This function checks ratings and modifies them to decimal point with Date.now()
-          */
-          async function normalizeRating() {
-            if (previousNode.rating == '0.00000000000000000' && (previousNode.rating % 1) == 0) {
-              console.log('previousNode.rating', previousNode.rating)
-              console.log('after point', previousNode.rating % 1)
-              console.log('point test', (Number(previousNode.rating + '.' + Date.now())) % 1)
-              console.warn('rating is not normal!')
-              console.info('Normalizing...')
-              const id = previousNode.id
-              const newRating = previousNode.rating == '0.00000000000000000'
-                                ? Number(0 + '.' + Date.now())
-                                : Number(previousNode.rating + '.' + Date.now())
-              await Node.update({rating: newRating}, {where: {id}})
-              await Decision.update({NodeRating: newRating}, {where: {NodeId: id}})
-            }
-          }
-          await normalizeRating()
-
-          response = await Node.findOne({
-                              where: {
-                                MoodId,
-                                id: { $not: previousNode.id }, // TODO i most likely don't need this
-                                rating: { $lt: previousNode.rating },
-                              },
-                              order: [['rating', 'DESC']] // TODO ineed this?
-                            })
-        }
-      // }
+      //   if(previousNode) {
+      //     response = await Node.findOne({
+      //                         where: {
+      //                           MoodId,
+      //                           id: { $not: previousNode.id }, // TODO i most likely don't need this
+      //                           rating: { $lt: previousNode.rating },
+      //                         },
+      //                         order: [['rating', 'DESC']] // TODO ineed this?
+      //                       })
+      //   }
+      // // }
 
       /* USER IS LOGGED IN */
+      // TODO some of this things i do in decisionsApi
       // else {// IMPLEMENT THIS // DO NOT FORGET TO IMPLEMENT DECISIONS ON USER CREATION
-
-      //     const decisionsCount = await Decision.count({where: { UserId, MoodId }})
-      //     const nodesCount = await Node.count({where: { MoodId }})
-
       //     if (previousNode) {
-      //       const previousDecision =  await Decision.findOne({
-      //                                   where: { UserId, NodeId: previousNode.id }
-      //                                 })
-      //       // set lastViewAt, increment viewedAmount and set position
-      //       const previousPosition = (Number((previousDecision.position < 0 ? 0 : previousDecision.position)) + 1)
-      //       const modifier = Number(previousDecision.viewedAmount == 0 ? 1 : previousDecision.viewedAmount)
-      //       const newPosition = previousPosition * modifier
-      //       await Decision.update(
-      //               {
-      //                 lastViewAt: new Date(),
-      //                 viewedAmount: Number(previousDecision.viewedAmount) + 1,
-      //                 position: newPosition
-      //               },
-      //               { where: { id: previousDecision.id } }
-      //             )
-
-      //       // decrement previous decision.position / increment next ones
-
-      //       await Decision.update(
-      //         { position: sequelize.literal('position +1') },
-      //         {
-      //           where: {
-      //             UserId,
-      //             MoodId,
-      //             position: { $gte: newPosition },
-      //             id: { $not: previousDecision.id },
-      //           }
-      //         }
-      //       )     
-
-      //       await Decision.update(
-      //         { position: sequelize.literal('position -1') },
-      //         {
-      //           where: {
-      //             UserId,
-      //             MoodId,
-      //             position: { $lte: newPosition },
-      //             id: { $not: previousDecision.id },
-      //           }
-      //         }
-      //       )
-
-      //       // prepare response
-      //       const decision = await Decision.findOne({
-      //         where: {
-      //           UserId,
-      //           MoodId,
-      //           position: {$gt: previousDecision.position},
-      //         },
-      //         order: [['position', 'ASC']],                        
-      //         raw: true
+      //       /* set lastViewAt, increment viewedAmount and set position */
+      //       const where = { UserId, NodeId: previousNode.id }
+      //       // TODO test 'findOrCreate'
+      //       const previousDecision =  await Decision.findOrCreate({
+      //         where,
+      //         limit: 1,
+      //         defaults: {MoodId},
       //       })
-
-      //       response = await Node.findById(decision && decision.NodeId, {raw: true})
-      //       if (response) response.Decision = decision
-      //       else {
-      //         const highestPositionDecision = await Decision.findOne({
-      //           where: { UserId, MoodId, },
-      //           order: [['position', 'ASC']],
-      //           raw: true
-      //         })
-      //         response = await Node.findById(highestPositionDecision && highestPositionDecision.NodeId, {raw: true})
-      //         if (highestPositionDecision) response.Decision = highestPositionDecision
-      //       }
+      //       // TODO remove this in future (when availability of decision will be certain)
+      //       if (previousDecision) await updatePositionAndViews(previousDecision)
+      //       // find next node
+      //       response = await findHighestRatingNode(MoodId, UserId, previousDecision.NodeRating) // $qt //.position // TODO qt is not unique?
+      //       console.log('response: ', response);
       //   }
-      //     if (!response) {
-      //         const decision = await Decision.findOne({
-      //         where: {
-      //           UserId,
-      //           MoodId,
-      //         },
-      //         order: [['position', 'ASC']],                        
-      //         raw: true
-      //       })
-      //       const node = await Node.findById(decision && decision.NodeId, {raw: true})          
-      //         response = node
-      //         if (response) {
-      //           response.Decision = decision
-      //         }
-      //     }
       // }
 
-      if (!response) {
-        // console.log('there is no response!!!')
-        response = await Node.findOne({
-          where: { MoodId },
-          order: [['rating', 'DESC']]            
-        })
-      }
-
-      res.json(response)      
+      // // fallback to highest rated node if nothing was found
+      // if (!response) response = await findHighestRatingNode(MoodId, UserId)
+      if (!response) response = await findRandomNode(MoodId)
+      // close request
+      res.json(response)
     } catch (error) {
       console.error(error);
       res.boom.internal(error)

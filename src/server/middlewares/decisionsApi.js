@@ -1,192 +1,66 @@
-import { Node, Mood, Decision, User } from '../data/models'
-import { mustLogin } from '../services/permissions'
-import { assignIn as extend } from 'lodash'
-import express from "express"
-import selectn from "selectn"
+import { Node, Mood, Decision, User } from 'server/data/models'
+import { mustLogin } from 'server/services/permissions'
+import { Router } from 'express'
 
-const router = express.Router(); // TODO refactor without "const"?
-
-// TODO rework into async functions
-// TODO add comments
-
-/**
- * calculate rating to increment field properly
- * 
- * @param {Number} previousRating rating before update
- * @param {Number} newRating value of update
- * @return {Number} calculated value
- */
-function calculateNewRating(previousRating, newRating) {
-  if ((newRating > 0 && previousRating < 0) && (newRating < 0 && previousRating > 0)) newRating = Math.abs(previousRating) * -1 //  || rating < 0 && previousRating < 0
-  else newRating = newRating - previousRating
-  return newRating
-}
-
-router
+export default Router()
   .post('/', mustLogin, async function({user, body}, res) {
-
     /*
       When user makes a decision we need to:
-      1. Update Node.rating
-      2. Update Decision.rating with req.body.rating
-      3. Update all decision's NodeRating with new Node.rating 
+      1. Create a Decision
+      2. Update Node.rating
     */
-
-    // TODO add body validators or just wrap everything in try/catch
-    const { id: UserId } = user
-    const { NodeId, rating } = body
-
-
     try {
-      // TODO rework this awaits (RTFM, not all of them are needed)
-      const node = await Node.findById(NodeId)
-      const where = await {
-                            NodeId,
-                            UserId,
-                            MoodId: node.MoodId
-                          }
-      const nextViewAt = new Date().setDate(new Date().getDate() + 1) // tommorow // TEST VALUE
-      console.log('nextViewAt', nextViewAt);
-      const defaults = await  {
-                                nextViewAt,
-                                NodeRating: calculateNewRating(node.rating, body.rating),
-                              }
+      const { id: UserId } = user,
+            { NodeId, vote } = body,
+            node = await Node.findById(NodeId),
+            newRating = Number(node.rating) + (vote ? 1 : -1)
 
-      // update Node.rating
-      await node.increment({ rating: defaults.NodeRating }, { where: { id: NodeId } }) // do i actually need to specify id?
-      const nodeAfterUpdate = await Node.findById(NodeId)
-      const NodeRating = await nodeAfterUpdate.get('rating')
-
-      // update Decision.rating
-      await Decision.findOrCreate({
-        where: {
-          NodeId, UserId
-        },
-        defaults: {
-          rating, ...defaults, ...where // watch for "where" (double use of NodeId may not work)
-        }
+      // 1. Create a Decision
+      const decision = await Decision.create({
+        vote,
+        NodeId,
+        UserId,
+        MoodId: node.MoodId,
+        NodeRating: newRating,
       })
-      await Decision.update(
-        { rating, NodeRating, nextViewAt },
-        { where: { NodeId, UserId } }
+      // 2. Update Node.rating
+      await node.increment(
+        { rating: newRating },
+        { where: { id: NodeId } }
       )
-      // await Decision.upsert( // REWORK THIS? UPSERT DOES NOT SEEM TO WORK
-      //     { rating, NodeRating, ...defaults, ...where },
-      //     {
-      //       fields: ['NodeRating']
-      //     }
-      //   )
-
-      // update all Decision.NodeRating
-      const users = await User.findAll()
-      await users.forEach(user => {
-        Decision.findOrCreate({
-         where: { NodeId, UserId: user.id },
-         defaults: {
-           NodeRating, MoodId: node.MoodId
-         }
-        })
-      })
-      await Decision.update(
-        { NodeRating },
-        { where: { NodeId } }
-      )
-      // await users.forEach(user => {
-      //   return Decision.upsert({
-      //      ...defaults,
-      //      NodeId,
-      //      NodeRating,
-      //      UserId: user.id,
-      //      MoodId: node.MoodId,
-      //     },
-      //     {
-      //       fields: ['NodeRating']
-      //     }
-      //   )
-      // })
-
-      res.end()
-            
-
-    //   const decisions = await Decision.upsert({ where, defaults }) // try upsert again
-    //   const updatedDecisions1 = await Decision.update(defaults, { where })
-    //   const users = await User.findAll()
-    //   await node.increment({ rating: newRating }, { where: { id: NodeId } })
-    //   const decisionsToIncrement = await Decision.findCreateFind({ // or try .upsert again? // TODO ADD MOODID
-    //                       where: {
-    //                         NodeId,
-    //                         UserId,
-    //                         MoodId: where.MoodId,
-    //                         rating: newRating,
-    //                       },
-    //                       defaults
-    //                     })
-    //   const updatedDecisions2 = await Decision.find({ where }).increment({rating: newRating})
-
-    //   console.log('node.id', node.id);
-    //   res.end()
+      // send response
+      res.json(decision)
     } catch (error) {
       console.error(error)
       res.boom.internal(error.message)
     }
-
-
-
-
-
-
-    // // // Node.findById(NodeId).then(result => {
-    // // //   where.MoodId = result.get('MoodId')
-    // // // console.log('where', where);
-    // // // // return res.end()
-    // // // return Decision // using .findOrCreate => .update instead of upsert because Sequelize is buggy with upsert // TODO move upsert in model definition?
-    // // //   .findCreateFind({ where, defaults }) // TODO try .upsert again
-    // // //   .then((result) => Decision.update(defaults, { where })) // should this update be here?
-    // // //   .then(result => Node.findById(NodeId))
-    // // //   .then(result => {
-
-    // // //     // const previousRating = result.get('rating')
-    // // //     // let newRating = rating;
-    // // //     // if ((rating > 0 && previousRating < 0) && (rating < 0 && previousRating > 0)) newRating = Math.abs(previousRating) * -1 //  || rating < 0 && previousRating < 0
-    // // //     // else newRating = newRating - previousRating
-    // // //     // return result.increment({ rating: newRating }, { where: { id: NodeId } })
-    // // //     const newRating = calculateNewRating(result.get('rating'), body.rating)
-    // // //     return result.increment({rating: newRating }, { where: { id: NodeId } }) // where is not needed?
-    // // //             .then(() => {
-    // // //               return User.findAll()
-    // // //             })
-    // // //             .each(user => {
-    // // //               console.log('new where', where);
-    // // //               return Decision.findCreateFind({ // or try .upsert again? // TODO ADD MOODID
-    // // //                 where: {
-    // // //                   NodeId,
-    // // //                   UserId,
-    // // //                   MoodId: where.MoodId,
-    // // //                   rating: newRating,
-    // // //                 },
-    // // //                 defaults
-    // // //               })
-    // // //             })
-    // // //             .then(() => Decision.find({ where }))
-    // // //             .then(result => {
-    // // //               return result.increment({rating: newRating})
-    // // //             })
-    // // //             .catch(error => {
-    // // //               console.log(error);
-    // // //               res.boom.internal(error.message)                  
-    // // //             })
-    // //   })
-    // //   .then(result => {
-    // //     // console.log('result after', result);
-    // //     return result
-    // //   })
-    // //   .then(() => res.end())
-    // //   .catch(error => {
-    // //     console.log('defaults', defaults);
-    // //     console.error(error);
-    // //     res.boom.internal(error.message)
-    // //   })
-    // }) // THIS IS THE THING YOU ARE LOOKING FOR
   })
 
-export default router
+  .put('/', mustLogin, async function({user, body, params}, res) {
+    /*
+      When user changes decision we need to:
+      1. Update a Decision
+      2. Update Node.rating
+    */
+    try {
+      const { id: UserId } = user,
+            decision = await Decision.findById(body.id),
+            node = await Node.findById(decision.NodeId),
+            newRating = Number(node.rating) + (body.vote ? 1 : -1)
+      // Update Node.rating
+      await node.increment(
+        { rating: newRating },
+        { where: { id: node.id } }
+      )
+      // update decision
+      res.json(
+        await decision.update({
+          vote: body.vote,
+          NodeRating: newRating,
+        })
+      )
+    } catch (error) {
+      console.error(error)
+      res.boom.internal(error.message)
+    }
+  })

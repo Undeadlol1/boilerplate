@@ -1,14 +1,19 @@
-<html>
+{{!--TODO improve language setting via i18n--}}
+<html lang="ru-RU">
     <head>
+      <meta charset="utf-8">
       <!--<base href="/">        -->
-      <title>MooD</title>
+      {{#each headerTags}}
+        {{{this}}}
+      {{/each}}
+      <meta name="yandex-verification" content="684537441eb0ae9e" />
+      <meta name="google-site-verification" content="Lbzhacc3EGnNwEIyuTSQlmzzHajjDNZnQzO_CaIXe3Q" />
       <meta content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no" name="viewport" />
-      {{!--<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">--}}
       <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
       <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
       <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
       <link rel="manifest" href="/manifest.json">
-      <meta name="theme-color" content="#000000">
+      <meta name="theme-color" content="rgb(48, 48, 48)">
       <style>
             body {
                 margin: 0;
@@ -16,13 +21,19 @@
                 /* placeholder before proper styling can be applied */
                 background-color: rgb(48, 48, 48);
             }
-        </style>
+       </style>
+       {{{ css }}}
     </head>
     <body>
         {{!-- extra 'div' is needed to avoid "different markup on" error of React in SSR --}}
         <div id="react-root"><div>{{{ markup }}}</div></div>
-        <script src="/vendor.js"></script>
-        <script src="/scripts.js"></script>
+        {{!-- "async" does not block html parsing --}}
+        <script async="async" src="/scripts.js"></script>
+        {{!--<script src="/vendor.js"></script>--}}
         {{!--<link rel="stylesheet" href="/styles.css">--}}
+        <!-- setup Redux initial data -->
+        <script charSet="UTF-8">
+            window.__data = {{{ initialData }}}
+        </script>
     </body>
 </html>

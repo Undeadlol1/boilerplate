@@ -1,0 +1,6 @@
+.UserPage {
+	.UserPage__avatar {
+		// avatar was overflowing on small screens
+		max-width: inherit !important;
+	}
+}

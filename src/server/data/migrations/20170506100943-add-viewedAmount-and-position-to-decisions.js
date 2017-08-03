@@ -2,7 +2,7 @@
 
 module.exports = {
   up: function (queryInterface, Sequelize) {
-    queryInterface.addColumn(
+    return queryInterface.addColumn(
       'decisions',
       'position',
       {
@@ -10,20 +10,23 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING,
       }
-    )
-    queryInterface.addColumn(
-      'decisions',
-      'viewedAmount',
-      {
-        defaultValue: 0,
-        allowNull: false,
-        type: Sequelize.STRING,
-      }
-    )
+    ).then(function() {
+      return queryInterface.addColumn(
+        'decisions',
+        'viewedAmount',
+        {
+          defaultValue: 0,
+          allowNull: false,
+          type: Sequelize.STRING,
+        }
+      )
+    })
   },
 
   down: function (queryInterface, Sequelize) {
-    queryInterface.removeColumn('decisions', 'position')
-    queryInterface.removeColumn('decisions', 'viewedAmount')
+    return queryInterface.removeColumn('decisions', 'position')
+            .then(function() {
+              return queryInterface.removeColumn('decisions', 'viewedAmount')
+            })
   }
 };

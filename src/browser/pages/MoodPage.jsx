@@ -1,86 +1,87 @@
-import React, { Component } from 'react'
+import selectn from 'selectn'
 import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
+import React, { Component } from 'react'
+import NavBar from 'browser/components/NavBar'
+import Video from 'browser/components/Video.jsx'
+import Loading from 'browser/components/Loading'
+import Decision from 'browser/components/Decision'
 import { Row, Col } from 'react-styled-flexboxgrid'
-import { connect } from 'react-redux';
-import Loading from '../components/Loading'
-import NodesInsert from '../containers/NodesInsertContainer'
-import Decision from '../components/Decision.jsx'
-import Video from '../components/Video.jsx'
-import NavBar from '../components/NavBar'
-import { fetchMood, unloadMood } from '../redux/actions/MoodActions'
-import { fetchNode, actions } from '../redux/actions/NodeActions'
-import { toggleHeader } from '../redux/actions/GlobalActions'
-import { RouteTransition } from 'react-router-transition';
-import presets from 'react-router-transition/src/presets';
-import { FormattedMessage } from 'react-intl';
-import { translate } from 'browser/containers/Translator'
+import PageWrapper from 'browser/components/PageWrapper'
+import ShareButton from 'browser/components/ShareButton'
+import { translate as t } from 'browser/containers/Translator'
+import { parseJSON } from 'browser/redux/actions/actionHelpers'
+import NodesInsert from 'browser/containers/NodesInsertContainer'
+import { actions as nodeActions } from 'browser/redux/actions/NodeActions'
+import { recieveMood, unloadMood } from 'browser/redux/actions/MoodActions'
+import { actions as globalActions } from 'browser/redux/actions/GlobalActions'
 
-@connect(
-	({ node, mood, global: { controlsAreShown } }, ownProps) => {
-		return { mood, node, controlsAreShown, ...ownProps}
-	}, // TODO rework "node" state because it is store in 'mood' now
-	(dispatch, ownProps) => ({ // TODO remove this and use dispatch directly?
-		fetchMood: (slug) => dispatch(fetchMood(slug)),
-	    fetchNode: (slug) => dispatch(fetchNode(slug)),
-	    unloadMood: () => dispatch(unloadMood()),
-	    unloadNode: () => dispatch(actions.unloadNode()),
-		toggleHeader: (boolean) => dispatch(toggleHeader(boolean))
-    })
-)
-class MoodPage extends Component {
+export class MoodPage extends Component {
 
 	componentWillMount() {
 		this.props.toggleHeader(false)
-		this.props.fetchMood(this.props.params.moodSlug)
-		this.props.fetchNode(this.props.params.moodSlug)
 	}
 
 	componentWillUnmount() {
 		this.props.unloadMood()
-		this.props.unloadNode()		
-		this.props.toggleHeader(true)		
+		this.props.unloadNode()
+		this.props.toggleHeader(true)
 	}
 
 	render() {
-		let dom;
-		const { mood, node, location, params, controlsAreShown, toggleHeader, ...rest } = this.props
-
-		if (process.env.BROWSER && (mood.loading || node.loading)) return <Loading />
-
-		if (!node.contentId) {
-
-			dom = 	<div className="MoodPage--empty">
+		const { props } = this
+		const { contentNotFound, isLoading, params, ...rest } = this.props
+		const moodName = selectn('moodName', props)
+		const title = moodName && 'Мое настроение: ' + moodName
+		const contentId = selectn('videoId', props)
+		const image = contentId && `http://img.youtube.com/vi/${contentId}/hqdefault.jpg`
+		// TODO https://stackoverflow.com/a/42956044/4380989 might get you better preview images
+		return 	<PageWrapper
+					loading={isLoading}
+					className="MoodPage"
+					title={title}
+					image={image}
+				>
+					{/* TODO remove h1 (use css instead) */}
+					{
+						contentNotFound
+						&& <h1 className="MoodPage__header">{t("currently_zero_content_here")}</h1>
+					}
+					<Video className='MoodPage__video'>
 						<NavBar className='NavBar--sticky' />
-						{/* TODO remove h1 (use css instead) */}
-						<h1 className="MoodPage__header">{translate("currently_zero_content_here")}</h1>
-						<NodesInsert moodSlug={params.moodSlug} />
-					</div>
-		}
-		else {
-			dom =  <Video className='MoodPage__video' moodSlug={params.moodSlug}> {/* TODO rework passing of moodSlug */}
-						<NavBar className='NavBar--sticky' />
-						<Decision className='MoodPage__decision' />
-						<NodesInsert moodSlug={params.moodSlug} />																	
+						{!contentNotFound && <Decision className='MoodPage__decision' />}
+						<ShareButton />
+						<NodesInsert moodSlug={params.moodSlug} /> {/* TODO rework passing of moodSlug */}
 					</Video>
-		}
-
-		return 	<div className="MoodPage">
-					{/*<NavBar className='NavBar--sticky' />			*/}
-					<RouteTransition {...presets.slideLeft} pathname={location.pathname} className="MoodPage">
-						{dom}
-					</RouteTransition>
-				</div>
+				</PageWrapper>
 	}
 }
 
 MoodPage.propTypes = {
-	mood: PropTypes.object,
-	node: PropTypes.object,
-	// fetchMood: PropTypes.func.isRequred,
-	// fetchNode: PropTypes.func.isRequred,		
-	// unloadMood: PropTypes.func.isRequred,		
-	// unloadNode: PropTypes.func.isRequred,		
-	// toggleHeader: PropTypes.func.isRequred,
+	videoId: PropTypes.string,
+	moodName: PropTypes.string,
+	contentNotFound: PropTypes.bool,
+	isLoading: PropTypes.bool.isRequired,
+	params: PropTypes.object.isRequired,
+	unloadMood: PropTypes.func.isRequired,
+	unloadNode: PropTypes.func.isRequired,
+	toggleHeader: PropTypes.func.isRequired,
 }
 
-export default MoodPage
+export const stateToProps = ({ node, mood }, ownProps) => {
+	return {
+		moodName: mood.get('name'),
+		videoId: node.get('contentId'),
+		contentNotFound: node.get('contentNotFound'),
+		isLoading: mood.get('loading') || !node.get('finishedLoading'),
+		...ownProps
+	}
+}
+
+export const dispatchToProps = dispatch => ({
+	unloadMood: () => dispatch(unloadMood()),
+	unloadNode: () => dispatch(nodeActions.unloadNode()),
+	toggleHeader: (boolean) => dispatch(globalActions.toggleHeader(boolean))
+})
+
+export default (connect(stateToProps, dispatchToProps)(MoodPage))

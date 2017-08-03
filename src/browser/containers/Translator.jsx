@@ -11,7 +11,7 @@ import uk from '../i18n/uk'
 
 addLocaleData([...enData, ...ruData, ...ukData]);
 
-const DEFAULT_LANGUAGE = 'en'
+const DEFAULT_LANGUAGE = 'ru'
 
 // TODO refactor everything
 
@@ -21,18 +21,18 @@ if (process.env.SERVER) {
 // https://formatjs.io/guides/runtime-environments/#server
 // var areIntlLocalesSupported = require('intl-locales-supported');
 // var localesMyAppSupports = ['en', 'ru'];
- 
+
 // if (global.Intl) {
-//     // Determine if the built-in `Intl` has the locale data we need. 
+//     // Determine if the built-in `Intl` has the locale data we need.
 //     if (!areIntlLocalesSupported(localesMyAppSupports)) {
-//         // `Intl` exists, but it doesn't have the data we need, so load the 
-//         // polyfill and replace the constructors with need with the polyfill's. 
+//         // `Intl` exists, but it doesn't have the data we need, so load the
+//         // polyfill and replace the constructors with need with the polyfill's.
 //         require('intl');
 //         Intl.NumberFormat   = IntlPolyfill.NumberFormat;
 //         Intl.DateTimeFormat = IntlPolyfill.DateTimeFormat;
 //     }
 // } else {
-//     // No `Intl`, so use and load the polyfill. 
+//     // No `Intl`, so use and load the polyfill.
 //     global.Intl = require('intl');
 // }
 }
@@ -71,11 +71,12 @@ class Translator extends Component {
             const localeCookie = cookies.get('locale')
             if (localeCookie) return localeCookie
         }
-        return navigator
-                ? (navigator.languages && navigator.languages[0])
-                || navigator.language
-                || navigator.userLanguage
-                : ''                
+        const ret = navigator
+                    ? (navigator.languages && navigator.languages[0])
+                    || navigator.language
+                    || navigator.userLanguage
+                    : DEFAULT_LANGUAGE
+        return ret || DEFAULT_LANGUAGE
     }
 
     render() {
@@ -103,7 +104,7 @@ class Translator extends Component {
         }
         // "key" prop is needed to change language dynamically
         return  <IntlProvider locale={language} messages={messages[language]} key={language}>
-                    <div>{this.props.children}</div>
+                    {this.props.children}
                 </IntlProvider>
     }
 }

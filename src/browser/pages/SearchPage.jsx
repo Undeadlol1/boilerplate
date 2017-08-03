@@ -7,45 +7,43 @@ import { Grid } from 'react-styled-flexboxgrid';
 import { injectProps } from 'relpers'
 import { connect } from 'react-redux';
 import { fetchMoods } from '../redux/actions/MoodActions'
-import { RouteTransition } from 'react-router-transition';
-import presets from 'react-router-transition/src/presets';
+import PageWrapper from 'browser/components/PageWrapper'
 
-@connect(
-	({ global, mood }) => {
-		const 	{ moods, loading } = mood
+export class SearchPage extends Component {
+	componentWillMount() { this.props.fetchMoods() }
+    @injectProps
+    render({loading, moods, currentPage, totalPages, location}) {
+		return 	<PageWrapper className="SearchPage">
+					<Grid fluid>
+						<Loading condition={loading}>
+							<MoodsFind />
+							<MoodsList moods={moods} currentPage={currentPage} totalPages={totalPages} />
+						</Loading>
+					</Grid>
+				</PageWrapper>
+    }
+}
+
+SearchPage.propTypes = {
+	moods: PropTypes.object,
+	totalPages: PropTypes.number,
+	currentPage: PropTypes.number,
+	loading: PropTypes.bool.isRequired,
+	fetchMoods: PropTypes.func.isRequired,
+}
+
+export default
+connect(
+	({ mood }) => {
 		const searchedMoods = mood.get('searchedMoods')
 		return 	{
-			loading: mood.get('loading'),
-			totalPages: searchedMoods.get('totalPages'), // TODO rework this?
-			currentPage: searchedMoods.get('currentPage'), // TODO rework this? 
 			moods: searchedMoods.get('moods'),
+			totalPages: searchedMoods.get('totalPages'),
+			currentPage: searchedMoods.get('currentPage'),
+			loading: process.env.BROWSER && mood.get('loading'),
 		}
 	},
 	dispatch => ({
 		fetchMoods() {dispatch(fetchMoods())}
 	})
-)
-export default class SearchPage extends Component {
-
-	static propTypes = {
-		moods: PropTypes.object,
-		loading: PropTypes.bool
-	}
-
-	componentWillMount() { this.props.fetchMoods() }
-
-    @injectProps
-    render({loading, moods, currentPage, totalPages, location}) {
-        return 	loading
-                ?   <Loading />
-                :	<RouteTransition
-						pathname={location.pathname}
-						{...presets.pop}
-					>
-						<Grid className="SearchPage">
-	        				<MoodsFind />
-							<MoodsList moods={moods} currentPage={currentPage} totalPages={totalPages} />
-	        	    	</Grid>
-					</RouteTransition>
-    }
-}
+)(SearchPage)

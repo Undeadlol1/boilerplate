@@ -1,13 +1,17 @@
-const decisionStructure = {
+import isEmpty from 'lodash/isEmpty'
+import { Map, List } from 'immutable'
+
+const decisionStructure = Map({
 								rating: '',
 								UserId: '',
 								NodeId: '',
 								MoodId: '',
+								vote: null,
 								NodeRating: '',
 								nextViewAt: '',
-							}
+							})
 
-const nodeStructure = 	{
+const nodeStructure = 	Map({
 							id: '',
 							url: '',
 							UserId: '',
@@ -16,42 +20,72 @@ const nodeStructure = 	{
 							type: '',
 							provider: '',
 							contentId: '',
-							Decision: decisionStructure
-						}
-const initialState = 	{
+							Decision: decisionStructure.toJS()
+						})
+export const initialState = Map({
+							nodes: List(),
 							error: '',
-							loading: true,
+							loading: false,
+							finishedLoading: true,
 							dialogIsOpen: false,
+							contentNotFound: false,
 							searchIsActive: false, // TODO do i need this?
-							searchedVideos: [],
-							...nodeStructure
-						}
-						
-export default (state = initialState, {type, payload}) => {
-	let newState = state
+							searchedVideos: List(),
+							...nodeStructure.toJS()
+						})
 
+export default (state = initialState, {type, payload}) => {
 	switch(type) {
+		// case 'FETCHING_NODE':
+		// 	return state.merge({
+		// 		loading: true,
+		// 		finishedLoading: false,
+		// 		contentNotFound: false,
+		// 	})
 		case 'RECIEVE_NODE':
-			newState = Object.assign({}, state, payload || initialState, {
-				loading: false
-			})
-			// if (!payload) newState = Object.assign({}, state, initialState)
-			break
+			return state
+				.merge(payload)
+				.merge({
+					loading: false,
+					// finishedLoading: true,
+					contentNotFound: isEmpty(payload),
+				})
+		case 'RECIEVE_NODES':
+			return state
+				.mergeDeep({
+					...payload[0],
+					nodes: payload,
+					loading: false,
+					// finishedLoading: true,
+					contentNotFound: isEmpty(payload),
+				})
+		case 'UPDATE_NODE':
+			return state.mergeDeep(payload)
 		case 'TOGGLE_DIALOG':
-			newState = Object.assign({}, state, {
-				dialogIsOpen: !state.dialogIsOpen
-			})
-			break
+			return state.set('dialogIsOpen', !state.get('dialogIsOpen'))
 		case 'UNLOAD_NODE':
-			newState = Object.assign({}, state, nodeStructure)
-			break
+			return state
+				.merge(nodeStructure)
+				.merge({nodes: List()})
+				.mergeDeep({
+					loading: false,
+					// finishedLoading: false,
+					contentNotFound: false,
+				})
+		// remove node from nodes list
+		case 'REMOVE_NODE':
+			return state
+				.merge({
+					nodes: state
+							.get('nodes')
+							.filter(node => node.get('id') !== payload)
+				})
 		case 'RECIEVE_SEARCHED_VIDEOS':
-			newState = Object.assign({}, state, {
+			return state.merge({
 				searchIsActive: false,
 				searchedVideos: payload
 			})
-			break
+		default:
+			return state
 	}
-
-	return newState
 }

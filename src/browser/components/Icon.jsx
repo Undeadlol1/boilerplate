@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types'
+import classNames from 'classnames'
 import React, { Component } from 'react'
+import extendObject from 'lodash/assignIn'
 import FontAwesome from 'react-fontawesome'
-import { assignIn as extendObject } from 'lodash'
 
 class Icon extends Component {
     state = {
@@ -15,24 +16,38 @@ class Icon extends Component {
     }
 
     render() {
-        const { size, style, hoverIcon, ...rest } = this.props
+        const { className, size, color, style, hoverIcon, ...rest } = this.props
+        // add dark outline to icon
+        // (needed in Decision when background is white)
+        const iconStyles = {
+            'WebkitTextStrokeWidth': '1px',
+            'WebkitTextStrokeColor': 'rgb(48, 48, 48)',
+        }
         const iconOptions = {
-                                size: size || "2x",
+                                size,
                                 name: this.state.currentIcon,
-                                style: extendObject({color: 'white'}, style),
+                                style: extendObject({color}, iconStyles, style),
                             }
 
         return  <FontAwesome
                     {...rest}
                     {...iconOptions}
+                    className={classNames('Icon', className)}
                     onMouseEnter={this.toggleHoverIcon.bind(this, true)}
                     onMouseLeave={this.toggleHoverIcon.bind(this, false)}
                 />
     }
 }
 
+Icon.defaultProps = {
+    size: '2x',
+    color: 'white',
+}
+
 Icon.propTypes = {
-    hoverIcon: PropTypes.string
+    size: PropTypes.string,
+    color: PropTypes.string,
+    hoverIcon: PropTypes.string,
 }
 
 export default Icon

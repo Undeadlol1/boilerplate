@@ -1,0 +1,1 @@
+export { default, ComponentName } from './ComponentName.jsx'

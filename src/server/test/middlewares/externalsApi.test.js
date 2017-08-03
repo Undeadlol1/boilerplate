@@ -4,7 +4,7 @@ import request from 'supertest'
 import server from '../../server'
 import { Mood, User, Node, Decision } from '../../data/models'
 import slugify from 'slug'
-import { uniq } from 'lodash'
+import uniq from 'lodash/uniq'
 import colors from 'colors'
 import users from '../../data/fixtures/users'
 import { stringify } from 'query-string'
@@ -14,7 +14,7 @@ chai.should();
 const   user = request.agent(server)
 
 export default describe('/externals API', function() {
-    
+
     before(function() {
         // TODO add logout? to test proper user login?
         // Kill supertest server in watch mode to avoid errors
@@ -29,7 +29,7 @@ export default describe('/externals API', function() {
 
     describe('/search?selector', async function() {
         const route = '/api/externals/search'
-        try {        
+        try {
             it('fails without "selector"', async function() {
                 await user.get(`${route}?`).expect(400)
             })
@@ -40,7 +40,7 @@ export default describe('/externals API', function() {
                         .expect(200)
                         .expect('Content-Type', /json/)
                         .then(({body}) => {
-                            expect(body.length).to.be.equal(3)
+                            expect(body.length).to.be.equal(4)
                             body.map(video => {
                                 return expect(video.id.videoId).to.be.an('string')
                             })

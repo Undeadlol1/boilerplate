@@ -2,7 +2,7 @@
 
 module.exports = {
   up: function (queryInterface, Sequelize) {
-    queryInterface.changeColumn(
+    return queryInterface.changeColumn(
       'users',
       'image',
       {
@@ -13,7 +13,7 @@ module.exports = {
   },
 
   down: function (queryInterface, Sequelize) {
-    queryInterface.changeColumn(
+    return queryInterface.changeColumn(
       'users',
       'image',
       {

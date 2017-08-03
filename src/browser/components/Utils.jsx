@@ -1,5 +1,8 @@
 import React from 'react'
-import { has, isObject, isArray, isEmpty } from 'lodash'
+import isEmpty from 'lodash/isEmpty'
+import isArray from 'lodash/isArray'
+import isObject from 'lodash/isObject'
+import has from 'lodash/has'
 
 // check condition value
 function check (props) {

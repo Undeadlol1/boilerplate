@@ -1,9 +1,12 @@
+// fetch polyfill, used everywhere in code
+require('isomorphic-fetch') // TODO to webpack?
+require('babel-register')();
+require('source-map-support').install();
+
 // this is copy+paste from
 // https://semaphoreci.com/community/tutorials/testing-react-components-with-enzyme-and-mocha
-// and 
+// and
 // https://github.com/airbnb/enzyme/issues/942
-require('babel-register')();
-
 const { JSDOM } = require('jsdom');
 const jsdom = new JSDOM('<!doctype html><html><body></body></html>');
 const { window } = jsdom;

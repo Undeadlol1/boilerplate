@@ -1,15 +1,8 @@
 .NavBar {
 	z-index: 1;
 	width: 100%;
-	.NavBar__home-link {
-		color: rgb(48, 48, 48);
-	}
 	.NavBar__avatar {
 		margin-top: 3px;
-	}
-
-	.LoginLogoutButton {
-		margin-top: 5.5px;
 	}
 }
 
@@ -20,4 +13,18 @@
 
 .NavBar--hidden {
 	display: none;
+}
+
+.Navbar__profile-link {
+	display: flex;
+	text-decoration: none;
+	color: rgb(48, 48, 48);
+	&:visited {
+		color: rgb(48, 48, 48);
+	}
+}
+
+.Navbar__username {
+	font-size: 1.4rem;
+	margin: auto 0.5rem auto 0;
 }

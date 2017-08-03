@@ -1,10 +1,9 @@
 // @ts-check
-import { createAction, createActions } from 'redux-actions'
+import { createAction } from 'redux-actions'
 import { checkStatus, parseJSON, headersAndBody } from'./actionHelpers'
 import { toastr } from 'react-redux-toastr'
-import { API_URL } from '../../../../config'
 
-const moodsUrl = API_URL + 'moods/'
+const moodsUrl = String(process.env.API_URL) + 'moods/'
 
 // export const { recieveMood, recieveMoods, fetchingInProgress, fetchingError } = createActions({
 //   recieveMood: mood => mood, // object => object
@@ -14,23 +13,23 @@ const moodsUrl = API_URL + 'moods/'
 // })
 
 /**
- * @param {Array} moods
+ * @param {array} moods
  */
 export const recieveMoods = createAction('RECIEVE_MOODS')
 /**
- * @param {Object} mood
+ * @param {object} mood
  */
 export const recieveMood = createAction('RECIEVE_MOOD')
 /**
- * @param {Array} moods
+ * @param {array} moods
  */
 export const recieveSearchResult = createAction('RECIEVE_SEARCH_RESULT')
 /**
- * @param {Boolean} value // TODO add toggle
+ * @param {boolean} value // TODO add toggle
  */
-export const fetchingInProgress = createAction('FETCHING_IN_PROGRESS')
+export const fetchingInProgress = createAction('FETCHING_MOOD')
 /**
- * @param {String} reason
+ * @param {string} reason
  */
 export const fetchingError = createAction('FETCHING_ERROR', reason => reason)
 /**
@@ -40,12 +39,12 @@ export const unloadMood = createAction('UNLOAD_MOOD')
 
 export const fetchMoods = (pageNumber = 1) => dispatch => {
 	dispatch(fetchingInProgress())
-	fetch(moodsUrl + (pageNumber ? '/' + pageNumber : ''))
-		.then(checkStatus)		
+	return fetch(moodsUrl + (pageNumber ? '/' + pageNumber : ''))
+		.then(checkStatus)
 		.then(parseJSON)
 		.then(data => {
 			data.currentPage = pageNumber
-			dispatch(recieveMoods((data)))
+			return dispatch(recieveMoods((data)))
 		})
 		.catch(error => {
 			console.error(error)
@@ -53,14 +52,16 @@ export const fetchMoods = (pageNumber = 1) => dispatch => {
 }
 /**
  * fetch mood by slug
- * @param {String} slug 
+ * @param {String} slug
  */
-export const fetchMood = slug => dispatch => {
+export const fetchMood = (slug) => dispatch => {
 	dispatch(fetchingInProgress())
-	fetch(moodsUrl + 'mood/' + slug || '')
-		.then(checkStatus)		
+	return fetch(moodsUrl + 'mood/' + slug || '')
+		.then(checkStatus)
 		.then(parseJSON)
-		.then(mood => dispatch(recieveMood((mood))))
+		.then(mood => {
+			return dispatch(recieveMood((mood)))
+		})
 }
 /**
  * create mood
@@ -74,7 +75,7 @@ export const insertMood = (name, callback) => dispatch => {
 		.then(({slug}) => {
 			callback && callback(slug)
 			return slug
-		})		
+		})
 		.then(() => dispatch(fetchMoods()))
 }
 /**
@@ -84,7 +85,7 @@ export const insertMood = (name, callback) => dispatch => {
 export const findMoods = name => dispatch => {
 	dispatch(fetchingInProgress())
 	fetch(moodsUrl + 'search/' + name)
-		.then(checkStatus)		
+		.then(checkStatus)
 		.then(parseJSON)
 		.then(data => {
 			console.log('moods have been found!', data)

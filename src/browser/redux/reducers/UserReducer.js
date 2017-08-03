@@ -1,42 +1,65 @@
-import { isEmpty } from 'lodash'
-import { Map } from 'immutable'
+import isEmpty from 'lodash/isEmpty'
+import { Map, fromJS } from 'immutable'
 
-const emptyProfileObject = Map({
+const emptyProfileObject = {
 	id: '',
 	language: '',
 	UserId: '',
-})
+}
 
-const emptyUserObject = Map({
+const emptyLocalObject = {
+	id: '',
+	username: '',
+	email: '',
+	UserId: '',
+}
+
+const emptyVkObject = {
 	id: '',
 	image: '',
+	UserId: '',
 	username: '',
-	vk_id: '',
-	facebook_id: '',
-	twitter_id: '',
-	Profile: emptyProfileObject,
-})
+	displayName: '',
+}
 
-const initialState = Map({
+const emptyTwitterObject = {
+	id: '',
+	image: '',
+	UserId: '',
+	username: '',
+	displayName: '',
+}
+
+const emptyUserObject = {
+	id: undefined,
+	image: '',
+	displayName: '',
+	Vk: emptyVkObject,
+	Twitter: emptyTwitterObject,
+	Profile: emptyProfileObject,
+	Local: emptyLocalObject,
+}
+
+export const initialState = fromJS({
 	...emptyUserObject,
-	loginIsOpen: false,
 	loading: false,
-	fetchedUser: emptyUserObject
+	loginIsOpen: false,
+	fetchedUser: emptyUserObject,
 })
 
 export default (state = initialState, { type, payload }) => {
 	switch(type) {
-		case 'FETCHING_IN_PROGRESS':
+		case 'FETCHING_USER':
 			return state.set('loading', true)
 		case 'RECIEVE_CURRENT_USER':
-			return state.merge({
+			return state.mergeDeep({
 				...payload,
 				loading: false,
 				loginIsOpen: isEmpty(payload) && state.get('loading') && state.get('loginIsOpen')
 			})
 		case 'RECIEVE_FETCHED_USER':
 			return state.mergeDeep({
-				loading: false,				
+				loading: false,
 				fetchedUser: payload
 			})
 		case 'REMOVE_FETCHED_USER':

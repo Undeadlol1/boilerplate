@@ -1,5 +1,6 @@
 {
-    "name": "mood",
+    "name": "MooD",
+    "short_name": "MooD",
     "icons": [
         {
             "src": "/android-chrome-192x192.png",
@@ -7,7 +8,7 @@
             "type": "image/png"
         }
     ],
-    "theme_color": "#000000",
-    "background_color": "#000000",
-    "display": "standalone"
+    "theme_color": "rgb(48, 48, 48)",
+    "background_color": "rgb(48, 48, 48)",
+    "display": "fullscreen"
 }

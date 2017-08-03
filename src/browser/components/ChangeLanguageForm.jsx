@@ -5,9 +5,9 @@ import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import { Row, Col } from 'react-styled-flexboxgrid'
 import { updateUser } from '../redux/actions/UserActions'
+// TODO test (redux-form may be importing whole material-ui library)
 import { TextField, SelectField } from 'redux-form-material-ui'
 import MenuItem from 'material-ui/MenuItem'
-import { FormattedMessage } from 'react-intl';
 import cookies from 'cookies-js'
 import { translate } from '../containers/Translator'
 
@@ -17,22 +17,24 @@ import { translate } from '../containers/Translator'
 })
 @connect(
 	({user}, ownProps) => {
-		const username = user.get('username')
-		return ({username, ...ownProps})
+		const UserId = user.get('id')
+		console.log('UserId: ', UserId);
+		return ({UserId, ...ownProps})
 	},
     (dispatch, ownProps) => ({
-        changeLanguage(username, language) {
+        changeLanguage(UserId, language) {
+			console.log('UserId: ', UserId);
 			cookies.set('locale', language)
             dispatch(
-				updateUser(username, {language})
+				updateUser(UserId, {language})
 			)
         }
     })
 )
 export default class ChangeLanguageForm extends Component {
 	handleChange = (event, language) => {
-		const {username, changeLanguage} = this.props
-		changeLanguage(username, language)
+		const {UserId, changeLanguage} = this.props
+		changeLanguage(UserId, language)
 	}
 
 	render() {
@@ -40,8 +42,9 @@ export default class ChangeLanguageForm extends Component {
 		const labelText = translate("choose_your_language")
 	    return  <form>
 					<Row>
-						<Col xs={12}>
+						<Col xs={12} sm={6} md={3}>
 							<Field
+								fullWidth
 								name="language"
 								component={SelectField}
 								onChange={this.handleChange}

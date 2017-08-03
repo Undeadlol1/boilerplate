@@ -1,6 +1,8 @@
 'use strict';
-module.exports = function(sequelize, DataTypes) {
-  var Decision = sequelize.define('Decision', {
+// THIS IS MESSED UP
+// TODO fix ASAP
+function colums(DataTypes) {
+  var types = {
     rating: {
       defaultValue: 0,
       allowNull: false,
@@ -16,11 +18,6 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       type: DataTypes.INTEGER,
     },
-    lastViewAt: {
-      allowNull: false,
-      type: DataTypes.DATE,
-      defaultValue: DataTypes.NOW,
-    },
     nextViewAt: DataTypes.DATE,
     NodeId: {
       allowNull: false,
@@ -33,16 +30,36 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.INTEGER,
     },
     UserId: {
-      allowNull: false,      
+      allowNull: false,
       type: DataTypes.INTEGER,
       // unique: 'compositeIndex'
     },
     MoodId: {
-      allowNull: false,      
+      allowNull: false,
       type: DataTypes.INTEGER,
       // unique: 'compositeIndex'
+    },
+    vote: {
+      allowNull: true,
+      type: DataTypes.BOOLEAN
     }
-  }, {
+  }
+  if (process.env.NODE_ENV == 'production' || process.env.NODE_ENV == undefined) {
+    /* somehow even after dropping 'lastViewAt' in migration,
+      Sequelize does not remove the column.
+      This code is kept to avoid 'does not have default value' error
+    */
+    // types.lastViewAt = {
+    //   allowNull: false,
+    //   type: DataTypes.DATE,
+    //   defaultValue: DataTypes.NOW,
+    // }
+  }
+  return types
+}
+
+module.exports = function(sequelize, DataTypes) {
+  var Decision = sequelize.define('Decision', colums(DataTypes), {
     tableName: 'decisions',
     freezeTableName: true,
     classMethods: {

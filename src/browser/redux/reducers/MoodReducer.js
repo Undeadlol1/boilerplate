@@ -42,7 +42,7 @@ export default (state = initialState, {type, payload}) => {
 						moods: [...state.get('moods'), payload.mood], // TODO rework this with immutable array method
 						loading: false
 					})
-		case 'FETCHING_IN_PROGRESS':
+		case 'FETCHING_MOOD':
 			return state.set('loading', true)
 		case 'RECIEVE_SEARCH_RESULT':
 			return state.merge({

@@ -13,11 +13,16 @@
 		width: 100%;
 		text-align: center;
 	}
-	.NodesInsert {
-		right: 70px;
-		bottom: 60px;
+	.NodesInsert, .ShareButton {
 		position: fixed;
 		margin-bottom: 0;
+		bottom: 60px;
+	}
+	.ShareButton {
+		left: 7%;
+	}
+	.NodesInsert {
+		right: 7%;
 	}
 }
 .MoodPage, .MoodPage--empty {

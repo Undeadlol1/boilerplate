@@ -4,54 +4,43 @@ import request from 'supertest'
 import server from '../../server'
 import { Mood, User } from '../../data/models'
 import slugify from 'slug'
+import { loginUser } from '../middlewares/authApi.test'
+import users from '../../data/fixtures/users'
 chai.should();
 
 const   user = request.agent(server),
-        username = "somename",
-        password = "somepassword",
+        username = users[0].username,
+        password = users[0].password,
         moodName = "random name",
         slug = slugify(moodName)
 
 export default describe('/moods API', function() {
-    
-    before(function(done) {
+
+    before(async function() {
         // TODO add logout? to test proper user login?
         // Kill supertest server in watch mode to avoid errors
         server.close()
-        // Create user and login
-        user
-            .post('/api/auth/signup')
-            .send({ username, password })
-            .end(function(error, result) {
-                if (error) return done(error)
-                user
-                    .post('/api/auth/login')
-                    .send({ username, password })
-                    .expect(302)
-                    .end((error, result) => {
-                        if (error) return done(error)
-                        done()
-                    })
-            })
+
     })
 
     // clean up
     after(function() {
-        User.destroy({where: { username }})
-        Mood.destroy({where: { name: moodName }})        
+        Mood.destroy({where: { name: moodName }})
     })
 
-    it('POST mood', function(done) {
-        user
-            .post('/api/moods')
+    it('POST mood', async function() {
+        const agent = await loginUser(username, password)
+        await agent.post('/api/moods')
             .send({ name: moodName })
             .expect('Content-Type', /json/)
             .expect(200)
-            .end(function(err, res){ 
-                if (err) return done(err);
-                res.body.slug.should.be.equal(slug)
-                done()
-        })
+            .then(function(res) {
+                return res.body.slug.should.be.equal(slug)
+            })
+            .catch(error => {
+                console.error(error)
+                throw new Error(error)
+            })
     })
 
     it('GET moods', function(done) {
@@ -85,23 +74,16 @@ export default describe('/moods API', function() {
             .expect(200)
             .end(function(err, res) {
                 if (err) return done(err);
-                res.body.moods.should.be.a('array')                
+                res.body.moods.should.be.a('array')
                 done()
             });
     })
     // TODO create test for "mustLogin" function and this kind of tests will be obsolete
     it('fail to POST if not authorized', function(done) { // TODO move this to previous function?
-        // TODO how to test if user is logged in?
         user
-            .get('/api/auth/logout')
-            .expect(200)
-            .end(err => {
-                if (err) return done(err);
-                user
-                    .post('/api/moods')
-                    .send({ name: moodName })
-                    .expect(401, done)
-            })
+            .post('/api/moods')
+            .send({ name: moodName })
+            .expect(401, done)
     })
 
 })

@@ -1,50 +1,72 @@
+import LoginLogoutButton from 'browser/components/LoginLogoutButton'
+import { actions } from 'browser/redux/actions/GlobalActions'
+import Loading from 'browser/components/Loading'
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import { AppBar, Avatar } from 'material-ui'
+import Link from 'react-router/lib/Link'
+import AppBar from 'material-ui/AppBar'
+import Avatar from 'material-ui/Avatar'
 import { connect } from 'react-redux'
-import { Link } from 'react-router'
-import LoginLogoutButton from './LoginLogoutButton'
-import { toggleSidebar, toggleControls } from '../redux/actions/GlobalActions'
-// import classnames from 'classnames'
+import classNames from 'classnames'
+import PropTypes from 'prop-types'
 
-// import { gql, graphql } from 'react-apollo';
-// @graphql(gql`query current_user { id }`)
-@connect(
-    ({ user, global  }, ownProps) => {
-        const { controlsAreShown, headerIsShown } = global
-        const username = user.get('username') && user.get('username').toLowerCase()
-        return { controlsAreShown, headerIsShown, username, ...ownProps }
-    },
-    (dispatch, ownProps) => ({
-        toggleSidebar() {
-            dispatch(toggleSidebar())
-        }
-    })
-)
-class NavBar extends Component {
+const titleStyles = { color: 'rgb(48, 48, 48)' }
+const LoginLogoutButtonStyles = { marginTop: '5.5px' }
+const LoadingStyles = { marginTop: '1.5px' }
+
+const titleLink =   <Link
+                        to="/"
+                        style={titleStyles}
+                        className="NavBar__home-link"
+                    >
+                        {process.env.APP_NAME}
+                    </Link>
+
+export class NavBar extends Component {
     render() {
-        const { username, headerIsShown, controlsAreShown, className, toggleSidebar, children, ...rest } = this.props
-        const titleLink = <Link to="/" className="NavBar__home-link">MooD</Link>
-        const loginButton = username
-                            ? <Link to={`/users/${username}`}>
-                                <Avatar className="NavBar__avatar" src={`https://api.adorable.io/avatars/100/${username}.png`} />
-                              </Link>
-                            : <LoginLogoutButton />
+        const { displayName, UserId, loading, className, children, toggleSidebar, ...rest } = this.props
 
-        return  <header className={'NavBar ' + className} {...rest}>
+        let loginOrAvatar
+        // show loading animation if user is being fetched
+        if (!UserId && loading) loginOrAvatar = <Loading style={LoadingStyles} color="rgb(48, 48, 48)" condition={true} />
+        // else show avatar or login button
+        else {
+            loginOrAvatar = UserId
+                            ? <Link className="Navbar__profile-link" to={`/users/${UserId}`}>
+                                <Avatar
+                                    className="NavBar__avatar"
+                                    src={`https://api.adorable.io/avatars/100/${UserId}.png`}
+                                />
+                              </Link>
+                            : <LoginLogoutButton style={LoginLogoutButtonStyles} />
+        }
+
+        return  <header className={classNames('NavBar ', className)} {...rest}>
                     <AppBar
+                        {...rest}
                         title={titleLink}
-                        iconElementRight={loginButton}
+                        iconElementRight={loginOrAvatar}
                         onLeftIconButtonTouchTap={toggleSidebar}
-                        {...rest} />
-                        {children}
+                    />
+                    {children}
                 </header>
     }
 }
 
 NavBar.propTypes = {
-    // user: PropTypes.object.isRequired,
-    // toggleSidebar: PropTypes.func.isRequired
+    UserId: PropTypes.number,
+    toggleSidebar: PropTypes.func.isRequired,
 }
 
-export default NavBar
+export const dispatchToProps = dispatch => ({
+    toggleSidebar: () => dispatch(actions.toggleSidebar())
+})
+
+export default connect(
+    ({ user, global  }, ownProps) => {
+        const UserId = user.get('id')
+        const loading = user.get('loading')
+        const displayName = user.get('displayName')
+        return { UserId, displayName, loading, ...ownProps }
+    },
+    dispatchToProps
+)(NavBar)

@@ -2,7 +2,7 @@
 
 module.exports = {
   up: function (queryInterface, Sequelize) {
-    queryInterface.changeColumn(
+    return queryInterface.changeColumn(
       'nodes',
       'rating',
       {
@@ -14,7 +14,7 @@ module.exports = {
   },
 
   down: function (queryInterface, Sequelize) {
-    queryInterface.changeColumn(
+    return queryInterface.changeColumn(
       'nodes',
       'rating',
       {

@@ -2,7 +2,7 @@
 
 module.exports = {
   up: function (queryInterface, Sequelize) {
-    queryInterface.addColumn(
+    return queryInterface.addColumn(
       'users',
       'password',
       Sequelize.STRING
@@ -10,6 +10,6 @@ module.exports = {
   },
 
   down: function (queryInterface, Sequelize) {
-    queryInterface.removeColumn('users', 'password')
+    return queryInterface.removeColumn('users', 'password')
   }
 };

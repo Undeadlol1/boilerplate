@@ -1,33 +1,24 @@
-var bcrypt   = require('bcrypt-nodejs');
-
 'use strict';
 module.exports = function(sequelize, DataTypes) {
   var User = sequelize.define('User', {
-    username: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true
-    },
-    password: DataTypes.STRING,
+    // TODO comment
     image: DataTypes.STRING,
-    facebook_id: DataTypes.STRING,
-    twitter_id: DataTypes.STRING,
-    vk_id: DataTypes.STRING,
+    /*
+      NOTE: with non-latin characters the only way to avoid "charset" erros using sequelize
+      was to change mysql config to accept utf-8 and changing table charsets manually via
+      ALTER TABLE db_name.table_name CONVERT TO CHARACTER SET utf8;
+    */
+    displayName: DataTypes.STRING,
   }, {
     tableName: 'users',
     freezeTableName: true,
     classMethods: {
-      generateHash: function(password) {
-        return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
-      },
       // associations can be defined here
       associate: function(models) {
         User.hasOne(models.Profile)
-      }
-    },
-    instanceMethods: {
-      validPassword: function(password) {
-        return bcrypt.compareSync(password, this.password);
+        User.hasOne(models.Local)
+        User.hasOne(models.Twitter)
+        User.hasOne(models.Vk)
       }
     }
   });

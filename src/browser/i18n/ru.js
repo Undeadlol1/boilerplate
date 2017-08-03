@@ -16,8 +16,29 @@ export default {
     add_your_own_mood: 'Создать настроение!',
     choose_your_language: 'Выберите ваш язык',
     currently_zero_content_here: 'Пока контента нет',
-    
+
+
+    mood_is_a_content_consumption_service: 'Mood - это сервис потребления контента.',
+    pick_your_mood_and_service_will_generate: 'Выберите свое настроение и сервис сгенерирует для вас уникальный персональный плейлист.',
+    ok: 'OK',
+    current_mood: 'Мое настроение: ',
+    incorrent_password: 'неправильный пароль',
+    user_does_not_exists: 'пользователя не существует',
+    user_already_exists: 'пользователь уже существует',
+    email_not_valid: 'адрес не действителен',
+    must_not_be_empty: 'не может быть пустым',
+    no_whitespace_allowed: 'пробелы не разрешены',
+    email: 'электронная почта',
+    username: 'имя пользователя',
+    password: 'пароль',
+    sign_up: 'Регистрация',
+    loading: 'Загрузка',
+    add_url: 'Добавить url',
+    search_for_video: 'Искать видео',
     page_not_found: 'Страница не найдена',
     list_is_empty: 'Список пуст',
     this_video_already_exists_please_no_duplicates: 'Это видео уже добавлено! Пожалуйста, не добавляйте дубликатов.',
+    whats_on_your_mind: "Что у тебя на уме?",
+    // used for img's "alt" property
+    things_image: ' изображение',
 }
