@@ -1,42 +1,54 @@
-const inquirer = require('inquirer')
-var replace = require('replace')
-const path = require('path')
 const fs = require('fs')
+const path = require('path')
+const shell = require('shelljs')
+const replace = require('replace')
+const inquirer = require('inquirer')
 
 // show cli menu with few options
+const updateText = 'update project'
 inquirer.prompt([{
     type: 'list',
     name: 'name',
-    choices: ['component', 'page'],
+    choices: ['component', 'page', updateText],
     message: 'What do you want to create?',
 }])
 // show prompt depending on users decision
 .then(function ({name}) {
-    if (name == 'component') {
-        inquirer
-        .prompt([{
-            name: 'name',
-            type: 'input',
-            message: 'component name',
-        }])
-        .then(input => createComponent(input.name))
-    }
-    else {
-        inquirer
-        .prompt([{
-            name: 'name',
-            type: 'input',
-            message: 'page file name?',
-        }])
-        .then(({name: pageName}) => {
+    console.log('name: ', name);
+    switch (name) {
+        case 'component':
             inquirer
             .prompt([{
-                name: 'path',
+                name: 'name',
                 type: 'input',
-                message: 'routing path(no first slash)?',
+                message: 'component name',
             }])
-            .then(({path}) => createPage(pageName, path))
-        })
+            .then(input => createComponent(input.name))
+            break;
+        case 'page':
+            inquirer
+            .prompt([{
+                name: 'name',
+                type: 'input',
+                message: 'page file name?',
+            }])
+            .then(({name: pageName}) => {
+                inquirer
+                .prompt([{
+                    name: 'path',
+                    type: 'input',
+                    message: 'routing path(no first slash)?',
+                }])
+                .then(({path}) => createPage(pageName, path))
+            })
+            break;
+        case updateText:
+            // shell.exec('git remote add upstream https://github.com/developer-expirience/boilerplate')
+            shell.exec('git pull upstream master --allow-unrelated-histories')
+            shell.echo('😎  all done 😎')
+            break;
+        default:
+            break;
     }
 });
 
@@ -76,7 +88,6 @@ function copyFolderAndReplace(folderPath, replaceWhat, replaceText, outputPath) 
 }
 
 function createPage(pageName, routePath) {
-    const replace = require("replace");
     const hook = "// ⚠️ Hook for cli! Do not remove 💀"
     const folderName = pageName
     const folderPath = path.resolve(__dirname, '../../src/browser/pages')
