@@ -5,18 +5,23 @@ const replace = require('replace')
 const inquirer = require('inquirer')
 
 // show cli menu with few options
+const launchText = 'launch project'
 const updateText = 'update project'
+const pageText = 'create page'
+const componentText = 'create component'
 inquirer.prompt([{
     type: 'list',
     name: 'name',
-    choices: ['component', 'page', updateText],
-    message: 'What do you want to create?',
+    choices: [launchText, componentText, pageText, updateText],
+    message: 'What do you want to do?',
 }])
 // show prompt depending on users decision
 .then(function ({name}) {
-    console.log('name: ', name);
     switch (name) {
-        case 'component':
+        case launchText:
+            shell.exec('yarn; yarn start')
+            break;
+        case componentText:
             inquirer
             .prompt([{
                 name: 'name',
@@ -25,7 +30,7 @@ inquirer.prompt([{
             }])
             .then(input => createComponent(input.name))
             break;
-        case 'page':
+        case pageText:
             inquirer
             .prompt([{
                 name: 'name',
