@@ -3,21 +3,20 @@ var replace = require('replace')
 const path = require('path')
 const fs = require('fs')
 
-// TODO comments
-// TODO refactor
-
+// show cli menu with few options
 inquirer.prompt([{
     type: 'list',
     name: 'name',
     choices: ['component', 'page'],
     message: 'What do you want to create?',
 }])
+// show prompt depending on users decision
 .then(function ({name}) {
     if (name == 'component') {
         inquirer
         .prompt([{
-            type: 'input',
             name: 'name',
+            type: 'input',
             message: 'component name',
         }])
         .then(input => createComponent(input.name))
@@ -25,15 +24,15 @@ inquirer.prompt([{
     else {
         inquirer
         .prompt([{
-            type: 'input',
             name: 'name',
+            type: 'input',
             message: 'page file name?',
         }])
         .then(({name: pageName}) => {
             inquirer
             .prompt([{
-                type: 'input',
                 name: 'path',
+                type: 'input',
                 message: 'routing path(no first slash)?',
             }])
             .then(({path}) => createPage(pageName, path))
@@ -41,122 +40,62 @@ inquirer.prompt([{
     }
 });
 
-function createPage(pageName, routePath) {
-    var replace = require("replace");
-    var hook = "// ⚠️ Hook for cli! Do not remove 💀"
-    const folderName = pageName
-    const folderPath = path.resolve(__dirname, '../../src/browser/pages/' + folderName)
-
-    replace({
-        regex: hook,
-        replacement: `{ path: '${routePath}', component: require('browser/pages/${pageName}') },\n${hook}`,
-        paths: [path.resolve(__dirname, '../../src/browser/routes.js')],
-        silent: true,
-    })
-
+/**
+ * Copy files from folder and replace parts of text and file name
+ * @param {string} folderPath what to copy
+ * @param {string} replaceWhat what to replace
+ * @param {string} replaceText replacement text
+ * @param {string} outputPath where to put folder
+ */
+function copyFolderAndReplace(folderPath, replaceWhat, replaceText, outputPath) {
     try {
-        fs.mkdir(folderPath, err => {
-            if (err) return console.log(err);
-            fs.readFile(path.resolve(__dirname, '../templates/page/page.jsx'), 'utf8', function (err, data) {
-                if (err) {
-                    return console.log(err);
-                }
-                var result = data.replace(/PageName/g, folderName);
-
-                fs.writeFile(`${folderPath}/${folderName}.jsx`, result, 'utf8', function (err) {
-                    if (err) return console.log(err);
-                });
-            });
-            fs.readFile(path.resolve(__dirname, '../templates/page/index.js'), 'utf8', function (err, data) {
-                if (err) {
-                    return console.log(err);
-                }
-                var result = data.replace(/PageName/g, folderName);
-
-                fs.writeFile(`${folderPath}/index.js`, result, 'utf8', function (err) {
-                    if (err) return console.log(err);
-                });
-            });
-            fs.readFile(path.resolve(__dirname, '../templates/page/test.js'), 'utf8', function (err, data) {
-                if (err) {
-                    return console.log(err);
-                }
-                var result = data.replace(/PageName/g, folderName);
-
-                fs.writeFile(`${folderPath}/${folderName}.test.js`, result, 'utf8', function (err) {
-                    if (err) return console.log(err);
-                });
-            });
-            fs.readFile(path.resolve(__dirname, '../templates/page/styles.scss'), 'utf8', function (err, data) {
-                if (err) {
-                    return console.log(err);
-                }
-                var result = data.replace(/PageName/g, folderName);
-
-                fs.writeFile(`${folderPath}/${folderName}.scss`, result, 'utf8', function (err) {
-                    if (err) return console.log(err);
-                });
-            });
+        fs.readdir(folderPath, (err, files) => {
+            if (err) throw err
+            // 1) create folder
+            fs.mkdir(`${outputPath}/${replaceText}`, err => {
+            // 2) copy + paste files from folder
+                files.forEach(file => {
+            // 3) replace text in each file and rename it
+                    fs.readFile(folderPath + '/' + file, 'utf8', function (err, data) {
+                        if (err) return console.log(err);
+                        const regex = new RegExp(replaceWhat, "g")
+                        const fileText = data.replace(regex, replaceText);
+                        const fileName = file.replace(regex, replaceText);
+                        fs.writeFile(`${outputPath}/${replaceText}/${fileName}`, fileText, 'utf8', function (err) {
+                            if (err) return console.log(err);
+                        });
+                    });
+                })
+            })
         })
     } catch(e) {
         // TODO
         console.log(e);
         if (e.code = 'EEXIST') throw e
     }
+}
+
+function createPage(pageName, routePath) {
+    const replace = require("replace");
+    const hook = "// ⚠️ Hook for cli! Do not remove 💀"
+    const folderName = pageName
+    const folderPath = path.resolve(__dirname, '../../src/browser/pages')
+    const templatesPath = path.resolve(__dirname, '../templates/page')
+    // add route to 'routes.js'
+    replace({
+        regex: hook,
+        silent: true,
+        paths: [path.resolve(__dirname, '../../src/browser/routes.js')],
+        // replace 'hook' text with route info, and add hook text again afterwards
+        replacement: `{ path: '${routePath}', component: require('browser/pages/${pageName}') },\n${hook}`,
+    })
+    // copy+paste page template folder to 'pages' directory
+    copyFolderAndReplace(templatesPath, 'PageName', pageName, folderPath)
 
 }
 
 function createComponent(componentName) {
-    const folderName = componentName
-    const folderPath = path.resolve(__dirname, '../../src/browser/components/' + folderName)
-
-    try {
-        fs.mkdir(folderPath, err => {
-            if (err) return console.log(err);
-            fs.readFile(path.resolve(__dirname, '../templates/component/component.jsx'), 'utf8', function (err, data) {
-                if (err) {
-                    return console.log(err);
-                }
-                var result = data.replace(/ComponentName/g, folderName);
-
-                fs.writeFile(`${folderPath}/${folderName}.jsx`, result, 'utf8', function (err) {
-                    if (err) return console.log(err);
-                });
-            });
-            fs.readFile(path.resolve(__dirname, '../templates/component/index.js'), 'utf8', function (err, data) {
-                if (err) {
-                    return console.log(err);
-                }
-                var result = data.replace(/ComponentName/g, folderName);
-
-                fs.writeFile(`${folderPath}/index.js`, result, 'utf8', function (err) {
-                    if (err) return console.log(err);
-                });
-            });
-            fs.readFile(path.resolve(__dirname, '../templates/component/test.js'), 'utf8', function (err, data) {
-                if (err) {
-                    return console.log(err);
-                }
-                var result = data.replace(/ComponentName/g, folderName);
-
-                fs.writeFile(`${folderPath}/${folderName}.test.js`, result, 'utf8', function (err) {
-                    if (err) return console.log(err);
-                });
-            });
-            fs.readFile(path.resolve(__dirname, '../templates/component/styles.scss'), 'utf8', function (err, data) {
-                if (err) {
-                    return console.log(err);
-                }
-                var result = data.replace(/ComponentName/g, folderName);
-
-                fs.writeFile(`${folderPath}/${folderName}.scss`, result, 'utf8', function (err) {
-                    if (err) return console.log(err);
-                });
-            });
-        })
-    } catch(e) {
-        // TODO
-        console.log(e);
-        if (e.code = 'EEXIST') throw e
-    }
+    const templatesPath = path.resolve(__dirname, '../templates/component')
+    const folderPath = path.resolve(__dirname, '../../src/browser/components/' + componentName)
+    copyFolderAndReplace(templatesPath, 'ComponentName', componentName, folderPath)
 }
