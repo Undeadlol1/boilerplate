@@ -93,3 +93,7 @@ export const findMoods = name => dispatch => {
 		})
 		.then(data => dispatch(recieveSearchResult((data))))
 }
+
+export const toggleDialog = () => dispatch => {
+	dispatch({type: 'TOGGLE_MOODS_INSERT_DIALOG'})
+}

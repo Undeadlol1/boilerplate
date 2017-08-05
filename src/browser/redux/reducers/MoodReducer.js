@@ -18,6 +18,8 @@ const initialState = 	Map({
 								totalPages: 0,
 								currentPage: 0,
 							}), // TODO rework this
+							// <MoodsInsert /> dialog
+							dialogIsOpen: false,
 							Nodes: List(),
 							totalPages: 0,
 							currentPage: 0,
@@ -37,6 +39,9 @@ export default (state = initialState, {type, payload}) => {
 						...payload,
 						loading: false
 					})
+
+		case 'TOGGLE_MOODS_INSERT_DIALOG':
+			return state.set('dialogIsOpen', !state.get('dialogIsOpen'))
 		case 'INSERT_MOOD_SUCCES':
 			return state.merge({
 						moods: [...state.get('moods'), payload.mood], // TODO rework this with immutable array method
