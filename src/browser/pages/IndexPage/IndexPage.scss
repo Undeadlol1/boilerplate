@@ -1,5 +1,15 @@
 .IndexPage {
+	.WelcomeCard {
+		margin: 1rem -7px;
+	}
 	.MoodsList__item {
 		margin-bottom: 1rem;
+	}
+	.MoodsInsert {
+		right: 7%;
+		bottom: 60px;
+		z-index: 1000;
+		position: fixed;
+		margin-bottom: 0;
 	}
 }
