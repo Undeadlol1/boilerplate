@@ -45,6 +45,7 @@ inquirer.prompt([{
         case updateText:
             // shell.exec('git remote add upstream https://github.com/developer-expirience/boilerplate')
             shell.exec('git pull upstream master --allow-unrelated-histories')
+            shell.exec('yarn')
             shell.echo('😎  all done 😎')
             break;
         default:
