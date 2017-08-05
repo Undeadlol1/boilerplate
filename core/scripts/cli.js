@@ -113,6 +113,6 @@ function createPage(pageName, routePath) {
 
 function createComponent(componentName) {
     const templatesPath = path.resolve(__dirname, '../templates/component')
-    const folderPath = path.resolve(__dirname, '../../src/browser/components/' + componentName)
+    const folderPath = path.resolve(__dirname, '../../src/browser/components')
     copyFolderAndReplace(templatesPath, 'ComponentName', componentName, folderPath)
 }
