@@ -3,59 +3,66 @@ const path = require('path')
 const shell = require('shelljs')
 const replace = require('replace')
 const inquirer = require('inquirer')
+const imageToAscii = require("image-to-ascii")
 
 // show cli menu with few options
 const launchText = 'launch project'
 const updateText = 'update project'
 const pageText = 'create page'
 const componentText = 'create component'
-inquirer.prompt([{
-    type: 'list',
-    name: 'name',
-    choices: [launchText, componentText, pageText, updateText],
-    message: 'What do you want to do?',
-}])
-// show prompt depending on users decision
-.then(function ({name}) {
-    switch (name) {
-        case launchText:
-            shell.exec('yarn; yarn start')
-            break;
-        case componentText:
-            inquirer
-            .prompt([{
-                name: 'name',
-                type: 'input',
-                message: 'component name',
-            }])
-            .then(input => createComponent(input.name))
-            break;
-        case pageText:
-            inquirer
-            .prompt([{
-                name: 'name',
-                type: 'input',
-                message: 'page file name?',
-            }])
-            .then(({name: pageName}) => {
+
+imageToAscii(path.resolve(__dirname, '../duck.jpeg'), (err, converted) => {
+    // show image
+    console.log(err || converted);
+    // show cli ui
+    inquirer.prompt([{
+        type: 'list',
+        name: 'name',
+        choices: [launchText, componentText, pageText, updateText],
+        message: 'What do you want to do?',
+    }])
+    // show prompt depending on users decision
+    .then(function ({name}) {
+        switch (name) {
+            case launchText:
+                shell.exec('yarn; yarn start')
+                break;
+            case componentText:
                 inquirer
                 .prompt([{
-                    name: 'path',
+                    name: 'name',
                     type: 'input',
-                    message: 'routing path(no first slash)?',
+                    message: 'component name',
                 }])
-                .then(({path}) => createPage(pageName, path))
-            })
-            break;
-        case updateText:
-            // shell.exec('git remote add upstream https://github.com/developer-expirience/boilerplate')
-            shell.exec('git pull upstream master --allow-unrelated-histories')
-            shell.exec('yarn')
-            shell.echo('😎  all done 😎')
-            break;
-        default:
-            break;
-    }
+                .then(input => createComponent(input.name))
+                break;
+            case pageText:
+                inquirer
+                .prompt([{
+                    name: 'name',
+                    type: 'input',
+                    message: 'page file name?',
+                }])
+                .then(({name: pageName}) => {
+                    inquirer
+                    .prompt([{
+                        name: 'path',
+                        type: 'input',
+                        message: 'routing path(no first slash)?',
+                    }])
+                    .then(({path}) => createPage(pageName, path))
+                })
+                break;
+            case updateText:
+                // shell.exec('git remote add upstream https://github.com/developer-expirience/boilerplate')
+                shell.exec('git pull upstream master --allow-unrelated-histories')
+                shell.exec('yarn')
+                shell.echo('😎  all done 😎')
+                break;
+            default:
+                break;
+        }
+    });
 });
 
 /**

@@ -131,6 +131,7 @@
     "friendly-errors-webpack-plugin": "^1.6.1",
     "happypack": "^3.1.0",
     "html-webpack-plugin": "^2.28.0",
+    "image-to-ascii": "^3.0.7",
     "inquirer": "^3.2.1",
     "jsdom": "^10.1.0",
     "json-loader": "^0.5.4",
