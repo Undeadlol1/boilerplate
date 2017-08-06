@@ -4,7 +4,7 @@ import express from 'express'
 import slugify from 'slug'
 
 // routes
-const router = express.Router(); // TODO refactor without "const"?
+const router = express.Router()
 const limit = 12
 
 router
