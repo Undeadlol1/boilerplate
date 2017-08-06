@@ -112,6 +112,7 @@
     "chai-datetime": "^1.4.1",
     "chai-enzyme": "^0.7.1",
     "chai-immutable": "^1.6.0",
+    "change-case": "^3.0.1",
     "colors": "^1.1.2",
     "compression-webpack-plugin": "^0.4.0",
     "concurrently": "^3.4.0",
