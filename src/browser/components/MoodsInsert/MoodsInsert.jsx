@@ -44,14 +44,14 @@ export class MoodsInsert extends Component {
                         modal={false}
                         actions={actions}
                         open={dialogIsOpen}
-                        title={translate("add_something")}
+                        title={translate("add_your_own_mood")}
                         autoScrollBodyContent={true}
                         onRequestClose={toggleDialog}
                     >
 						<form onSubmit={handleSubmit(insertMood)}>
 							<Row>
 								<Col xs={12}>
-									<Field name="name" component={TextField} hidden={asyncValidating} hintText={translate("add_your_own_mood")} fullWidth />
+									<Field name="name" component={TextField} hidden={asyncValidating} hintText={translate("add_something")} fullWidth />
 									<button type="submit" hidden={true}>Submit</button>
 								</Col>
 							</Row>
