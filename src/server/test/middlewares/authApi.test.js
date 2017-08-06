@@ -1,7 +1,7 @@
 import chai, { assert, expect } from 'chai'
 import request from 'supertest'
-import server from '../../server.js'
-import { User, Local } from '../../data/models'
+import server from 'server/server.js'
+import { User, Local } from 'server/data/models'
 
 chai.should();
 
