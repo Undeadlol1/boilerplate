@@ -9,6 +9,7 @@ import MoodsFind from 'browser/components/MoodsFind'
 import MoodsInsert from 'browser/components/MoodsInsert'
 import PageWrapper from 'browser/components/PageWrapper'
 import { Grid, Row, Col } from 'react-styled-flexboxgrid'
+import { translate } from 'browser/containers/Translator'
 import YoutubeSearch from 'browser/components/YoutubeSearch'
 import ChangeLanguageForm from 'browser/components/ChangeLanguageForm'
 
@@ -16,6 +17,7 @@ export class UserPage extends Component {
 	@injectProps
     render({loading, location, UserId, displayName, isOwnPage}) {
 		const src = `https://api.adorable.io/avatars/300/${UserId}.png`
+		const imageText = displayName + translate('things_image')
 		return 	<PageWrapper
 					preset={'pop'}
 					loading={loading}
@@ -30,7 +32,7 @@ export class UserPage extends Component {
 						</Row>
 						<Row center="xs">
 							<Col xs={12} className="UserPage__avatar">
-								<Avatar size={300} src={src} />
+								<Avatar size={300} src={src} alt={displayName + translate('things_image')} title={imageText} />
 							</Col>
 						</Row>
 						<Row>

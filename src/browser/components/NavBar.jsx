@@ -1,5 +1,6 @@
 import LoginLogoutButton from 'browser/components/LoginLogoutButton'
 import { actions } from 'browser/redux/actions/GlobalActions'
+import { translate } from 'browser/containers/Translator'
 import Loading from 'browser/components/Loading'
 import React, { Component } from 'react'
 import Link from 'react-router/lib/Link'
@@ -33,6 +34,7 @@ export class NavBar extends Component {
             loginOrAvatar = UserId
                             ? <Link className="Navbar__profile-link" to={`/users/${UserId}`}>
                                 <Avatar
+                                    alt={translate('your_avatar')}
                                     className="NavBar__avatar"
                                     src={`https://api.adorable.io/avatars/100/${UserId}.png`}
                                 />
