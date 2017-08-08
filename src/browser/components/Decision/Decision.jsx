@@ -2,8 +2,9 @@ import selectn from 'selectn'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import { connect } from 'react-redux'
-import React, { PureComponent } from 'react'
 import Icon from 'browser/components/Icon'
+import React, { PureComponent } from 'react'
+import { translate as t } from 'browser/containers/Translator'
 import { vote, fetchNode, nextVideo } from 'browser/redux/actions/NodeActions'
 
 // TODO change name to 'controls'?
@@ -18,13 +19,16 @@ export class Decision extends PureComponent {
 		return 	<div className={'Decision ' + className}>
 					<Icon
 						name="thumbs-up"
+						title={t('i_like_it')}
 						hoverIcon='thumbs-o-up'
 						color={decisionVote ? 'rgb(0, 151, 167)' : undefined}
 						onClick={vote.bind(this, true)} />
 					<Icon
+						title={t('skip')}
 						onClick={nextVideo}
 						name="step-forward" />
 					<Icon
+						title={t('dont_like_it_dont_show_again')}
 						name="thumbs-down"
 						hoverIcon='thumbs-o-down'
 						color={decisionVote === false || 0 ? 'rgb(255, 64, 129)' : undefined}

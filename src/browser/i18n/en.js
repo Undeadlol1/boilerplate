@@ -40,4 +40,8 @@ export default {
     whats_on_your_mind: "What's on your mind?",
     // used for img's "alt" property
     things_image: "'s image",
+    your_avatar: 'Your avatar',
+    i_like_it: 'i like it',
+    skip: 'skip',
+    dont_like_it_dont_show_again: 'i don\'t like it (you will never see this again here)',
 }
