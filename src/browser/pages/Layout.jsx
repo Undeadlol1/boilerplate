@@ -10,6 +10,7 @@ import Sidebar from 'browser/components/Sidebar'
 import LoginDialog from 'browser/components/LoginDialog'
 import LoginLogoutButton from 'browser/components/LoginLogoutButton'
 import { fetchCurrentUser, logoutCurrentUser } from 'browser/redux/actions/UserActions'
+import styles from 'browser/theme'
 
 let timeout = null
 
@@ -73,11 +74,11 @@ export default class Layout extends React.Component {
 
 		// styles
 		const 	baseStyles = 	{
-									color: 'white',
 									height: '100vh',
 									minHeight: '100vh',
 									fontFamily: 'sans-serif',
-									backgroundColor: 'rgb(48, 48, 48)',
+									color: styles.palette.textColor,
+									backgroundColor: styles.palette.canvasColor,
 								},
 				headerStyles = 	{ // this is moved to navbar.scss
 									// position: 'fixed',

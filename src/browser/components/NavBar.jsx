@@ -1,6 +1,7 @@
 import LoginLogoutButton from 'browser/components/LoginLogoutButton'
 import { actions } from 'browser/redux/actions/GlobalActions'
 import { translate } from 'browser/containers/Translator'
+import { alternateTextColor } from 'browser/theme'
 import Loading from 'browser/components/Loading'
 import React, { Component } from 'react'
 import Link from 'react-router/lib/Link'
@@ -10,9 +11,9 @@ import { connect } from 'react-redux'
 import classNames from 'classnames'
 import PropTypes from 'prop-types'
 
-const titleStyles = { color: 'rgb(48, 48, 48)' }
-const LoginLogoutButtonStyles = { marginTop: '5.5px' }
 const LoadingStyles = { marginTop: '1.5px' }
+const titleStyles = { color: alternateTextColor }
+const LoginLogoutButtonStyles = { marginTop: '5.5px' }
 
 const titleLink =   <Link
                         to="/"
@@ -34,8 +35,8 @@ export class NavBar extends Component {
             loginOrAvatar = UserId
                             ? <Link className="Navbar__profile-link" to={`/users/${UserId}`}>
                                 <Avatar
-                                    alt={translate('your_avatar')}
                                     className="NavBar__avatar"
+                                    alt={translate('your_avatar')}
                                     src={`https://api.adorable.io/avatars/100/${UserId}.png`}
                                 />
                               </Link>

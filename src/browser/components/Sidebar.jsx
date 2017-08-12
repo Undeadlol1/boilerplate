@@ -4,14 +4,27 @@ import { connect } from 'react-redux'
 import Drawer from 'material-ui/Drawer'
 import React, { Component } from 'react'
 import MenuItem from 'material-ui/MenuItem'
+import { textColor } from 'browser/theme'
 import { translate } from 'browser/containers/Translator'
 import { actions } from 'browser/redux/actions/GlobalActions'
 import LoginLogoutButton from 'browser/components/LoginLogoutButton'
 
+const styles = {
+	color: textColor,
+	display: 'block',
+	textAlign: 'center',
+}
+
 export class Sidebar extends Component {
 	render() {
 		const { UserId, sidebarIsOpen, toggleSidebar } = this.props
-		return 	<Drawer className="Sidebar" docked={false} open={sidebarIsOpen} onRequestChange={toggleSidebar}>
+		return 	<Drawer
+					docked={false}
+					style={styles}
+					className="Sidebar"
+					open={sidebarIsOpen}
+					onRequestChange={toggleSidebar}
+				>
 					{
 						UserId
 						?	<div>
