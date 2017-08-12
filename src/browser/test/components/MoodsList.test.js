@@ -40,6 +40,11 @@ describe('<MoodsList />', () => {
     expect(withoutPages.exists()).to.be.true
   });
 
+  it('displays <Loading /> if needed', () => {
+    const element = shallow(<MoodsList loading={true} />)
+    expect(element).to.have.length(1)
+  })
+
   // TODO write this two tests
   // TODO refactor MoodsList
   // (move Pagination into component and create MoodsListItem)

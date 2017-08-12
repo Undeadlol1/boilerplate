@@ -1,0 +1,9 @@
+.Decision {
+	margin: 0;
+	width: 100%;
+	position: fixed;
+	bottom: calc(50% - 64px);
+	.fa:nth-child(2) {
+		margin: 0 30px;
+	}
+}

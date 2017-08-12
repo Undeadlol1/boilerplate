@@ -51,7 +51,7 @@ export class MoodsInsert extends Component {
 						<form onSubmit={handleSubmit(insertMood)}>
 							<Row>
 								<Col xs={12}>
-									<Field name="name" component={TextField} hidden={asyncValidating} hintText={translate("add_something")} fullWidth />
+									<Field name="name" component={TextField} hidden={asyncValidating} hintText={translate("add_something")} autoFocus fullWidth />
 									<button type="submit" hidden={true}>Submit</button>
 								</Col>
 							</Row>

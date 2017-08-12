@@ -1,6 +1,5 @@
 import 'babel-polyfill'
 import slugify from 'slug'
-import colors from 'colors'
 import uniq from 'lodash/uniq'
 import request from 'supertest'
 import server from 'server/server'

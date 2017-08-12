@@ -35,11 +35,11 @@ describe('<NodesInsert />', () => {
     expect(actionButton).to.have.descendants('ContentAdd')
   });
 
-  it('has <Dialog />', () => {
-    const dialog = wrapper.find('Dialog')
-    expect(wrapper).to.have.descendants('Dialog');
-    // TODO why is this not working? because of @connect?
-    // expect(dialog).to.have.descendants('YoutubeSearch');
-  });
+  // it('has <Dialog />', () => {
+  //   const dialog = wrapper.find('Dialog')
+  //   expect(wrapper).to.have.descendants('Dialog');
+  //   // TODO why is this not working? because of @connect?
+  //   // expect(dialog).to.have.descendants('YoutubeSearch');
+  // });
 
 });

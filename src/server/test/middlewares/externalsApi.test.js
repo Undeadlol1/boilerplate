@@ -5,7 +5,6 @@ import server from '../../server'
 import { Mood, User, Node, Decision } from '../../data/models'
 import slugify from 'slug'
 import uniq from 'lodash/uniq'
-import colors from 'colors'
 import users from '../../data/fixtures/users'
 import { stringify } from 'query-string'
 chai.use(require('chai-datetime'));

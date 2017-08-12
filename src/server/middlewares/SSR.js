@@ -10,31 +10,36 @@ import match from 'react-router/lib/match'
 import serialize from 'serialize-javascript'
 import { renderToString } from 'react-dom/server'
 import { ServerStyleSheet, StyleSheetManager } from 'styled-components'
-const cache = require('express-redis-cache')();
+// const cache = require('express-redis-cache')();
 
 export default
   express.Router()
   // all routes are processed client side via react-router
   .get('*',
+  /**
+   * ⚠️ caching is disabled on purpose ⚠️
+   * it caused problems with prerendered redux state not changing after code change,
+   * users seeing non-theirs avatars and so on.
+   */
   // TODO setup caching for logged in and unlogged
   // TODO setup caching for /mood/something
   // middleware to define cache prefix
-  function (req, res, next) {
-    // TODO user cache
-    // set cache name
-    res.express_redis_cache_name = 'url-' + req.url
-    next();
-  },
+  // function (req, res, next) {
+  //   // TODO user cache
+  //   // set cache name
+  //   res.express_redis_cache_name = 'url-' + req.url
+  //   next();
+  // },
 
-  // middleware to decide if using cache
-  function (req, res, next) {
-    // Use only cache if user not signed in
-    res.use_express_redis_cache = !req.user;
-    next();
-  },
+  // // middleware to decide if using cache
+  // function (req, res, next) {
+  //   // Use only cache if user not signed in
+  //   res.use_express_redis_cache = !req.user;
+  //   next();
+  // },
 
-  // cache middleware
-  cache.route(),
+  // // cache middleware
+  // cache.route(),
   // markup renderer
   function(req, res) {
     match(

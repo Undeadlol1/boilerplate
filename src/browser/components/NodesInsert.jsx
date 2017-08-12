@@ -6,6 +6,7 @@ import FlatButton from 'material-ui/FlatButton'
 import { Grid } from 'react-styled-flexboxgrid'
 import { TextField } from 'redux-form-material-ui'
 import ContentAdd from 'material-ui/svg-icons/content/add'
+import CloseIcon from 'material-ui/svg-icons/navigation/close'
 import YoutubeSearch from 'browser/components/YoutubeSearch'
 import { translate as t } from 'browser/containers/Translator'
 import FloatingActionButton from 'material-ui/FloatingActionButton'
@@ -22,17 +23,9 @@ class NodesInsert extends Component {
                                 onTouchTap={toggleDialog}
                                 label={t("cancel")}
                                 disabled={isDisabled}
-                            />,
-                            // <FlatButton
-                            //     type="submit"
-                            //     primary={true}
-                            //     disabled={!props.valid}
-                            //     onTouchTap={handleSubmit}
-                            //     label={t("submit")}
-                            //     disabled={isDisabled}
-                            // />
+                            />
                         ]
-// TODO this 'handlesubmit' just bugs me out
+        // TODO this 'handlesubmit' just bugs me out
         // TODO this is where it comes from
         // Failed prop type: The prop `onSubmit` is marked as required in `Form`
         return  <Form onSubmit={handleSubmit(props.insertNode)} className="NodesInsert">
@@ -42,13 +35,17 @@ class NodesInsert extends Component {
                         secondary={true}
                         onClick={toggleDialog}
                     >
-                        <ContentAdd />
+                        {
+                            props.open
+                            ? <CloseIcon />
+                            : <ContentAdd />
+                        }
                     </FloatingActionButton>
                     {/* DIALOG */}
-                    <Dialog
+                    {/* <Dialog
                         modal={false}
                         actions={actions}
-                        open={dialogIsOpen}
+                        open={false}
                         title={t("add_something")}
                         autoScrollBodyContent={true}
                         onRequestClose={toggleDialog}
@@ -56,20 +53,14 @@ class NodesInsert extends Component {
                         <Grid className="NodesInsert__Grid">
                             <YoutubeSearch />
                         </Grid>
-                        {/*<Field
-                            name="url"
-                            fullWidth
-                            hintText={t('add_url')}
-                            disabled={isDisabled}
-                            component={TextField}
-                        />*/}
-                    </Dialog>
+                    </Dialog> */}
 
                 </Form>
     }
 }
 
 NodesInsert.propTypes = {
+    open: PropTypes.bool,
     dialogIsOpen: PropTypes.bool.isRequired,
     handleSubmit: PropTypes.func.isRequired,
     toggleDialog: PropTypes.func.isRequired,

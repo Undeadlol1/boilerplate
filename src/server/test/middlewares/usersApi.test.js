@@ -1,4 +1,4 @@
-import chai, { assert } from 'chai'
+import chai, { assert, expect } from 'chai'
 import request from 'supertest'
 import server from '../../server.js'
 import { User, Local, Profile } from '../../data/models'
@@ -29,6 +29,8 @@ export default describe('/users API', function() {
                 .then(function({body}) {
                     assert(body.id, 'must have an id')
                     assert(body.Profile, 'must have Profile')
+                    expect(body.moods).to.be.a('array')
+                    assert(body.moods[0].UserId == body.id)
                     // TODO
                     // assert(!body.Local, 'must not have Local')
                 })

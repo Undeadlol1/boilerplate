@@ -1,6 +1,8 @@
-import { mustLogin } from '../services/permissions'
 import { User, Local,  Profile, Vk, Twitter } from '../data/models'
+import { getUsersMoods } from '../data/controllers/MoodsController'
+import { mustLogin } from '../services/permissions'
 import { Router } from 'express'
+import merge from 'lodash/assignIn'
 
 // routes
 const limit = 12
@@ -17,9 +19,10 @@ export default Router()
                       // TODO remove in future when all values will be stored in profile
                       include: [Profile, Local, Vk, Twitter],
                     })
+      const moodsData = await getUsersMoods(user.id)
 
       if (!user) res.boom.notFound('user not found')
-      else res.json(user)
+      else res.json(merge(user, moodsData))
 
     } catch (error) {
       console.error(error)

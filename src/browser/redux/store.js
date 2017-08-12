@@ -5,9 +5,6 @@ import rootReducer, { initialState as stateWithoutPlugins } from './reducers/Roo
 import { createStore, applyMiddleware } from 'redux'
 import { composeWithDevTools } from 'redux-devtools-extension/logOnlyInProduction'
 
-// create enhancer for redux-devtools
-// TODO check if it's not actuallly available in production
-const composeEnhancers = composeWithDevTools({})
 /**
  * create initial state
  * Server side it's undefined and is calculated while rendering
@@ -26,17 +23,16 @@ function getInitialState() {
          // in testing window.__data is undefined
         .keys(window.__data || {})
         .map(key => {
-            // TODO comment this or delete
-            // state[key] = immutableKeys.includes(key) ? fromJS(window.__data[key]) : window.__data[key]
-            state[key] = fromJS(window.__data[key])
+            // immutable and non-immutable modules differently
+            state[key] = immutableKeys.includes(key) ? fromJS(window.__data[key]) : window.__data[key]
         })
-        // example: state = {
-        //     something: Map(),
-        //     otherthing: Map(),
-        // }
         return state
     }
 }
+
+// create enhancer for redux-devtools
+// TODO check if it's not actuallly available in production
+const composeEnhancers = composeWithDevTools({})
 
 const store =   createStore(
                     rootReducer,

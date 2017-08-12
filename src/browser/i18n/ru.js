@@ -41,8 +41,13 @@ export default {
     whats_on_your_mind: "Что у тебя на уме?",
     // used for img's "alt" property
     things_image: ' изображение',
+    popular: 'популярное',
+    new: 'новое',
+    random: 'случайное',
+    created_moods: 'Созданные настроения',
     your_avatar: 'Ваш аватар',
     i_like_it: 'мне нравится',
     skip: 'пропустить',
     dont_like_it_dont_show_again: 'мне не нравится (вы больше не увидите это видео)',
+    add_this_video: 'добавить это видео',
 }

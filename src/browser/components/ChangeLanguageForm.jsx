@@ -18,12 +18,10 @@ import { translate } from '../containers/Translator'
 @connect(
 	({user}, ownProps) => {
 		const UserId = user.get('id')
-		console.log('UserId: ', UserId);
 		return ({UserId, ...ownProps})
 	},
     (dispatch, ownProps) => ({
         changeLanguage(UserId, language) {
-			console.log('UserId: ', UserId);
 			cookies.set('locale', language)
             dispatch(
 				updateUser(UserId, {language})

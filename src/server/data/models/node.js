@@ -7,12 +7,12 @@ module.exports = function(sequelize, DataTypes) {
       },
       provider: {
         type: DataTypes.STRING,
-        unique: 'compositeIndex'        
-      },
-      contentId: { // TODO add unique property
-        type: DataTypes.STRING,
         unique: 'compositeIndex'
-        // allowNull: false
+      },
+      contentId: {
+        allowNull: false,
+        type: DataTypes.STRING,
+        unique: 'compositeIndex',
       },
       UserId: {
         type: DataTypes.STRING,
@@ -35,7 +35,7 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING,
   }, {
     tableName: 'nodes',
-    freezeTableName: true,    
+    freezeTableName: true,
     classMethods: {
       associate: function(models) {
         // associations can be defined here

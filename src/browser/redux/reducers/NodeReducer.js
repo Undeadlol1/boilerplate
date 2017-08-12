@@ -14,17 +14,18 @@ const decisionStructure = Map({
 const nodeStructure = 	Map({
 							id: '',
 							url: '',
+							type: '',
 							UserId: '',
 							MoodId: '',
 							rating: '',
-							type: '',
 							provider: '',
 							contentId: '',
 							Decision: decisionStructure.toJS()
 						})
+
 export const initialState = Map({
-							nodes: List(),
 							error: '',
+							nodes: List(),
 							loading: false,
 							finishedLoading: true,
 							dialogIsOpen: false,
@@ -45,6 +46,11 @@ export default (state = initialState, {type, payload}) => {
 		case 'RECIEVE_NODE':
 			return state
 				.merge(payload)
+				.updateIn(['nodes'], arr => {
+					return isEmpty(payload)
+						? arr
+						: arr.push(Map(payload))
+				})
 				.merge({
 					loading: false,
 					// finishedLoading: true,

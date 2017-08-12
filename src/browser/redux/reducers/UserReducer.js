@@ -1,10 +1,13 @@
 import isEmpty from 'lodash/isEmpty'
 import { Map, fromJS } from 'immutable'
+import { emptyMoodsObject } from 'browser/redux/reducers/MoodReducer'
 
 const emptyProfileObject = {
 	id: '',
 	language: '',
 	UserId: '',
+	// to display <MoodsList /> in <UserPage />
+	...emptyMoodsObject,
 }
 
 const emptyLocalObject = {

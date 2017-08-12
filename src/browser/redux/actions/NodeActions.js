@@ -46,7 +46,7 @@ export const insertNode = payload => (dispatch, getState) => {
 		.then(function(response) {
 			dispatch(actions.toggleDialog())
 			const {node} = getState()
-			if(!node.get('id')) return dispatch(actions.recieveNode(response))
+			return dispatch(actions.recieveNode(response))
 		})
 }
 

@@ -10,6 +10,7 @@ import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { List } from 'immutable'
 import selectn from 'selectn'
+import Loading from 'browser/components/Loading'
 
 const itemStyles = {
 	marginBottom: '1rem'
@@ -26,7 +27,7 @@ export class MoodsList extends Component {
 								? `http://img.youtube.com/vi/${nodeContent}/0.jpg`
 								: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/2000px-No_image_available.svg.png'
 					return	<Col className="MoodsList__item" style={itemStyles} xs={12} sm={6} md={4} lg={3} key={mood.get('id')}>
-							<Paper zDepth={5}>
+								<Paper zDepth={5}>
 									<Link to={`/mood/${mood.get('slug')}`}>
 										<Card>
 											<CardMedia overlay={<CardTitle title={mood.get('name')} />}>
@@ -47,6 +48,7 @@ export class MoodsList extends Component {
 
 	render() {
 		const { props } = this
+		if (props.loading) return <Loading />
 		return  <section className="MoodsList">
 					<Row>
 						{this.renderItems()}
@@ -83,8 +85,10 @@ export class MoodsList extends Component {
 
 MoodsList.propTypes = {
   moods: PropTypes.object.isRequired,
+  selector: PropTypes.string,
   totalPages: PropTypes.number,
   currentPage: PropTypes.number,
+  loading: PropTypes.bool,
 }
 
 MoodsList.defaultProps = {
@@ -95,11 +99,14 @@ MoodsList.defaultProps = {
 
 export default connect(
 	// stateToProps
-	(state, ownProps) => ({ ...ownProps }),
+	({mood}, ownProps) => ({
+		loading: mood.get('loading'),
+		...ownProps
+	}),
 	// dispatchToProps
     (dispatch, ownProps) => ({
 		changePage(page) {
-			dispatch(fetchMoods(page))
+			dispatch(fetchMoods(ownProps.selector, page))
 		}
     })
 )(MoodsList)

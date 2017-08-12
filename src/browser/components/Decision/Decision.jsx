@@ -40,7 +40,6 @@ export class Decision extends PureComponent {
 export default connect(
 	// state to props
 	({ node }, ownProps) => {
-		console.log('decision', node.get('Decision').toJS());
 		return {
 			decisionVote: node.getIn(['Decision', 'vote']),
 			...ownProps

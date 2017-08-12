@@ -1,35 +1,12 @@
 import React, { Component } from 'react'
+import clx from 'classnames'
+import PropTypes from 'prop-types'
 import YouTube from 'react-youtube'
 import { connect } from 'react-redux'
 import { fetchNode, nextVideo } from 'browser/redux/actions/NodeActions'
 import { actions } from 'browser/redux/actions/GlobalActions'
 
-@connect(
-	({node, global}, ownProps) => {
-		return ({
-			nodes: node.get('nodes').toJS(),
-			loading: node.get('loading'),
-			contentId: node.get('contentId'),
-			controlsAreShown: global.get('controlsAreShown'),
-			...ownProps,
-		})
-	},
-	(dispatch, ownProps) => ({
-		nextVideo() {
-			dispatch(nextVideo())
-		},
-		openControls() {
-			dispatch(actions.toggleControls(true))
-		},
-		closeControls() {
-			dispatch(actions.toggleControls(false))
-		},
-		requestNewVideo(params) {
-			dispatch(fetchNode())
-		}
-    })
-)
-export default class Video extends Component {
+class Video extends Component {
 	// to avoid long loading of iframe on mobile devices
 	// we hide them till they are ready
 	// TODO move this to redux
@@ -52,7 +29,7 @@ export default class Video extends Component {
 		// auto play does not work on IOS and Android
 		// https://developers.google.com/youtube/iframe_api_reference#Events
 		var embedCode = event.target.getVideoEmbedCode();
-		event.target.playVideo();
+		if(this.props.autoPlay) event.target.playVideo();
 		if (document.getElementById('embed-code')) {
 			document.getElementById('embed-code').innerHTML = embedCode;
 		}
@@ -65,17 +42,17 @@ export default class Video extends Component {
 	}
 
 	render() {
-		const 	{controlsAreShown, nextVideo, contentId, nodes, requestNewVideo, className, ...rest} = this.props,
+		const 	{controlsAreShown, nextVideo, contentId, nodes, className, ...rest} = this.props,
 				{props, state} = this,
 				opts = {
-					height: '100%',
-					width: '100%',
+					width: props.width,
+					height: props.height,
 					// https://developers.google.com/youtube/player_parameters
 					playerVars: {
 						fs: 0, // hide fullscreen button
 						rel: 0,
 						controls: 1,
-						autoplay: 1,
+						autoplay: props.autoPlay ? 1 : 0,
 						playlist: [nodes.map(node => node.contentId)]
 					}
 				}
@@ -83,7 +60,7 @@ export default class Video extends Component {
 		return 	<section
 					// && !state.playerLoaded
 					hidden={props.loading}
-					className={"Video " + className}
+					className={clx("Video", className)}
 					// TODO add comments about iframe!!!
 					onMouseMove={this.watchMouseMove}
 					onMouseLeave={props.closeControls}
@@ -111,3 +88,48 @@ export default class Video extends Component {
 				</section>
 	}
 }
+
+Video.defaultProps = {
+	width: '100%',
+	height: '100%',
+	autoPlay: true,
+}
+
+Video.propTypes = {
+	width: PropTypes.string,
+	height: PropTypes.string,
+	autoPlay: PropTypes.bool,
+	nodes: PropTypes.array,
+	loading: PropTypes.bool,
+	contentId: PropTypes.string,
+	controlsAreShown: PropTypes.bool,
+	// functions
+	nextVideo: PropTypes.func,
+	openControls: PropTypes.func,
+	closeControls: PropTypes.func,
+}
+
+export { Video }
+
+export default connect(
+	({node, global}, ownProps) => {
+		return ({
+			nodes: node.get('nodes').toJS(),
+			loading: node.get('loading'),
+			contentId: node.get('contentId'),
+			controlsAreShown: global.get('controlsAreShown'),
+			...ownProps,
+		})
+	},
+	(dispatch, ownProps) => ({
+		nextVideo() {
+			dispatch(nextVideo())
+		},
+		openControls() {
+			dispatch(actions.toggleControls(true))
+		},
+		closeControls() {
+			dispatch(actions.toggleControls(false))
+		}
+    })
+)(Video)

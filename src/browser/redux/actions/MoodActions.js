@@ -13,7 +13,7 @@ const moodsUrl = String(process.env.API_URL) + 'moods/'
 // })
 
 /**
- * @param {array} moods
+ * @param {object} moods moods data (ex. pages, moods array)
  */
 export const recieveMoods = createAction('RECIEVE_MOODS')
 /**
@@ -37,14 +37,21 @@ export const fetchingError = createAction('FETCHING_ERROR', reason => reason)
  */
 export const unloadMood = createAction('UNLOAD_MOOD')
 
-export const fetchMoods = (pageNumber = 1) => dispatch => {
+/**
+ *
+ * @param {string} selector route api specifier (popular, new, random)
+ * @param {number} pageNumber
+ */
+export const fetchMoods = (selector = 'popular', pageNumber = 1) => dispatch => {
 	dispatch(fetchingInProgress())
-	return fetch(moodsUrl + (pageNumber ? '/' + pageNumber : ''))
+	return fetch(moodsUrl + selector + (pageNumber ? '/' + pageNumber : ''))
 		.then(checkStatus)
 		.then(parseJSON)
 		.then(data => {
 			data.currentPage = pageNumber
-			return dispatch(recieveMoods((data)))
+			data.selector = selector
+			// TODO
+			return dispatch(recieveMoods(data))
 		})
 		.catch(error => {
 			console.error(error)
@@ -52,7 +59,7 @@ export const fetchMoods = (pageNumber = 1) => dispatch => {
 }
 /**
  * fetch mood by slug
- * @param {String} slug
+ * @param {string} slug
  */
 export const fetchMood = (slug) => dispatch => {
 	dispatch(fetchingInProgress())

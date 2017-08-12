@@ -2,13 +2,14 @@ import selectn from 'selectn'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import React, { Component } from 'react'
+import Video from 'browser/components/Video'
 import NavBar from 'browser/components/NavBar'
-import Video from 'browser/components/Video.jsx'
 import Loading from 'browser/components/Loading'
 import Decision from 'browser/components/Decision'
-import { Row, Col } from 'react-styled-flexboxgrid'
 import PageWrapper from 'browser/components/PageWrapper'
 import ShareButton from 'browser/components/ShareButton'
+import { Grid, Row, Col } from 'react-styled-flexboxgrid'
+import YoutubeSearch from 'browser/components/YoutubeSearch'
 import { translate as t } from 'browser/containers/Translator'
 import { parseJSON } from 'browser/redux/actions/actionHelpers'
 import NodesInsert from 'browser/containers/NodesInsertContainer'
@@ -30,7 +31,7 @@ export class MoodPage extends Component {
 
 	render() {
 		const { props } = this
-		const { contentNotFound, isLoading, params, ...rest } = this.props
+		const { dialogIsOpen, contentNotFound, isLoading, params, ...rest } = this.props
 		const moodName = selectn('moodName', props)
 		const title = moodName && 'Мое настроение: ' + moodName
 		const contentId = selectn('videoId', props)
@@ -44,15 +45,30 @@ export class MoodPage extends Component {
 				>
 					{/* TODO remove h1 (use css instead) */}
 					{
-						contentNotFound
+						!dialogIsOpen
+						&& contentNotFound
 						&& <h1 className="MoodPage__header">{t("currently_zero_content_here")}</h1>
 					}
-					<Video className='MoodPage__video'>
-						<NavBar className='NavBar--sticky' />
-						{!contentNotFound && <Decision className='MoodPage__decision' />}
-						<ShareButton />
-						<NodesInsert moodSlug={params.moodSlug} /> {/* TODO rework passing of moodSlug */}
-					</Video>
+					{
+						!dialogIsOpen
+						?	<Video className='MoodPage__video'>
+								<NavBar className='NavBar--sticky' />
+								{!contentNotFound && <Decision className='MoodPage__decision' />}
+								<ShareButton />
+							</Video>
+						: null
+					}
+					{
+						dialogIsOpen
+						?	<div>
+								<NavBar className='NavBar--sticky' />
+								<Grid fluid>
+									<YoutubeSearch />
+								</Grid>
+							</div>
+						: null
+					}
+					<NodesInsert open={dialogIsOpen} moodSlug={params.moodSlug} /> {/* TODO rework passing of moodSlug */}
 				</PageWrapper>
 	}
 }
@@ -74,6 +90,7 @@ export const stateToProps = ({ node, mood }, ownProps) => {
 		videoId: node.get('contentId'),
 		contentNotFound: node.get('contentNotFound'),
 		isLoading: mood.get('loading') || !node.get('finishedLoading'),
+		dialogIsOpen: node.get('dialogIsOpen'),
 		...ownProps
 	}
 }

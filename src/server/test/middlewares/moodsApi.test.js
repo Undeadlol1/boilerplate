@@ -1,5 +1,5 @@
 import 'babel-polyfill'
-import chai from 'chai'
+import chai, { expect } from 'chai'
 import request from 'supertest'
 import server from '../../server'
 import { Mood, User } from '../../data/models'
@@ -43,16 +43,76 @@ export default describe('/moods API', function() {
             })
     })
 
-    it('GET moods', function(done) {
-        request(server)
-            .get('/api/moods')
-            .expect('Content-Type', /json/)
-            .expect(200)
-            .end(function(err, res) {
-                if (err) return done(err);
-                res.body.moods.should.be.a('array')
-                done()
-            });
+    describe('GET moods', function() {
+
+        it('GET random moods', function(done) {
+            request(server)
+                .get('/api/moods/random')
+                .expect('Content-Type', /json/)
+                .expect(200)
+                .end(function(err, res) {
+                    if (err) return done(err);
+                    res.body.moods.should.be.a('array')
+                    done()
+                });
+        })
+
+        it('GET popular moods', function(done) {
+            request(server)
+                .get('/api/moods/popular')
+                .expect('Content-Type', /json/)
+                .expect(200)
+                .end(function(err, {body}) {
+                    if (err) return done(err);
+                    // test for descending order
+                    body.moods.forEach(mood => {
+                        // console.log('mood: ', mood.rating)
+                    })
+                    body.moods.should.be.a('array')
+                    done()
+                });
+        })
+
+        it('GET new moods', function(done) {
+            request(server)
+                .get('/api/moods/new')
+                .expect('Content-Type', /json/)
+                .expect(200)
+                .end(function(err, {body}) {
+                    if (err) return done(err);
+                    // test for descending order
+                    body.moods.forEach(mood => {
+                        // console.log('mood: ', mood.createdAt)
+                    })
+                    body.moods.should.be.a('array')
+                    done()
+                });
+        })
+
+
+        // it('GET moods by user', function(done) {
+        //     User.findOne({
+        //         where: {},
+        //         order: 'rand()',
+        //     })
+        //     .then(randomUser => {
+        //         const UserId = randomUser.id
+        //         request(server)
+        //             .get('/api/moods/user/' + UserId)
+        //             .expect('Content-Type', /json/)
+        //             .expect(200)
+        //             .end(function(err, {body}) {
+        //                 if (err) return done(err)
+        //                 body.moods.should.be.a('array')
+        //                 body.moods.forEach(mood => {
+        //                     expect(mood.UserId == UserId)
+        //                 })
+        //                 done()
+        //             })
+        //     })
+        // })
+
+
     })
 
     it('GET single mood', function(done) {

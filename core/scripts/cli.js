@@ -105,7 +105,7 @@ function createApi(name) {
     addLineToFile(
         path.resolve(__dirname, '../../src/server/server.js'),
         hook,
-        `app.use(${'/api/' + lowerCase}, require(${'./middlewares/' + lowerCase + 'Api'})`
+        `app.use(${'/api/' + lowerCase}, require(${'./middlewares/' + lowerCase + 'Api'}),`
     )
     console.log('don\'t forget to edit all the files!')
 }
@@ -152,7 +152,7 @@ function addLineToFile(filePath, regex, replaceText) {
         paths: [filePath],
         // replace 'regex' text with appropriate text, and add regex text again afterwards,
         // in order to this function reusable
-        replacement: replaceText + ` ,\n${regex}`,
+        replacement: replaceText + ` \n${regex}`,
     })
 }
 
@@ -178,4 +178,10 @@ function createComponent(componentName) {
     const templatesPath = path.resolve(__dirname, '../templates/component')
     const folderPath = path.resolve(__dirname, '../../src/browser/components')
     copyFolderAndReplace(templatesPath, 'ComponentName', componentName, folderPath)
+    // import component styles to main styles.scss file
+    addLineToFile(
+        path.resolve(__dirname, '../../src/browser/styles.scss'),
+        hook,
+       `@import "./components/${componentName}/${componentName}.scss";`
+    )
 }

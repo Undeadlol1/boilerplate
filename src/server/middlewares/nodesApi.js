@@ -129,7 +129,7 @@ export default Router()
         body,
         { url, MoodId, UserId: user.id },
         // url is optional if 'provider' and 'contentId' is provided
-        body.url ? parseUrl(body.url).contentId : {},
+        body.url ? parseUrl(body.url) : undefined
       )
       const node   = await Node.create(body)
       const users  = await User.findAll()

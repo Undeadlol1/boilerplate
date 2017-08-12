@@ -6,6 +6,7 @@ import { Grid, Row } from 'react-styled-flexboxgrid'
 // project files
 import store from 'browser/redux/store'
 import Loading from 'browser/components/Loading'
+import MoodTabs from 'browser/components/MoodTabs'
 import MoodsFind from 'browser/components/MoodsFind'
 import MoodsList from 'browser/components/MoodsList'
 import MoodsInsert from 'browser/components/MoodsInsert'
@@ -22,12 +23,7 @@ class IndexPage extends PureComponent {
 					<Grid fluid>
 						<WelcomeCard />
 						<MoodsInsert />
-						<Loading condition={props.loading}>
-							<MoodsList
-								moods={props.moods}
-								totalPages={props.totalPages}
-								currentPage={props.currentPage} />
-						</Loading>
+						<MoodTabs />
 					</Grid>
 				</PageWrapper>
     }

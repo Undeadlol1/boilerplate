@@ -25,7 +25,7 @@ import RateLimiter from 'express-rate-limit'
 import exphbs from 'express-handlebars'
 
 const RedisStore = require('connect-redis')(session)
-const cache = require('express-redis-cache')();
+// const cache = require('express-redis-cache')();
 
 const port = process.env.PORT || 3000,
       app = express(),

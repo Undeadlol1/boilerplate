@@ -8,6 +8,7 @@ const { expect } = require('chai')
 const isEqual = require('lodash/isEqual')
 const extend = require('lodash/assignIn')
 const { parseUrl } = require('shared/parsers.js')
+const getRandomDate = require('random-date-generator').getRandomDate
 const userFixtures = require('server/data/fixtures/users.js')
 const { User, Local, Mood, Node, Decision, Profile } = require('server/data/models/index.js')
 chai.should()
@@ -73,13 +74,15 @@ before(function(done) {
             const   name = uniqid(),
                     language = 'ru',
                     slug = slugify(name),
-                    UserId = user.get('id')
+                    UserId = user.get('id'),
+                    // mood rating
+                    rating = randomIntFromInterval(1, 100000)
             const local = localsWithHashedPassword[index]
             local.UserId = user.id
             locals.push(local)
             createdUsers.push(user)
             profiles.push({UserId, language})
-            moods.push({name, UserId, slug})
+            moods.push({name, UserId, slug, rating, createdAt: getRandomDate()})
         })
         // create locals
         .then(() => Local.bulkCreate(locals))

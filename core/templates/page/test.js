@@ -18,23 +18,14 @@ describe('<IndexPage />', () => {
   it('has className and tagName', () => {
     expect(wrapper).to.have.className('IndexPage')
     expect(wrapper.type().name).to.eq('PageWrapper')
-  });
+  })
 
   it('has <Grid>', () => {
     expect(wrapper.find('Styled(Grid)')).to.have.length(1);
-  });
+  })
 
-  it('has <WelcomeCard>', () => {
-    expect(wrapper.find('WelcomeCard')).to.have.length(1);
-  });
+  it('failes the test', () => {
+    assert(false)
+  })
 
-  it('has <MoodsInsert>', () => {
-    // TODO 'ReduxForm' does not seems right
-    expect(wrapper.find('ReduxForm')).to.have.length(1);
-  });
-
-  it('has <MoodTabs>', () => {
-    expect(wrapper.find('Connect(MoodTabs)')).to.have.length(1);
-  });
-
-});
+})

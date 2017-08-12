@@ -1,4 +1,3 @@
-// PAGES
 import Layout from './pages/Layout';
 import IndexPage from './pages/IndexPage';
 import LoginPage from './pages/LoginPage';
@@ -12,6 +11,10 @@ import { fetchUser } from 'browser/redux/actions/UserActions'
 import { fetchMoods, fetchMood } from 'browser/redux/actions/MoodActions'
 import { fetchNodes, actions as nodeActions } from 'browser/redux/actions/NodeActions'
 
+/**
+ * fetching is done in router config in order to properly prefetch data in SSR
+ */
+
 const routesConfig = {
   path: '/',
   component: Layout,
@@ -19,12 +22,16 @@ const routesConfig = {
     component: IndexPage,
     // fetch data
     onEnter({params}, replace, done) {
-      const fetchedMoods = store.getState().mood.get('moods')
       // check if fetching is needed
-      if (fetchedMoods.size) return done()
+      const newMoods = store.getState().mood.getIn(['new', 'moods'])
+      if (newMoods.size) return done()
       else {
-        store
-        .dispatch(fetchMoods())
+        Promise
+        .all([
+          store.dispatch(fetchMoods('new')),
+          store.dispatch(fetchMoods('random')),
+          store.dispatch(fetchMoods('popular')),
+        ])
         .then(() => done())
       }
     }
