@@ -22,14 +22,15 @@ import { actions } from 'browser/redux/actions/UserActions'
 
 /* STYLES */
 if (process.env.BROWSER) require('./styles.scss')
+import customMuiTheme from './theme.js'
 import { ThemeProvider } from 'styled-components'
 import { BASE_CONF } from 'react-styled-flexboxgrid'
-import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme'
+// import customMuiTheme from 'material-ui/styles/baseThemes/customMuiTheme'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 // supply userAgent for material-ui prefixer in ssr
 // http://stackoverflow.com/a/38100609
-darkBaseTheme.userAgent = navigator.userAgent
-const muiTheme = getMuiTheme(darkBaseTheme)
+customMuiTheme.userAgent = navigator.userAgent
+const muiTheme = getMuiTheme(customMuiTheme)
 
 class App extends Component {
   // if SSR provided logged in user, put object in state

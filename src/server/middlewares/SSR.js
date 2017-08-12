@@ -1,6 +1,7 @@
 import 'isomorphic-fetch' // fetch polyfill
 import React from 'react'
 import express from "express"
+import themeConfig from 'browser/theme'
 import routes from 'browser/routes'
 import { Helmet } from 'react-helmet'
 import session from 'express-session'
@@ -89,7 +90,7 @@ export default
             // TODO make sure to reset state afterwards
             const initialData = JSON.stringify(store.getState())//.replace(/</g, '\\u003c')
             // send data to handlebars template
-            res.render('index', { markup, css, headerTags, initialData })
+            res.render('index', { markup, css, themeConfig, headerTags, initialData })
           }
 
           else res.status(404).send('Not found')
