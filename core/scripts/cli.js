@@ -5,19 +5,18 @@ const replace = require('replace')
 const inquirer = require('inquirer')
 const upperCaseFirst = require('change-case').upperCaseFirst
 const lowerCaseFirst = require('change-case').lowerCaseFirst
-const imageToAscii = require('image-to-ascii')
 
-// show cli menu with few options
-const launchText = 'launch project'
-const updateText = 'update project'
-const pageText = 'create page'
-const apiText = 'create API'
-const componentText = 'create component'
-const reduxText = 'create redux module'
-const hook = "// ⚠️ Hook for cli! Do not remove 💀"
-const imagePath = path.resolve(__dirname, '../ascii.txt')
+// cli options
+const   launchText      = 'launch project',
+        updateText      = 'update project',
+        apiText         = 'create API',
+        pageText        = 'create page',
+        componentText   = 'create component',
+        reduxText       = 'create redux module'
 
-// imageToAscii(path.resolve(__dirname, '../duck.jpeg'), (err, converted) => {
+const   hook = "// ⚠️ Hook for cli! Do not remove 💀",
+        imagePath = path.resolve(__dirname, '../ascii.txt')
+
 fs.readFile(imagePath, "utf8", (err, ascii) => {
     // show image
     console.log(ascii);
