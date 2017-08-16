@@ -1,17 +1,7 @@
 import isEmpty from 'lodash/isEmpty'
 import { Map, List } from 'immutable'
 
-const decisionStructure = Map({
-								rating: '',
-								UserId: '',
-								NodeId: '',
-								MoodId: '',
-								vote: null,
-								NodeRating: '',
-								nextViewAt: '',
-							})
-
-const nodeStructure = 	Map({
+const moduleNameStructure = 	Map({
 							id: '',
 							url: '',
 							type: '',

@@ -99,7 +99,8 @@ function createReeduxModule(name) {
         path.resolve(__dirname, '../templates/redux'),
         'moduleName',
         name,
-        path.resolve(__dirname, '../../src/browser/redux/')
+        path.resolve(__dirname, '../../src/browser/redux/'),
+        true
     )
     addLineToFile(
         rootReducer,
@@ -166,8 +167,9 @@ function createApi(name) {
  * @param {string} replaceWhat what to replace
  * @param {string} replaceText replacement text
  * @param {string} outputPath where to put folder
+ * @param {boolean} uppercaseFileName should first letter of file name be uppercased
  */
-function copyFolderAndReplace(folderPath, replaceWhat, replaceText, outputPath) {
+function copyFolderAndReplace(folderPath, replaceWhat, replaceText, outputPath, uppercaseFileName) {
     try {
         fs.readdir(folderPath, (err, files) => {
             if (err) throw err
@@ -180,7 +182,8 @@ function copyFolderAndReplace(folderPath, replaceWhat, replaceText, outputPath) 
                         if (err) return console.log(err);
                         const regex = new RegExp(replaceWhat, "g")
                         const fileText = data.replace(regex, replaceText);
-                        const fileName = file.replace(regex, replaceText);
+                        let fileName = file.replace(regex, replaceText);
+                        if (uppercaseFileName) fileName = upperCaseFirst(fileName)
                         fs.writeFile(`${outputPath}/${replaceText}/${fileName}`, fileText, 'utf8', function (err) {
                             if (err) return console.log(err);
                         });
