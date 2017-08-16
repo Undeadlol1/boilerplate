@@ -132,6 +132,7 @@
     "faker": "^4.1.0",
     "file-loader": "^0.10.1",
     "friendly-errors-webpack-plugin": "^1.6.1",
+    "fs-extra": "^4.0.1",
     "happypack": "^3.1.0",
     "html-webpack-plugin": "^2.28.0",
     "inquirer": "^3.2.1",
