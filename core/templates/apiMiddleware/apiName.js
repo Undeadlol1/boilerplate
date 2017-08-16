@@ -1,5 +1,5 @@
 import { mustLogin } from 'server/services/permissions'
-import { Mood, Node } from 'server/data/models'
+import { Mood } from 'server/data/models'
 import express from 'express'
 import slugify from 'slug'
 
@@ -9,14 +9,14 @@ const limit = 12
 
 router
 
-  // get all moods for index page
+  // get all apiNames for index page
   .get('/:page?', async (req, res) => { // TODO make sure pagination works right
     try {
       const page = req.params.page
       const offset = page ? limit * (page -1) : 0
       const totalMoods = await Mood.count()
       const totalPages = Math.ceil(totalMoods / limit)
-      const moods = await Mood.findAll({
+      const apiNames = await Mood.findAll({
         limit,
         offset,
         order: 'rand()',
@@ -27,32 +27,32 @@ router
           order: 'rand()',
         }]
       })
-      res.json({ moods, totalPages })
+      res.json({ apiNames, totalPages })
     }
     catch (error) {
       console.log(error);
-      res.boom.internal(error)
+      res.status(500).end(error)
     }
   })
 
-  // get single mood by slug or name
-  .get('/mood/:slug?', async ({params, query}, res) => {
+  // get single apiName by slug or name
+  .get('/apiName/:slug?', async ({params, query}, res) => {
     try {
       const slug = params.slug
       const name = query.name
-      const mood = await Mood.findOne({
+      const apiName = await Mood.findOne({
         where: {
           $or: [{slug}, {name}]
         }
       })
-      res.json(mood)
+      res.json(apiName)
     } catch (error) {
       console.log(error)
-      res.boom.internal(error)
+      res.status(500).end(error)
     }
   })
 
-  // search for mood
+  // search for apiName
   .get('/search/:name/:page?', async (req, res) => { // TODO make sure pagination works right
     try {
       const { page, name } = req.params
@@ -63,43 +63,42 @@ router
                     }
       const totalMoods = await Mood.count({ where })
       const totalPages = Math.round(totalMoods / limit)
-      const moods = await Mood.findAll({
+      const apiNames = await Mood.findAll({
         limit,
         offset,
         where,
-        include: [{ model: Node, limit: 1 }] // for preview image
       }) || []
-      res.json({ moods, totalPages })
+      res.json({ apiNames, totalPages })
     }
     catch (error) {
       console.log(error);
-      res.boom.internal(error)
+      res.status(500).end(error)
     }
   })
 
-  // create mood
+  // create apiName
   .post('/', mustLogin, async ({user, body: { name }}, res) => {
     try {
       const UserId = user.id
       const slug = slugify(name)
-      const mood = await Mood.create({ UserId, name, slug }) // TODO move this in model definition?
-      res.json(mood)
+      const apiName = await Mood.create({ UserId, name, slug }) // TODO move this in model definition?
+      res.json(apiName)
     } catch (error) {
       console.log(error)
-      res.boom.internal(error)
+      res.status(500).end(error)
     }
   })
 
-  // create mood
+  // create apiName
   .post('/', mustLogin, async ({user, body: { name }}, res) => {
     try {
       const UserId = user.id
       const slug = slugify(name)
-      const mood = await Mood.create({ UserId, name, slug }) // TODO move this in model definition?
-      res.json(mood)
+      const apiName = await Mood.create({ UserId, name, slug }) // TODO move this in model definition?
+      res.json(apiName)
     } catch (error) {
       console.log(error)
-      res.boom.internal(error)
+      res.status(500).end(error)
     }
   })
 
