@@ -11,18 +11,21 @@ const imageToAscii = require('image-to-ascii')
 const launchText = 'launch project'
 const updateText = 'update project'
 const pageText = 'create page'
-const componentText = 'create component'
 const apiText = 'create API'
+const componentText = 'create component'
+const reduxText = 'create redux module'
 const hook = "// ⚠️ Hook for cli! Do not remove 💀"
+const imagePath = path.resolve(__dirname, '../ascii.txt')
 
-imageToAscii(path.resolve(__dirname, '../duck.jpeg'), (err, converted) => {
+// imageToAscii(path.resolve(__dirname, '../duck.jpeg'), (err, converted) => {
+fs.readFile(imagePath, "utf8", (err, ascii) => {
     // show image
-    console.log(err || converted);
+    console.log(ascii);
     // show cli ui
     inquirer.prompt([{
         type: 'list',
         name: 'name',
-        choices: [launchText, componentText, pageText, updateText, apiText],
+        choices: [launchText, componentText, pageText, updateText, apiText, reduxText],
         message: 'What do you want to do?',
     }])
     // show prompt depending on users decision
@@ -57,6 +60,15 @@ imageToAscii(path.resolve(__dirname, '../duck.jpeg'), (err, converted) => {
                     .then(({path}) => createPage(pageName, path))
                 })
                 break;
+            case reduxText:
+                inquirer
+                .prompt([{
+                    name: 'name',
+                    type: 'input',
+                    message: 'module name (ex: post, message, user)?',
+                }])
+                .then(({name}) => createReeduxModule(name))
+                break;
             case updateText:
                 // shell.exec('git remote add upstream https://github.com/developer-expirience/boilerplate')
                 shell.exec('git pull upstream master --allow-unrelated-histories')
@@ -78,6 +90,44 @@ imageToAscii(path.resolve(__dirname, '../duck.jpeg'), (err, converted) => {
     });
 });
 
+function createReeduxModule(name) {
+    const firstHook = "// ⚠️ First hook for cli! Do not remove 💀"
+    const secondHook = "// ⚠️ Second hook for cli! Do not remove 💀"
+    const thirdHook = "// ⚠️ Third hook for cli! Do not remove 💀"
+    const rootReducer = path.resolve(__dirname, '../../src/browser/redux/reducers/RootReducer.js')
+    copyFolderAndReplace(
+        path.resolve(__dirname, '../templates/redux'),
+        'moduleName',
+        name,
+        path.resolve(__dirname, '../../src/browser/redux/')
+    )
+    addLineToFile(
+        rootReducer,
+        firstHook,
+        `import ${name}, { initialState as ${name}State } from './${name}Reducer'`
+        + '\n'
+        + firstHook
+    )
+    addLineToFile(
+        rootReducer,
+        secondHook,
+        `${name}: ${name}State,`
+        + '\n'
+        + secondHook
+    )
+    addLineToFile(
+        rootReducer,
+        thirdHook,
+        `${name},`
+        + '\n'
+        + thirdHook
+    )
+}
+
+/**
+ * create API files
+ * @param {string} name
+ */
 function createApi(name) {
     const upperCase = upperCaseFirst(name)
     const lowerCase = lowerCaseFirst(name)
