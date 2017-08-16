@@ -3,16 +3,16 @@ import { stringify } from 'query-string'
 import { createAction, createActions } from 'redux-actions'
 import { checkStatus, parseJSON, headersAndBody } from'./actionHelpers'
 
-const nodesUrl = process.env.API_URL + 'moduleNames/'
+const moduleNamesUrl = process.env.API_URL + 'moduleNames/'
 
 export const actions = createActions({
-  UNLOAD_NODE: () => null,
-  REMOVE_NODE: id => id,
+  UNLOAD_MODULENAME: () => null,
+  REMOVE_MODULENAME: id => id,
   TOGGLE_DIALOG: () => null,
-  RECIEVE_NODE: node => node,
-  RECIEVE_NODES: nodes => nodes,
-  UPDATE_NODE: object => object,
-  TOGGLE_NODE_FETCHING: boolean => boolean,
+  RECIEVE_MODULENAME: node => node,
+  RECIEVE_MODULENAMES: nodes => nodes,
+  UPDATE_MODULENAME: object => object,
+  TOGGLE_MODULENAME_FETCHING: boolean => boolean,
   FETCHING_ERROR: reason => reason,
   RECIEVE_SEARCHED_VIDEOS: videos => videos,
 })
@@ -21,13 +21,13 @@ export const actions = createActions({
  * create a moduleName
  * @param {Object} payload content url
  */
-export const insertNode = payload => (dispatch, getState) => {
+export const insertModuleName = payload => (dispatch, getState) => {
 	return fetch(nodesUrl, headersAndBody(payload))
 		.then(checkStatus)
 		.then(parseJSON)
 		.then(function(response) {
 			dispatch(actions.toggleDialog())
-			return dispatch(actions.recieveNode(response))
+			return dispatch(actions.recieveModuleName(response))
 		})
 }
 
@@ -35,12 +35,12 @@ export const insertNode = payload => (dispatch, getState) => {
  * fetch moduleName using mood slug
  * @param {String} slug mood slug (optional)
  */
-export const fetchmoduleName = slug => (dispatch, getState) => {
+export const fetchModuleName = slug => (dispatch, getState) => {
 	const state = getState()
 	const nodeId = state.node.id
 	const moodSlug = slug || state.mood.get('slug')
 
-	dispatch(actions.fetchingNode())
+	dispatch(actions.fetchingModuleName())
 
 	return fetch(
 		nodesUrl + moodSlug + '/' + nodeId,
@@ -49,21 +49,21 @@ export const fetchmoduleName = slug => (dispatch, getState) => {
 		.then(checkStatus)
 		.then(parseJSON)
 		.then(data => {
-			return dispatch(actions.recieveNode((data)))
+			return dispatch(actions.recieveModuleName((data)))
 		})
 		.catch(err => console.error('fetchmoduleName failed!', err))
 }
 
 /**
- * fetch fetchmoduleNames using mood slug
+ * fetch moduleNames using mood slug
  * @param {String} slug mood slug (optional)
  */
-export const fetchmoduleNames = slug => (dispatch, getState) => {
+export const fetchModuleNames = slug => (dispatch, getState) => {
 	const state = getState()
 	const nodeId = state.node.id
 	const moodSlug = slug || state.mood.get('slug')
 
-	dispatch(actions.fetchingNode())
+	dispatch(actions.fetchingModuleName())
 
 	return fetch(
 		nodesUrl + moodSlug,
@@ -72,7 +72,7 @@ export const fetchmoduleNames = slug => (dispatch, getState) => {
 		.then(checkStatus)
 		.then(parseJSON)
 		.then(data => {
-			return dispatch(actions.recieveNodes((data)))
+			return dispatch(actions.recieveModuleName((data)))
 		})
 		.catch(err => console.error('fetchmoduleName failed!', err))
 }
