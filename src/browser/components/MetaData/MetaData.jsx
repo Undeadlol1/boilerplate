@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { Helmet } from 'react-helmet'
 import PropTypes from 'prop-types'
 
-const defaultTitle = 'MooD - музыка твоего настроения'
+const defaultTitle = process.env.APP_NAME + ' - музыка твоего настроения'
 
 class MetaData extends Component {
 	// copy+paste from https://megatags.co/#generate-tags

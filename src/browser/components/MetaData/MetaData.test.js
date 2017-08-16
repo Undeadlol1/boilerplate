@@ -9,6 +9,7 @@ chai.use(chaiEnzyme())
 describe('<MetaData />', () => {
   const props = {location: {pathname: 'somepath'}}
   const wrapper = shallow(<MetaData {...props} />)
+  const description = process.env.APP_NAME + ' - музыка твоего настроения'
 
   it('has <Helmet />', () => {
     const helmet = wrapper.find('HelmetWrapper')
@@ -18,16 +19,16 @@ describe('<MetaData />', () => {
   it('has <title>', () => {
     const title = wrapper.find('title')
     expect(title).to.have.length(1)
-    expect(title.text()).to.eq('MooD - музыка твоего настроения')
+    expect(title.text()).to.eq(description)
   })
 
   it('has proper defaultProps', () => {
     const actual = MetaData.defaultProps
     const expected = {
       appUrl: process.env.URL,
-      title: 'MooD - музыка твоего настроения',
+      title: description,
       appName: process.env.APP_NAME,
-      description: 'MooD - музыка твоего настроения',
+      description: description,
       image: process.env.URL + "android-chrome-192x192.png",
     }
     expect(actual).to.deep.eq(expected)
