@@ -1,10 +1,13 @@
 const fs = require('fs')
 const path = require('path')
+const fse = require('fs-extra')
 const shell = require('shelljs')
 const replace = require('replace')
 const inquirer = require('inquirer')
 const upperCaseFirst = require('change-case').upperCaseFirst
 const lowerCaseFirst = require('change-case').lowerCaseFirst
+const upperCase = require('change-case').upperCase
+const lowerCase = require('change-case').lowerCase
 
 // cli options
 const   launchText      = 'launch project',
@@ -90,10 +93,15 @@ fs.readFile(imagePath, "utf8", (err, ascii) => {
 });
 
 function createReeduxModule(name) {
+
+    const firtUpperCase = upperCaseFirst(name)
+    const upperCaseName = upperCase(name)
+
     const firstHook = "// ⚠️ First hook for cli! Do not remove 💀"
     const secondHook = "// ⚠️ Second hook for cli! Do not remove 💀"
     const thirdHook = "// ⚠️ Third hook for cli! Do not remove 💀"
     const rootReducer = path.resolve(__dirname, '../../src/browser/redux/reducers/RootReducer.js')
+
     copyFolderAndReplace(
         path.resolve(__dirname, '../templates/redux'),
         'moduleName',
@@ -101,6 +109,7 @@ function createReeduxModule(name) {
         path.resolve(__dirname, '../../src/browser/redux/'),
         true
     )
+
     addLineToFile(
         rootReducer,
         firstHook,
@@ -169,32 +178,53 @@ function createApi(name) {
  * @param {boolean} uppercaseFileName should first letter of file name be uppercased
  */
 function copyFolderAndReplace(folderPath, replaceWhat, replaceText, outputPath, uppercaseFileName) {
-    try {
-        fs.readdir(folderPath, (err, files) => {
-            if (err) throw err
-            // 1) create folder
-            fs.mkdir(`${outputPath}/${replaceText}`, err => {
-            // 2) copy + paste files from folder
-                files.forEach(file => {
-            // 3) replace text in each file and rename it
-                    fs.readFile(folderPath + '/' + file, 'utf8', function (err, data) {
-                        if (err) return console.log(err);
-                        const regex = new RegExp(replaceWhat, "g")
-                        const fileText = data.replace(regex, replaceText);
-                        let fileName = file.replace(regex, replaceText);
+    return fse
+        // 1) create folder
+        .mkdir(`${outputPath}/${replaceText}`)
+        // 2) copy + paste files from folder
+        .then(() => fse.readdir(folderPath))
+        .then(files => {
+            return files.forEach(file => {
+                // 3) replace text in each file and rename it
+                return fse.readFile(folderPath + '/' + file, 'utf8')
+                    .then(data => {
+                        let fileText = data
+                        const   regex = new RegExp(replaceWhat, "g")
+                        // replcae different case variations of string
+                        const cases = [
+                            {
+                                from: replaceWhat,
+                                to: replaceText,
+                            },
+                            {
+                                from: lowerCase(replaceWhat),
+                                to: lowerCase(replaceText),
+                            },
+                            {
+                                from: upperCase(replaceWhat),
+                                to: upperCase(replaceText),
+                            },
+                            {
+                                from: upperCaseFirst(replaceWhat),
+                                to: upperCaseFirst(replaceText),
+                            },
+                            {
+                                from: lowerCaseFirst(replaceWhat),
+                                to: lowerCaseFirst(replaceText),
+                            },
+                        ]
+                        cases.forEach(({from, to}) => {
+                            return fileText = fileText.replace(new RegExp(from, "g"), to)
+                        })
+
+                        let fileName = file.replace(regex, replaceText)
+
                         if (uppercaseFileName) fileName = upperCaseFirst(fileName)
-                        fs.writeFile(`${outputPath}/${replaceText}/${fileName}`, fileText, 'utf8', function (err) {
-                            if (err) return console.log(err);
-                        });
+                        return fse.writeFile(`${outputPath}/${replaceText}/${fileName}`, fileText, 'utf8')
                     });
-                })
             })
         })
-    } catch(e) {
-        // TODO
-        console.log(e);
-        if (e.code = 'EEXIST') throw e
-    }
+        .catch(err => console.error(err))
 }
 
 function addLineToFile(filePath, regex, replaceText) {
