@@ -68,8 +68,9 @@ const routesConfig = {
     { path: 'login', component: LoginPage },
     { path: 'search', component: SearchPage },
     { path: 'about', component: AboutPage },
-    { path: '*', component: NotFound },
     // ⚠️ Hook for cli! Do not remove 💀
+    // 404 page must go after everything else
+    { path: '*', component: NotFound },
   ]
 }
 
