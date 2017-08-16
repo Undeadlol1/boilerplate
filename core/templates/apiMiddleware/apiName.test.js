@@ -2,7 +2,7 @@ import 'babel-polyfill'
 import chai from 'chai'
 import request from 'supertest'
 import server from '../../server'
-import { Mood, User } from '../../data/models'
+import { ApiName, User } from '../../data/models'
 import slugify from 'slug'
 import { loginUser } from '../middlewares/authApi.test'
 import users from '../../data/fixtures/users'
@@ -11,10 +11,10 @@ chai.should();
 const   user = request.agent(server),
         username = users[0].username,
         password = users[0].password,
-        moodName = "random name",
-        slug = slugify(moodName)
+        apiNameName = "random name",
+        slug = slugify(apiNameName)
 
-export default describe('/moods API', function() {
+export default describe('/apiNames API', function() {
 
     before(async function() {
         // TODO add logout? to test proper user login?
@@ -25,13 +25,13 @@ export default describe('/moods API', function() {
 
     // clean up
     after(function() {
-        Mood.destroy({where: { name: moodName }})
+        ApiName.destroy({where: { name: apiNameName }})
     })
 
-    it('POST mood', async function() {
+    it('POST apiName', async function() {
         const agent = await loginUser(username, password)
-        await agent.post('/api/moods')
-            .send({ name: moodName })
+        await agent.post('/api/apiNames')
+            .send({ name: apiNameName })
             .expect('Content-Type', /json/)
             .expect(200)
             .then(function(res) {
@@ -43,46 +43,46 @@ export default describe('/moods API', function() {
             })
     })
 
-    it('GET moods', function(done) {
+    it('GET apiNames', function(done) {
         request(server)
-            .get('/api/moods')
+            .get('/api/apiNames')
             .expect('Content-Type', /json/)
             .expect(200)
             .end(function(err, res) {
                 if (err) return done(err);
-                res.body.moods.should.be.a('array')
+                res.body.apiNames.should.be.a('array')
                 done()
             });
     })
 
-    it('GET single mood', function(done) {
+    it('GET single apiName', function(done) {
         user
-            .get('/api/moods/mood/' + slug )
+            .get('/api/apiNames/apiName/' + slug )
             .expect('Content-Type', /json/)
             .expect(200)
             .end(function(err, res) {
                 if (err) return done(err);
-                res.body.name.should.be.equal(moodName)
+                res.body.name.should.be.equal(apiNameName)
                 done()
             });
     })
 
-    it('GET /search moods', function(done) {
+    it('GET /search apiNames', function(done) {
         user
-            .get('/api/moods/search/' + 'something' )
+            .get('/api/apiNames/search/' + 'something' )
             .expect('Content-Type', /json/)
             .expect(200)
             .end(function(err, res) {
                 if (err) return done(err);
-                res.body.moods.should.be.a('array')
+                res.body.apiNames.should.be.a('array')
                 done()
             });
     })
     // TODO create test for "mustLogin" function and this kind of tests will be obsolete
     it('fail to POST if not authorized', function(done) { // TODO move this to previous function?
         user
-            .post('/api/moods')
-            .send({ name: moodName })
+            .post('/api/apiNames')
+            .send({ name: apiNameName })
             .expect(401, done)
     })
 

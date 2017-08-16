@@ -1,5 +1,5 @@
 import { mustLogin } from 'server/services/permissions'
-import { Mood } from 'server/data/models'
+import { ApiName } from 'server/data/models'
 import express from 'express'
 import slugify from 'slug'
 
@@ -14,18 +14,12 @@ router
     try {
       const page = req.params.page
       const offset = page ? limit * (page -1) : 0
-      const totalMoods = await Mood.count()
-      const totalPages = Math.ceil(totalMoods / limit)
-      const apiNames = await Mood.findAll({
+      const totalApiNames = await ApiName.count()
+      const totalPages = Math.ceil(totalApiNames / limit)
+      const apiNames = await ApiName.findAll({
         limit,
         offset,
         order: 'rand()',
-        // add preview image
-        include: [{
-          limit: 1,
-          model: Node,
-          order: 'rand()',
-        }]
       })
       res.json({ apiNames, totalPages })
     }
@@ -40,7 +34,7 @@ router
     try {
       const slug = params.slug
       const name = query.name
-      const apiName = await Mood.findOne({
+      const apiName = await ApiName.findOne({
         where: {
           $or: [{slug}, {name}]
         }
@@ -61,9 +55,9 @@ router
       const where = {
                       name: { $like: '%' + name + '%' }
                     }
-      const totalMoods = await Mood.count({ where })
-      const totalPages = Math.round(totalMoods / limit)
-      const apiNames = await Mood.findAll({
+      const totalApiNames = await ApiName.count({ where })
+      const totalPages = Math.round(totalApiNames / limit)
+      const apiNames = await ApiName.findAll({
         limit,
         offset,
         where,
@@ -81,7 +75,7 @@ router
     try {
       const UserId = user.id
       const slug = slugify(name)
-      const apiName = await Mood.create({ UserId, name, slug }) // TODO move this in model definition?
+      const apiName = await ApiName.create({ UserId, name, slug }) // TODO move this in model definition?
       res.json(apiName)
     } catch (error) {
       console.log(error)
@@ -94,7 +88,7 @@ router
     try {
       const UserId = user.id
       const slug = slugify(name)
-      const apiName = await Mood.create({ UserId, name, slug }) // TODO move this in model definition?
+      const apiName = await ApiName.create({ UserId, name, slug }) // TODO move this in model definition?
       res.json(apiName)
     } catch (error) {
       console.log(error)
