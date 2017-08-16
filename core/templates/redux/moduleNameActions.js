@@ -12,13 +12,13 @@ export const actions = createActions({
   RECIEVE_NODE: node => node,
   RECIEVE_NODES: nodes => nodes,
   UPDATE_NODE: object => object,
-//   FETCHING_NODE: () => null,
+  TOGGLE_NODE_FETCHING: boolean => boolean,
   FETCHING_ERROR: reason => reason,
   RECIEVE_SEARCHED_VIDEOS: videos => videos,
 })
 
 /**
- * create a node
+ * create a moduleName
  * @param {Object} payload content url
  */
 export const insertNode = payload => (dispatch, getState) => {
@@ -32,7 +32,7 @@ export const insertNode = payload => (dispatch, getState) => {
 }
 
 /**
- * fetch node using mood slug
+ * fetch moduleName using mood slug
  * @param {String} slug mood slug (optional)
  */
 export const fetchmoduleName = slug => (dispatch, getState) => {
@@ -40,7 +40,7 @@ export const fetchmoduleName = slug => (dispatch, getState) => {
 	const nodeId = state.node.id
 	const moodSlug = slug || state.mood.get('slug')
 
-	// dispatch(actions.fetchingNode())
+	dispatch(actions.fetchingNode())
 
 	return fetch(
 		nodesUrl + moodSlug + '/' + nodeId,
@@ -49,18 +49,13 @@ export const fetchmoduleName = slug => (dispatch, getState) => {
 		.then(checkStatus)
 		.then(parseJSON)
 		.then(data => {
-			/*
-				unload node before assigning new one because
-				mutability does node load youtube video if node is the same
-			*/
-			dispatch(actions.unloadNode())
 			return dispatch(actions.recieveNode((data)))
 		})
 		.catch(err => console.error('fetchmoduleName failed!', err))
 }
 
 /**
- * fetch nodes using mood slug
+ * fetch fetchmoduleNames using mood slug
  * @param {String} slug mood slug (optional)
  */
 export const fetchmoduleNames = slug => (dispatch, getState) => {
@@ -68,7 +63,7 @@ export const fetchmoduleNames = slug => (dispatch, getState) => {
 	const nodeId = state.node.id
 	const moodSlug = slug || state.mood.get('slug')
 
-	// dispatch(actions.fetchingNode())
+	dispatch(actions.fetchingNode())
 
 	return fetch(
 		nodesUrl + moodSlug,
@@ -77,11 +72,6 @@ export const fetchmoduleNames = slug => (dispatch, getState) => {
 		.then(checkStatus)
 		.then(parseJSON)
 		.then(data => {
-			/*
-				unload node before assigning new one because
-				mutability does node load youtube video if node is the same
-			*/
-			dispatch(actions.unloadNode())
 			return dispatch(actions.recieveNodes((data)))
 		})
 		.catch(err => console.error('fetchmoduleName failed!', err))
