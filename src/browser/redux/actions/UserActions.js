@@ -22,7 +22,6 @@ export const actions = createActions({
 const { fetchingUser, recieveFetchedUser, removeCurrentUser, recieveCurrentUser } = actions
 
 export const loginUser = (payload, callback) => dispatch => {
-	console.log('loginUser: ');
 	return fetch(authUrl + 'login', headersAndBody(payload))
 			.then(res => {
 				console.log('res', res);
