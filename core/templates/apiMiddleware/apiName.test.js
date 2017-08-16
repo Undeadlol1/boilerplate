@@ -1,11 +1,11 @@
 import 'babel-polyfill'
 import chai from 'chai'
-import request from 'supertest'
-import server from '../../server'
-import { ApiName, User } from '../../data/models'
 import slugify from 'slug'
-import { loginUser } from '../middlewares/authApi.test'
-import users from '../../data/fixtures/users'
+import request from 'supertest'
+import server from 'src/server'
+import users from 'src/server/data/fixtures/users'
+import { ApiName, User } from 'src/server/data/models'
+import { loginUser } from 'src/server/middlewares/authApi.test'
 chai.should();
 
 const   user = request.agent(server),
