@@ -14,10 +14,12 @@ const pageText = 'create page'
 const componentText = 'create component'
 const apiText = 'create API'
 const hook = "// ⚠️ Hook for cli! Do not remove 💀"
+const imagePath = path.resolve(__dirname, '../ascii.txt')
 
-imageToAscii(path.resolve(__dirname, '../duck.jpeg'), (err, converted) => {
+// imageToAscii(path.resolve(__dirname, '../duck.jpeg'), (err, converted) => {
+fs.readFile(imagePath, "utf8", (err, ascii) => {
     // show image
-    console.log(err || converted);
+    console.log(ascii);
     // show cli ui
     inquirer.prompt([{
         type: 'list',
