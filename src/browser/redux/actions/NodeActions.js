@@ -68,7 +68,7 @@ export const fetchNodes = slug => (dispatch, getState) => {
 		.then(data => {
 			/*
 				unload node before assigning new one because
-				mutability does node load youtube video if node is the same
+				mutability does not load youtube video if node is the same
 			*/
 			dispatch(actions.unloadNode())
 			return dispatch(actions.recieveNodes((data)))
@@ -96,7 +96,7 @@ export const fetchNode = slug => (dispatch, getState) => {
 		.then(data => {
 			/*
 				unload node before assigning new one because
-				mutability does node load youtube video if node is the same
+				mutability does not load youtube video if node is the same
 			*/
 			dispatch(actions.unloadNode())
 			return dispatch(actions.recieveNode((data)))
