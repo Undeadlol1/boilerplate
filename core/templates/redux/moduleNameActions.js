@@ -22,7 +22,7 @@ export const actions = createActions({
  * @param {Object} payload content url
  */
 export const insertModuleName = payload => (dispatch, getState) => {
-	return fetch(nodesUrl, headersAndBody(payload))
+	return fetch(moduleNamesUrl, headersAndBody(payload))
 		.then(checkStatus)
 		.then(parseJSON)
 		.then(function(response) {
@@ -32,18 +32,18 @@ export const insertModuleName = payload => (dispatch, getState) => {
 }
 
 /**
- * fetch moduleName using mood slug
- * @param {String} slug mood slug (optional)
+ * fetch moduleName using moduleName slug
+ * @param {String} slug moduleName slug (optional)
  */
 export const fetchModuleName = slug => (dispatch, getState) => {
 	const state = getState()
 	const nodeId = state.node.id
-	const moodSlug = slug || state.mood.get('slug')
+	const moduleNameSlug = slug || state.moduleName.get('slug')
 
 	dispatch(actions.fetchingModuleName())
 
 	return fetch(
-		nodesUrl + moodSlug + '/' + nodeId,
+		moduleNamesUrl + moduleNameSlug + '/' + nodeId,
 		{ credentials: 'same-origin' }
 	)
 		.then(checkStatus)
@@ -55,18 +55,18 @@ export const fetchModuleName = slug => (dispatch, getState) => {
 }
 
 /**
- * fetch moduleNames using mood slug
- * @param {String} slug mood slug (optional)
+ * fetch moduleNames using moduleName slug
+ * @param {String} slug moduleName slug (optional)
  */
 export const fetchModuleNames = slug => (dispatch, getState) => {
 	const state = getState()
 	const nodeId = state.node.id
-	const moodSlug = slug || state.mood.get('slug')
+	const moduleNameSlug = slug || state.moduleName.get('slug')
 
 	dispatch(actions.fetchingModuleName())
 
 	return fetch(
-		nodesUrl + moodSlug,
+		moduleNamesUrl + moduleNameSlug,
 		{ credentials: 'same-origin' }
 	)
 		.then(checkStatus)

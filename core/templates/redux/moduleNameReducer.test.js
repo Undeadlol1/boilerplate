@@ -1,17 +1,17 @@
 import chai, { expect } from 'chai'
 import { Map, List } from 'immutable'
 import chaiImmutable from 'chai-immutable'
-import { actions } from 'browser/redux/actions/NodeActions'
-import reducer, { initialState } from 'browser/redux/reducers/NodeReducer'
+import { actions } from 'browser/redux/actions/ModuleNameActions'
+import reducer, { initialState } from 'browser/redux/reducers/ModuleNameReducer'
 chai.should();
 chai.use(chaiImmutable);
 
 describe('user reducer', async () => {
 
-  const node =  {
+  const moduleName =  {
     id: 1,
     UserId: 2,
-    MoodId: 3,
+    ModuleNameId: 3,
     type: 'video',
     contentId: 123,
     url: 'google.com',
@@ -19,7 +19,8 @@ describe('user reducer', async () => {
     provider: 'youtube',
     Decision: {},
   }
-  const nodes = [
+
+  const moduleNames = [
     {id: 1},
     {id: 2},
     {id: 3},
@@ -29,25 +30,25 @@ describe('user reducer', async () => {
     expect(reducer(undefined, {})).to.equal(initialState);
   });
 
-  it('should handle RECIEVE_NODE action on initial state', async () => {
-    const action = actions.recieveNode(node)
+  it('should handle RECIEVE_MODULENAME action on initial state', async () => {
+    const action = actions.recieveModuleName(moduleName)
     const newState = reducer(undefined, action)
-    expect(newState).to.have.property('id', node.id)
-    expect(newState).to.have.property('contentId', node.contentId)
+    expect(newState).to.have.property('id', moduleName.id)
+    expect(newState).to.have.property('contentId', moduleName.contentId)
     expect(newState).to.have.property('loading', false)
   });
 
-  it('should handle RECIEVE_NODES action on initial state', () => {
-    const action = actions.recieveNodes(nodes)
+  it('should handle RECIEVE_MODULENAMES action on initial state', () => {
+    const action = actions.recieveModuleNames(moduleNames)
     const newState = reducer(undefined, action)
-    expect(newState.get('nodes').toJS()).to.deep.equal(nodes)
+    expect(newState.get('moduleNames').toJS()).to.deep.equal(moduleNames)
   });
 
-  it('should handle UPDATE_NODE action', async () => {
+  it('should handle UPDATE_MODULENAME action', async () => {
     expect(
-      reducer(undefined, actions.updateNode(node))
+      reducer(undefined, actions.updateModuleName(moduleName))
     )
-    .to.have.property('id', node.id)
+    .to.have.property('id', moduleName.id)
   });
 
   it('should handle TOGGLE_DIALOG action on initial state', async () => {
@@ -57,18 +58,18 @@ describe('user reducer', async () => {
     .to.have.property('dialogIsOpen', true)
   });
 
-  it('should handle UNLOAD_NODE action', () => {
-    const action = actions.unloadNode()
+  it('should handle UNLOAD_MODULENAME action', () => {
+    const action = actions.unloadModuleName()
     const newState = reducer(undefined, action)
     expect(newState).to.equal(initialState)
   });
 
-  it('should handle REMOVE_NODE action', () => {
-    const action = actions.recieveNodes(nodes)
-    // state containing active node and nodes list
-    const initialState = reducer(undefined, action).merge(node)
-    const newState = reducer(initialState, actions.removeNode(1))
-    expect(newState.get('nodes').toJS())
+  it('should handle REMOVE_MODULENAME action', () => {
+    const action = actions.recieveModuleNames(moduleNames)
+    // state containing active moduleName and moduleNames list
+    const initialState = reducer(undefined, action).merge(moduleName)
+    const newState = reducer(initialState, actions.removeModuleName(1))
+    expect(newState.get('moduleNames').toJS())
       .to.have.length(2)
       .and.not.contain({id: 1})
   });
