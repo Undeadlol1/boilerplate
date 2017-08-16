@@ -39,13 +39,11 @@ export const nextVideo = () => (dispatch, getState) => {
  * @param {Object} payload content url
  */
 export const insertNode = payload => (dispatch, getState) => {
-	// dispatch(actions.fetchingNode())
 	return fetch(nodesUrl, headersAndBody(payload))
 		.then(checkStatus)
 		.then(parseJSON)
 		.then(function(response) {
 			dispatch(actions.toggleDialog())
-			const {node} = getState()
 			return dispatch(actions.recieveNode(response))
 		})
 }
