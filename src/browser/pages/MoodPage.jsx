@@ -88,9 +88,9 @@ export const stateToProps = ({ node, mood }, ownProps) => {
 	return {
 		moodName: mood.get('name'),
 		videoId: node.get('contentId'),
+		dialogIsOpen: node.get('dialogIsOpen'),
 		contentNotFound: node.get('contentNotFound'),
 		isLoading: mood.get('loading') || !node.get('finishedLoading'),
-		dialogIsOpen: node.get('dialogIsOpen'),
 		...ownProps
 	}
 }
