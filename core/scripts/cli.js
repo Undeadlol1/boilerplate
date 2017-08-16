@@ -50,7 +50,7 @@ fs.readFile(imagePath, "utf8", (err, ascii) => {
                 .prompt([{
                     name: 'name',
                     type: 'input',
-                    message: 'page file name?',
+                    message: 'page file name (ex: IndexPage, UserPage)?',
                 }])
                 .then(({name: pageName}) => {
                     inquirer
@@ -249,7 +249,7 @@ function createPage(pageName, routePath) {
         silent: true,
         paths: [path.resolve(__dirname, '../../src/browser/routes.js')],
         // replace 'hook' text with route info, and add hook text again afterwards
-        replacement: `{ path: '${routePath}', component: require('browser/pages/${pageName}') },\n${hook}`,
+        replacement: `{ path: '${routePath}', component: require('browser/pages/${pageName}').default },\n${hook}`,
     })
     // copy+paste page template folder to 'pages' directory
     copyFolderAndReplace(templatesPath, 'PageName', pageName, folderPath)
