@@ -2,10 +2,11 @@
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import React, { PureComponent } from 'react'
-import { Grid, Row } from 'react-styled-flexboxgrid'
+import { Grid, Row, Col } from 'react-styled-flexboxgrid'
 // project files
 import Loading from 'browser/components/Loading'
 import PageWrapper from 'browser/components/PageWrapper'
+import { translate as t } from 'browser/containers/Translator'
 
 class PageName extends PureComponent {
     render() {
