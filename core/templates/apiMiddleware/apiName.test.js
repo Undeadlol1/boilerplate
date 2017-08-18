@@ -5,7 +5,7 @@ import request from 'supertest'
 import server from 'src/server'
 import users from 'src/server/data/fixtures/users'
 import { ApiName, User } from 'src/server/data/models'
-import { loginUser } from 'src/server/middlewares/authApi.test'
+import { loginUser } from 'src/server/test/middlewares/authApi.test'
 chai.should();
 
 const   user = request.agent(server),
