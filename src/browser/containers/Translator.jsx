@@ -43,6 +43,19 @@ let translate = id => {
     return messages[DEFAULT_LANGUAGE][id]
 }
 
+function detectLocale() {
+    if (process.env.BROWSER) {
+        const localeCookie = cookies.get('locale')
+        if (localeCookie) return localeCookie
+    }
+    const ret = navigator
+                ? (navigator.languages && navigator.languages[0])
+                || navigator.language
+                || navigator.userLanguage
+                : DEFAULT_LANGUAGE
+    return ret || DEFAULT_LANGUAGE
+}
+
 @connect(
 	({user}, ownProps) => {
         const userSettingsLocale = user.getIn(['Profile', 'language'])
@@ -58,7 +71,7 @@ class Translator extends Component {
     */
     componentWillMount() {
         if (process.env.BROWSER && !cookies.get('locale')) {
-            cookies.set('locale', this.detectBrowserLanguage())
+            cookies.set('locale', detectLocale())
         }
     }
     /**
@@ -66,18 +79,6 @@ class Translator extends Component {
      * @returns String (ie. 'en', or 'en-EN')
      * @memberOf Translator
      */
-    detectBrowserLanguage() {
-        if (process.env.BROWSER) {
-            const localeCookie = cookies.get('locale')
-            if (localeCookie) return localeCookie
-        }
-        const ret = navigator
-                    ? (navigator.languages && navigator.languages[0])
-                    || navigator.language
-                    || navigator.userLanguage
-                    : DEFAULT_LANGUAGE
-        return ret || DEFAULT_LANGUAGE
-    }
 
     render() {
         let language;
@@ -86,7 +87,7 @@ class Translator extends Component {
         // Different browsers have the user locale defined
         // on different fields on the `navigator` object, so we make sure to account
         // for these different by checking all of them
-        const preferedLanguage = userSettingsLocale || this.detectBrowserLanguage()
+        const preferedLanguage = userSettingsLocale || detectLocale()
 
         // Split locales with a region code (ie. 'en-EN' to 'en')
         const languageWithoutRegionCode = preferedLanguage.toLowerCase().split(/[_-]+/)[0];
@@ -109,6 +110,6 @@ class Translator extends Component {
     }
 }
 
-export { translate }
+export { translate, detectLocale }
 
 export default Translator
