@@ -164,7 +164,7 @@ function createApi(name) {
     addLineToFile(
         path.resolve(__dirname, '../../src/server/server.js'),
         hook,
-        `app.use('/api/${lowerCase}', require(${'./middlewares/' + lowerCase + 'Api'}).default)`
+        `app.use('/api/${lowerCase}', require('./middlewares/${lowerCase}Api'}).default)`
     )
     console.log('don\'t forget to edit all the files!')
 }
