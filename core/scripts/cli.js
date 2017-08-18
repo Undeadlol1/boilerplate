@@ -151,7 +151,7 @@ function createApi(name) {
     shell.exec(`sequelize model:create --name ${name} --attributes 'name:string'`)
     copyFolderAndReplace(
         path.resolve(__dirname, '../templates/controller'),
-        'controllerName',
+        'ControllerName',
         upperCase + 'Controller',
         path.resolve(__dirname, '../../src/server/data/controllers')
     )

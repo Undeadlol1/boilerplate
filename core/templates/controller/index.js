@@ -1,6 +1,1 @@
-export {
-    default,
-    createUser,
-    normalizePublicInfo,
-    updateSocialInfo,
-} from './UserController'
+export { default } from './controllerName'
