@@ -10,7 +10,7 @@ const limit = 12
 router
 
   // get all apiNames for index page
-  .get('/:page?', async (req, res) => { // TODO make sure pagination works right
+  .get('/:page?', async (req, res) => {
     try {
       const page = req.params.page
       const offset = page ? limit * (page -1) : 0
@@ -47,7 +47,7 @@ router
   })
 
   // search for apiName
-  .get('/search/:name/:page?', async (req, res) => { // TODO make sure pagination works right
+  .get('/search/:name/:page?', async (req, res) => {
     try {
       const { page, name } = req.params
       if (!name) return res.boom.badRequest('invalid query')
@@ -75,7 +75,7 @@ router
     try {
       const UserId = user.id
       const slug = slugify(name)
-      const apiName = await ApiName.create({ UserId, name, slug }) // TODO move this in model definition?
+      const apiName = await ApiName.create({ UserId, name, slug })
       res.json(apiName)
     } catch (error) {
       console.log(error)
@@ -88,7 +88,7 @@ router
     try {
       const UserId = user.id
       const slug = slugify(name)
-      const apiName = await ApiName.create({ UserId, name, slug }) // TODO move this in model definition?
+      const apiName = await ApiName.create({ UserId, name, slug })
       res.json(apiName)
     } catch (error) {
       console.log(error)
