@@ -1,7 +1,8 @@
 import selectn from 'selectn'
 import { stringify } from 'query-string'
 import { createAction, createActions } from 'redux-actions'
-import { checkStatus, parseJSON, headersAndBody } from'./actionHelpers'
+import { checkStatus, parseJSON, headersAndBody } from'browser/redux/actions/actionHelpers'
+
 
 const moduleNamesUrl = process.env.API_URL + 'moduleNames/'
 

@@ -1,8 +1,8 @@
 import chai, { expect } from 'chai'
 import { Map, List } from 'immutable'
 import chaiImmutable from 'chai-immutable'
-import { actions } from 'browser/redux/actions/ModuleNameActions'
-import reducer, { initialState } from 'browser/redux/reducers/ModuleNameReducer'
+import { actions } from 'browser/redux/ModuleName/ModuleNameActions'
+import reducer, { initialState } from 'browser/redux/ModuleName/ModuleNameReducer'
 chai.should()
 chai.use(chaiImmutable)
 
