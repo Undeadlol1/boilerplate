@@ -71,24 +71,10 @@ router
   })
 
   // create apiName
-  .post('/', mustLogin, async ({user, body: { name }}, res) => {
+  .post('/', mustLogin, async ({user, body}, res) => {
     try {
       const UserId = user.id
-      const slug = slugify(name)
-      const apiName = await ApiName.create({ UserId, name, slug })
-      res.json(apiName)
-    } catch (error) {
-      console.log(error)
-      res.status(500).end(error)
-    }
-  })
-
-  // create apiName
-  .post('/', mustLogin, async ({user, body: { name }}, res) => {
-    try {
-      const UserId = user.id
-      const slug = slugify(name)
-      const apiName = await ApiName.create({ UserId, name, slug })
+      const apiName = await ApiName.create({...body, UserId})
       res.json(apiName)
     } catch (error) {
       console.log(error)

@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import React, { PureComponent } from 'react'
 import { Grid, Row, Col } from 'react-styled-flexboxgrid'
 // project files
-import Loading from 'browser/components/Loading'
 import PageWrapper from 'browser/components/PageWrapper'
 import { translate as t } from 'browser/containers/Translator'
 
@@ -16,6 +15,7 @@ class PageName extends PureComponent {
 					loading={props.loading}
 				>
 					<Grid fluid>
+						<Row></Row>
 					</Grid>
 				</PageWrapper>
     }
@@ -30,7 +30,7 @@ export { PageName }
 export default
 connect(
 	(state, ownProps) => ({
-		// prop: mood.get('moods'),
+		// prop: state.mood.get('moods'),
 		...ownProps
 	}),
 )(PageName)

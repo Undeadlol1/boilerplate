@@ -24,6 +24,10 @@ describe('<PageName />', () => {
     expect(wrapper.find('Styled(Grid)')).to.have.length(1);
   })
 
+  it('has <Row>', () => {
+    expect(wrapper.find('Styled(Row)')).to.have.length(1);
+  })
+
   it('failes the test', () => {
     assert(false)
   })

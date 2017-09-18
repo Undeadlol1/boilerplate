@@ -20,7 +20,7 @@ export const actions = createActions({
 
 /**
  * create a moduleName
- * @param {Object} payload content url
+ * @param {object} payload content url
  */
 export const insertModuleName = payload => (dispatch, getState) => {
 	return fetch(moduleNamesUrl, headersAndBody(payload))
@@ -34,7 +34,7 @@ export const insertModuleName = payload => (dispatch, getState) => {
 
 /**
  * fetch moduleName using moduleName slug
- * @param {String} slug moduleName slug (optional)
+ * @param {string} slug moduleName slug (optional)
  */
 export const fetchModuleName = slug => (dispatch, getState) => {
 	const state = getState()
@@ -57,7 +57,7 @@ export const fetchModuleName = slug => (dispatch, getState) => {
 
 /**
  * fetch moduleNames using moduleName slug
- * @param {String} slug moduleName slug (optional)
+ * @param {string} slug moduleName slug (optional)
  */
 export const fetchModuleNames = slug => (dispatch, getState) => {
 	const state = getState()
