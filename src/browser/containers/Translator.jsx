@@ -110,6 +110,6 @@ class Translator extends Component {
     }
 }
 
-export { translate, detectLocale }
+export { translate, translate as t, detectLocale }
 
 export default Translator
