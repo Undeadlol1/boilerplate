@@ -2,6 +2,7 @@ import cls from 'classnames'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import React, { Component } from 'react'
+import { translate as t } from 'browser/containers/Translator'
 
 class ComponentName extends Component {
 	render() {
