@@ -10,7 +10,8 @@ const upperCase = require('change-case').upperCase
 const lowerCase = require('change-case').lowerCase
 
 // cli options
-const   launchText      = 'launch project',
+const   createText      = 'create new project',
+        launchText      = 'launch project',
         updateText      = 'update project',
         apiText         = 'create API',
         pageText        = 'create page',
@@ -27,12 +28,22 @@ fs.readFile(imagePath, "utf8", (err, ascii) => {
     inquirer.prompt([{
         type: 'list',
         name: 'name',
-        choices: [launchText, componentText, pageText, updateText, apiText, reduxText],
+        choices: [launchText, componentText, pageText, updateText, apiText, reduxText], // createText,
         message: 'What do you want to do?',
     }])
     // show prompt depending on users decision
     .then(function ({name}) {
         switch (name) {
+            case createText:
+                console.log('creating of project must be here')
+                inquirer
+                .prompt([{
+                    name: 'name',
+                    type: 'input',
+                    message: 'project name',
+                }])
+                .then(({name}) => createProject(name))
+                break;
             case launchText:
                 shell.exec('yarn; yarn start')
                 break;
@@ -91,6 +102,26 @@ fs.readFile(imagePath, "utf8", (err, ascii) => {
         }
     });
 });
+
+// TODO this is WIP
+function createProject(name) {
+    // TODO change path in future
+    shell.exec('git clone https://github.com/developer-expirience/boilerplate ' + name)
+
+    shell.exec('cd ' + name + ';') // yarn
+    // git remote remove origin
+    // git remote add upstream https://github.com/developer-expirience/boilerplate
+    replace({
+        regex: require('../../development.json').APP_NAME,
+        silent: true,
+        paths: [path.resolve(__dirname, '../../development.json')], // TODO or change every file?
+        replacement: name,
+    })
+    // yarn
+    // change DB config
+    // run sequelize migration (development and testing)
+    // start project
+}
 
 function createReeduxModule(name) {
 
