@@ -14,7 +14,7 @@ const   user = request.agent(server),
         singular = "random name",
         slug = slugify(singular)
 
-export default describe('/apiNames API', function() {
+export default describe('/plural API', function() {
 
     before(async function() {
         // TODO add logout? to test proper user login?
@@ -28,9 +28,9 @@ export default describe('/apiNames API', function() {
         Plural.destroy({where: { name: singular }})
     })
 
-    it('POST apiName', async function() {
+    it('POST singular', async function() {
         const agent = await loginUser(username, password)
-        await agent.post('/api/apiNames')
+        await agent.post('/api/plural')
             .send({ name: singular })
             .expect('Content-Type', /json/)
             .expect(200)
@@ -43,21 +43,21 @@ export default describe('/apiNames API', function() {
             })
     })
 
-    it('GET apiNames', function(done) {
+    it('GET plural', function(done) {
         request(server)
-            .get('/api/apiNames')
+            .get('/api/plural')
             .expect('Content-Type', /json/)
             .expect(200)
             .end(function(err, res) {
                 if (err) return done(err);
-                res.body.apiNames.should.be.a('array')
+                res.body.plural.should.be.a('array')
                 done()
             });
     })
 
-    it('GET single apiName', function(done) {
+    it('GET single singular', function(done) {
         user
-            .get('/api/apiNames/apiName/' + slug )
+            .get('/api/plural/singular/' + slug )
             .expect('Content-Type', /json/)
             .expect(200)
             .end(function(err, res) {
@@ -67,21 +67,12 @@ export default describe('/apiNames API', function() {
             });
     })
 
-    it('GET /search apiNames', function(done) {
-        user
-            .get('/api/apiNames/search/' + 'something' )
-            .expect('Content-Type', /json/)
-            .expect(200)
-            .end(function(err, res) {
-                if (err) return done(err);
-                res.body.apiNames.should.be.a('array')
-                done()
-            });
-    })
+    // TODO PUT test
+
     // TODO create test for "mustLogin" function and this kind of tests will be obsolete
     it('fail to POST if not authorized', function(done) { // TODO move this to previous function?
         user
-            .post('/api/apiNames')
+            .post('/api/plural')
             .send({ name: singular })
             .expect(401, done)
     })
