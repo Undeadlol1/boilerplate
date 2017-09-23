@@ -21,87 +21,84 @@ const   createText      = 'create new project',
 const   hook = "// ⚠️ Hook for cli! Do not remove 💀",
         imagePath = path.resolve(__dirname, '../ascii.txt')
 
-fs.readFile(imagePath, "utf8", (err, ascii) => {
-    // show image
+fse
+// read ascii image
+.readFile(imagePath, "utf8")
+// show image and cli options
+.then(ascii => {
     console.log(ascii);
-    // show cli ui
-    inquirer.prompt([{
+    return inquirer.prompt([{
         type: 'list',
         name: 'name',
         choices: [launchText, componentText, pageText, updateText, apiText, reduxText], // createText,
         message: 'What do you want to do?',
     }])
-    // show prompt depending on users decision
-    .then(function ({name}) {
-        switch (name) {
-            case createText:
-                console.log('creating of project must be here')
-                inquirer
-                .prompt([{
-                    name: 'name',
-                    type: 'input',
-                    message: 'project name',
-                }])
-                .then(({name}) => createProject(name))
-                break;
-            case launchText:
-                shell.exec('yarn; yarn start')
-                break;
-            case componentText:
-                inquirer
-                .prompt([{
-                    name: 'name',
-                    type: 'input',
-                    message: 'component name',
-                }])
-                .then(input => createComponent(input.name))
-                break;
-            case pageText:
-                inquirer
-                .prompt([{
-                    name: 'name',
-                    type: 'input',
-                    message: 'page file name (ex: IndexPage, UserPage)?',
-                }])
-                .then(({name: pageName}) => {
-                    inquirer
+})
+// show prompt depending on users decision
+.then(({name}) => {
+    switch (name) {
+        case createText:
+            console.log('creating of project must be here')
+            return  inquirer
                     .prompt([{
-                        name: 'path',
+                        name: 'name',
                         type: 'input',
-                        message: 'routing path(no first slash)?',
+                        message: 'project name',
                     }])
-                    .then(({path}) => createPage(pageName, path))
-                })
-                break;
-            case reduxText:
-                inquirer
-                .prompt([{
-                    name: 'name',
-                    type: 'input',
-                    message: 'module name (ex: post, message, user)?',
-                }])
-                .then(({name}) => createReeduxModule(name))
-                break;
-            case updateText:
-                // shell.exec('git remote add upstream https://github.com/developer-expirience/boilerplate')
-                shell.exec('git pull upstream master --allow-unrelated-histories')
-                shell.exec('yarn')
-                shell.echo('😎  all done 😎')
-                break;
-            case apiText:
-                inquirer
-                .prompt([{
-                    name: 'name',
-                    type: 'input',
-                    message: 'api name (ex. "posts", "messages", "users")?',
-                }])
-                .then(({name}) => createApi(name))
-                break;
-            default:
-                break;
-        }
-    });
-});
+                    .then(({name}) => createProject(name))
+        case launchText:
+            return shell.exec('yarn; yarn start')
+        case componentText:
+            return  inquirer
+                    .prompt([{
+                        name: 'name',
+                        type: 'input',
+                        message: 'component name',
+                    }])
+                    .then(input => createComponent(input.name))
+        case pageText:
+            return  inquirer
+                    .prompt([{
+                        name: 'name',
+                        type: 'input',
+                        message: 'page file name (ex: IndexPage, UserPage)?',
+                    }])
+                    .then(({name: pageName}) => {
+                        inquirer
+                        .prompt([{
+                            name: 'path',
+                            type: 'input',
+                            message: 'routing path(no first slash)?',
+                        }])
+                        .then(({path}) => createPage(pageName, path))
+                    })
+        case reduxText:
+            return  inquirer
+                    .prompt([{
+                        name: 'name',
+                        type: 'input',
+                        message: 'module name (ex: post, message, user)?',
+                    }])
+                    .then(({name}) => createReeduxModule(name))
+        case updateText:
+            // shell.exec('git remote add upstream https://github.com/developer-expirience/boilerplate')
+            shell.exec('git pull upstream master --allow-unrelated-histories')
+            shell.exec('yarn')
+            shell.echo('😎  all done 😎')
+            break;
+        case apiText:
+            return  inquirer
+                    .prompt([{
+                        name: 'name',
+                        type: 'input',
+                        message: 'api name (ex. "posts", "messages", "users")?',
+                    }])
+                    .then(({name}) => createApi(name))
+        default:
+            break;
+    }
+})
+.catch(err => console.error(err))
 
 // TODO this is WIP
 function createProject(name) {
