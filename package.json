@@ -149,6 +149,7 @@
     "node-sass": "^4.5.2",
     "nodemon": "^1.11.0",
     "parallel-webpack": "^1.6.1",
+    "pluralize": "^7.0.0",
     "pm2": "2.5.0",
     "random-date-generator": "^1.0.2",
     "react-test-renderer": "^15.5.4",
