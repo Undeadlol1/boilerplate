@@ -4,10 +4,11 @@ const fse = require('fs-extra')
 const shell = require('shelljs')
 const replace = require('replace')
 const inquirer = require('inquirer')
-const upperCaseFirst = require('change-case').upperCaseFirst
-const lowerCaseFirst = require('change-case').lowerCaseFirst
+const pluralize = require('pluralize')
 const upperCase = require('change-case').upperCase
 const lowerCase = require('change-case').lowerCase
+const upperCaseFirst = require('change-case').upperCaseFirst
+const lowerCaseFirst = require('change-case').lowerCaseFirst
 
 // cli options
 const   createText      = 'create new project',
@@ -178,22 +179,28 @@ function createApi(name) {
      */
     shell.exec(`sequelize model:create --name ${name} --attributes 'name:string'`)
     copyFolderAndReplace(
-        path.resolve(__dirname, '../templates/controller'),
-        'controllerName',
-        upperCase + 'Controller',
-        path.resolve(__dirname, '../../src/server/data/controllers')
-    )
-    copyFolderAndReplace(
         path.resolve(__dirname, '../templates/apiMiddleware'),
         'apiName',
-        lowerCase + 'Api',
-        path.resolve(__dirname, '../../src/server/middlewares')
+        lowerCase,
+        path.resolve(__dirname, '../../src/server/middlewares'),
+        false,
+        lowerCase + 'Api'
     )
     addLineToFile(
         path.resolve(__dirname, '../../src/server/server.js'),
         hook,
         `app.use('/api/${lowerCase}', require('./middlewares/${lowerCase}Api').default)`
     )
+    /*
+        controller files should be created when
+        linking functions to model is implemented properly
+    */
+    // copyFolderAndReplace(
+    //     path.resolve(__dirname, '../templates/controller'),
+    //     'controllerName',
+    //     upperCase + 'Controller',
+    //     path.resolve(__dirname, '../../src/server/data/controllers')
+    // )
     console.log('don\'t forget to edit all the files!')
 }
 
@@ -204,12 +211,13 @@ function createApi(name) {
  * @param {string} replaceText replacement text
  * @param {string} outputPath where to put folder
  * @param {boolean} uppercaseFileName should first letter of file name be uppercased
+ * @param {string} specifiFileName specify otput file name if needed
  */
-function copyFolderAndReplace(folderPath, replaceWhat, replaceText, outputPath, uppercaseFileName) {
+function copyFolderAndReplace(folderPath, replaceWhat, replaceText, outputPath, uppercaseFileName, specifiFileName) {
     return fse
         // 1) create folder
-        .mkdir(`${outputPath}/${replaceText}`)
-        // 2) copy + paste files from folder
+        .mkdir(`${outputPath}/${specifiFileName || replaceText}`)
+        // 2) copy files from folderPath
         .then(() => fse.readdir(folderPath))
         .then(files => {
             return files.forEach(file => {
@@ -217,13 +225,31 @@ function copyFolderAndReplace(folderPath, replaceWhat, replaceText, outputPath, 
                 return fse.readFile(folderPath + '/' + file, 'utf8')
                     .then(data => {
                         let fileText = data
-                        const   regex = new RegExp(replaceWhat, "g")
-                        // replcae different case variations of string
+                        const regex = new RegExp(replaceWhat, "g")
+                        // replace different variations of string
                         const cases = [
                             {
                                 from: replaceWhat,
                                 to: replaceText,
                             },
+                            // plurals and singulars
+                            {
+                                from: 'plural',
+                                to: pluralize.plural(replaceText),
+                            },
+                            {
+                                from: 'singular',
+                                to: pluralize.singular(replaceText),
+                            },
+                            {
+                                from: 'Singular',
+                                to: upperCaseFirst(pluralize.singular(replaceText)),
+                            },
+                            {
+                                from: 'Plural',
+                                to: upperCaseFirst(pluralize.plural(replaceText)),
+                            },
+                            // cases
                             {
                                 from: lowerCase(replaceWhat),
                                 to: lowerCase(replaceText),
@@ -245,10 +271,11 @@ function copyFolderAndReplace(folderPath, replaceWhat, replaceText, outputPath, 
                             return fileText = fileText.replace(new RegExp(from, "g"), to)
                         })
 
-                        let fileName = file.replace(regex, replaceText)
+                        let fileName = file.replace(regex, specifiFileName || replaceText)
 
                         if (uppercaseFileName) fileName = upperCaseFirst(fileName)
-                        return fse.writeFile(`${outputPath}/${replaceText}/${fileName}`, fileText, 'utf8')
+
+                        return fse.writeFile(`${outputPath}/${specifiFileName || replaceText}/${fileName}`, fileText, 'utf8')
                     });
             })
         })

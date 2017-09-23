@@ -1,24 +1,24 @@
 import slugify from 'slug'
 import { Router } from 'express'
-import { ApiName } from 'server/data/models'
+import { Plural } from 'server/data/models'
 import { mustLogin } from 'server/services/permissions'
 
 const limit = 12
 
 export default Router()
 
-  // get all apiNames
+  // get all plural
   .get('/:page?', async (req, res) => {
     try {
       const page = req.params.page
       const offset = page ? limit * (page -1) : 0
-      const totalApiNames = await ApiName.count()
+      const totalApiNames = await Plural.count()
       const totalPages = Math.ceil(totalApiNames / limit)
-      const apiNames = await ApiName.findAll({
+      const plural = await Plural.findAll({
         limit,
         offset,
       })
-      res.json({ apiNames, totalPages })
+      res.json({ plural, totalPages })
     }
     catch (error) {
       console.log(error);
@@ -26,26 +26,26 @@ export default Router()
     }
   })
 
-  // get single apiName
-  .get('/apiName/:apiNameId', async ({params}, res) => {
+  // get single singular
+  .get('/singular/:apiNameId', async ({params}, res) => {
     try {
-      const apiName = await ApiName.findById(params.apiNameId)
-      res.json(apiName)
+      const singular = await Plural.findById(params.apiNameId)
+      res.json(singular)
     } catch (error) {
       console.log(error)
       res.status(500).end(error)
     }
   })
 
-  // update apiName
+  // update singular
   .put('/:apiNameId', mustLogin, async ({user, body, params}, res) => {
     try {
       const UserId = user.id
-      const apiName = await ApiName.findById(params.apiNameId)
+      const singular = await Plural.findById(params.apiNameId)
 
       // check permissions
-      if (apiName.UserId != UserId) return res.status(401).end()
-      else res.json(await apiName.update(body))
+      if (Plural.UserId != UserId) return res.status(401).end()
+      else res.json(await singular.update(body))
 
     } catch (error) {
       console.log(error)
@@ -53,12 +53,12 @@ export default Router()
     }
   })
 
-  // create apiName
+  // create singular
   .post('/', mustLogin, async ({user, body}, res) => {
     try {
       const UserId = user.id
-      const apiName = await ApiName.create({...body, UserId})
-      res.json(apiName)
+      const singular = await Plural.create({...body, UserId})
+      res.json(singular)
     } catch (error) {
       console.log(error)
       res.status(500).end(error)
