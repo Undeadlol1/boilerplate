@@ -4,15 +4,15 @@ import slugify from 'slug'
 import request from 'supertest'
 import server from 'server/server'
 import users from 'server/data/fixtures/users'
-import { ApiName, User } from 'server/data/models'
+import { Plural, User } from 'server/data/models'
 import { loginUser } from 'server/test/middlewares/authApi.test'
 chai.should();
 
 const   user = request.agent(server),
         username = users[0].username,
         password = users[0].password,
-        apiNameName = "random name",
-        slug = slugify(apiNameName)
+        singular = "random name",
+        slug = slugify(singular)
 
 export default describe('/apiNames API', function() {
 
@@ -25,13 +25,13 @@ export default describe('/apiNames API', function() {
 
     // clean up
     after(function() {
-        ApiName.destroy({where: { name: apiNameName }})
+        Plural.destroy({where: { name: singular }})
     })
 
     it('POST apiName', async function() {
         const agent = await loginUser(username, password)
         await agent.post('/api/apiNames')
-            .send({ name: apiNameName })
+            .send({ name: singular })
             .expect('Content-Type', /json/)
             .expect(200)
             .then(function(res) {
@@ -62,7 +62,7 @@ export default describe('/apiNames API', function() {
             .expect(200)
             .end(function(err, res) {
                 if (err) return done(err);
-                res.body.name.should.be.equal(apiNameName)
+                res.body.name.should.be.equal(singular)
                 done()
             });
     })
@@ -82,7 +82,7 @@ export default describe('/apiNames API', function() {
     it('fail to POST if not authorized', function(done) { // TODO move this to previous function?
         user
             .post('/api/apiNames')
-            .send({ name: apiNameName })
+            .send({ name: singular })
             .expect(401, done)
     })
 

@@ -1,1 +1,1 @@
-export { default } from './apiName'
+export { default } from './pluralApi'
