@@ -16,7 +16,8 @@ export default {
     add_your_own_mood: 'Создать настроение!',
     choose_your_language: 'Выберите ваш язык',
     currently_zero_content_here: 'Пока контента нет',
-
+    image_url: 'Url изображения',
+    image_url_not_required: 'Url изображения (не обязательно)',
 
     mood_is_a_content_consumption_service: 'Mood - это сервис потребления контента.',
     pick_your_mood_and_service_will_generate: 'Выберите свое настроение и сервис сгенерирует для вас уникальный персональный плейлист.',
