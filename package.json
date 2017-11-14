@@ -8,9 +8,9 @@
   "scripts": {
     "cli": "node core/scripts/cli.js",
     "migrate": "cross-env NODE_ENV=test sequelize db:migrate && cross-env NODE_ENV=development sequelize db:migrate",
-    "test": "clear; cross-env NODE_ENV=test parallel-webpack --config ./config/tests.config.js --watch",
+    "test": "clear && cross-env NODE_ENV=test parallel-webpack --config ./config/tests.config.js --watch",
     "start": "rimraf dist && cross-env NODE_ENV=development concurrently \"parallel-webpack --config ./config/targets.config.js --progress --profile --watch --hide-modules\" \"nodemon dist/server.js --watch dist/server.js\"",
-    "production": "git pull; yarn; cross-env NODE_ENV=production sequelize db:migrate; rm -rf dist; cross-env NODE_ENV=production parallel-webpack --config ./config/targets.config.js; npm rebuild node-sass; pm2 stop all;  pm2 start dist/server.js --node-args='--expose-gc';",
+    "production": "git pull && yarn && cross-env NODE_ENV=production sequelize db:migrate && rimraf dist && cross-env NODE_ENV=production parallel-webpack --config ./config/targets.config.js && npm rebuild node-sass && pm2 stop all && pm2 start dist/server.js --node-args='--expose-gc'",
     "analyze": "cross-env NODE_ENV=production parallel-webpack --config ./config/targets.config.js --watch",
     "check_production": "cross-env NODE_ENV=production parallel-webpack --config ./config/targets.config.js; node dist/server.js"
   },
