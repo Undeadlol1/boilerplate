@@ -1,5 +1,6 @@
 import slugify from 'slug'
 import { Router } from 'express'
+import generateUuid from 'uuid/v4'
 import { Plural } from 'server/data/models'
 import { mustLogin } from 'server/services/permissions'
 
@@ -10,14 +11,11 @@ export default Router()
   // get all plural
   .get('/:page?', async (req, res) => {
     try {
-      const page = req.params.page
-      const offset = page ? limit * (page -1) : 0
-      const totalApiNames = await Plural.count()
-      const totalPages = Math.ceil(totalApiNames / limit)
-      const plural = await Plural.findAll({
-        limit,
-        offset,
-      })
+      const page = req.params.page,
+            totalApiNames = await Plural.count(),
+            offset = page ? limit * (page -1) : 0,
+            totalPages = Math.ceil(totalApiNames / limit),
+            plural = await Plural.findAll({limit, offset})
       res.json({ plural, totalPages })
     }
     catch (error) {

@@ -15,7 +15,11 @@ class PageName extends PureComponent {
 					loading={props.loading}
 				>
 					<Grid fluid>
-						<Row></Row>
+						<Row>
+							<Col xs={12}>
+								
+							</Col>
+						</Row>
 					</Grid>
 				</PageWrapper>
     }

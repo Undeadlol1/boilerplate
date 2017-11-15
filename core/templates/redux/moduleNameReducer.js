@@ -10,7 +10,6 @@ const moduleNameStructure = 	Map({
 							rating: '',
 							provider: '',
 							contentId: '',
-							Decision: decisionStructure.toJS()
 						})
 
 export const initialState = Map({
