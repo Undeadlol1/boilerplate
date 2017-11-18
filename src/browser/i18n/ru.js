@@ -51,4 +51,6 @@ export default {
     skip: 'пропустить',
     dont_like_it_dont_show_again: 'мне не нравится (вы больше не увидите это видео)',
     add_this_video: 'добавить это видео',
+    welcome_to_our_awesome_boilerplate: 'Добро пожаловать в наш классный boilerplate.',
+    hope_you_will_enjoy_it: 'Надеюсь он вам понравится.',
 }
