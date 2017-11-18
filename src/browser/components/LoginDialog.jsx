@@ -13,15 +13,15 @@ import { toggleLoginDialog } from 'browser/redux/actions/UserActions'
 export class LoginDialog extends Component {
 
 	static defaultProps = {
-		loginIsOpen: false,
+		open: false,
 	}
 
 	render() {
-		const { loginIsOpen, toggleDialog } = this.props
+		const { open, toggleDialog } = this.props
 		const iconStyle = {paddingBottom: '1.2rem'}
 		const iconColor = 'rgb(48, 48, 48)'
 		return <Dialog
-					open={loginIsOpen}
+					open={open}
 					className="LoginDialog"
 					onRequestClose={toggleDialog}
 					titleStyle={{ textAlign: 'center' }}
@@ -56,7 +56,7 @@ export class LoginDialog extends Component {
 }
 
 LoginDialog.PropTypes = {
-	loginIsOpen: PropTypes.bool.isRequired,
+	open: PropTypes.bool.isRequired,
 	toggleDialog: PropTypes.func.isRequired,
 }
 
@@ -65,6 +65,6 @@ export const dispatchToProps = (dispatch, ownProps) => ({
 })
 
 export default connect(
-	({ user }) => ({ loginIsOpen: user.get('loginIsOpen') }),
+	({ user }) => ({ open: user.get('loginIsOpen') }),
 	dispatchToProps
 )(LoginDialog)
