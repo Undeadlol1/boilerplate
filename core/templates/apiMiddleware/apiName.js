@@ -25,9 +25,11 @@ export default Router()
   })
 
   // get single singular
-  .get('/singular/:apiNameId', async ({params}, res) => {
+  .get('/singular/:slug', async ({params}, res) => {
     try {
-      const singular = await Plural.findById(params.apiNameId)
+      const singular =  await Plural.findOne({
+                          where: {slug: params.slug}
+                        })
       res.json(singular)
     } catch (error) {
       console.log(error)
@@ -55,7 +57,12 @@ export default Router()
   .post('/', mustLogin, async ({user, body}, res) => {
     try {
       const UserId = user.id
-      const singular = await Plural.create({...body, UserId})
+      const slug = slugify(body.name)
+      const singular =  await Plural.create({
+                          ...body,
+                          UserId,
+                          slug,
+                        })
       res.json(singular)
     } catch (error) {
       console.log(error)

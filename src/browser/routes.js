@@ -68,7 +68,20 @@ const routesConfig = {
     { path: 'login', component: LoginPage },
     { path: 'search', component: SearchPage },
     { path: 'about', component: AboutPage },
-    // ⚠️ Hook for cli! Do not remove 💀
+    {
+      path: 'threads/(:slug)',
+      component: require('browser/pages/ThreadPage').default,
+      // fetch data
+      // onEnter({params}, replace, done) {
+        // Promise
+        // .all([
+        //   store.dispatch(fetchMood(params.moodSlug)),
+        //   store.dispatch(fetchNodes(params.moodSlug)),
+        // ])
+        // .then(() => done())
+      // }
+    },
+// ⚠️ Hook for cli! Do not remove 💀
     // 404 page must go after everything else
     { path: '*', component: NotFound },
   ]

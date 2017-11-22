@@ -27,7 +27,7 @@ import exphbs from 'express-handlebars'
 const RedisStore = require('connect-redis')(session)
 // const cache = require('express-redis-cache')();
 
-const port = process.env.PORT || 3000,
+const port = process.env.PORT,
       app = express(),
       publicUrl = path.resolve('./dist', 'public'), // TODO: or use server/public?
       cookieExpires = 100 * 60 * 24 * 100, // 100 days
@@ -97,6 +97,9 @@ app.use('/api/moods', moodsApi)
 app.use('/api/nodes', nodesApi)
 app.use('/api/decisions', decisionsApi)
 app.use('/api/externals', externalsApi)
+app.use('/api/forums', require('./middlewares/forumsApi').default) 
+app.use('/api/threads', require('./middlewares/threadsApi').default) 
+app.use('/api/comments', require('./middlewares/commentsApi').default) 
 // ⚠️ Hook for cli! Do not remove 💀
 
 // SPA

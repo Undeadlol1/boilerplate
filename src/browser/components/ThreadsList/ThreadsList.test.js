@@ -4,29 +4,25 @@ import { shallow } from 'enzyme'
 import chaiEnzyme from 'chai-enzyme'
 import chai, { expect, assert } from 'chai'
 import { translate as t } from 'browser/containers/Translator'
-import { ComponentName } from 'browser/components/ComponentName'
+import { ThreadsList } from 'browser/components/ThreadsList'
 chai.should()
 chai.use(chaiEnzyme())
 
-describe('<ComponentName />', () => {
+describe('<ThreadsList />', () => {
 
   const props = {}
-  const wrapper = shallow(<ComponentName {...props} />)
+  const wrapper = shallow(<ThreadsList {...props} />)
 
   it('has <Row>', () => {
     const el = wrapper.find('Styled(Row)')
     expect(el).to.have.length(1)
-    expect(el).to.have.className('ComponentName')
+    expect(el).to.have.className('ThreadsList')
   })
 
   it('has <Col>', () => {
     const el = wrapper.find('Styled(Col)')
     expect(el).to.have.length(1)
     expect(el.props().xs).to.eq(12)
-  })
-
-  it('failes the test', () => {
-    assert(false)
   })
 
 })

@@ -177,7 +177,7 @@ function createApi(name) {
      * 5) create test for middleware
      * 6) add line to server.js
      */
-    shell.exec(`sequelize model:create --name ${name} --attributes 'name:string'`)
+    shell.exec(`sequelize model:create --name ${name} --attributes name:string`)
     copyFolderAndReplace(
         path.resolve(__dirname, '../templates/apiMiddleware'),
         'apiName',
