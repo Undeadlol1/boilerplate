@@ -7,7 +7,10 @@ class NotFound extends React.Component {
     // align to center
     // TODO use flexbox for it?
     const style = {
-      marginTop: '50%',
+      top: '50%',
+      width: '100%',
+      margin: '0 auto',
+      position: 'fixed',
       textAlign: 'center',
     }
     return  <h1 style={style} className="NotFound">{translate('page_not_found')}!</h1>
