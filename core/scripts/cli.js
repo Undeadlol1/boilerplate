@@ -308,7 +308,12 @@ function createPage(pageName, routePath) {
     })
     // copy+paste page template folder to 'pages' directory
     copyFolderAndReplace(templatesPath, 'PageName', pageName, folderPath)
-
+        // import component styles to main styles.scss file
+        addLineToFile(
+            path.resolve(__dirname, '../../src/browser/styles.scss'),
+            hook,
+           `@import "./pages/${pageName}/${pageName}.scss";`
+        )
 }
 
 function createComponent(componentName) {

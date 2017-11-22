@@ -28,8 +28,8 @@ class WelcomeCard extends Component {
 						<Paper zDepth={5}>
 							<Card>
 								<CardText>
-									<p>{t('mood_is_a_content_consumption_service')}</p>
-									<p>{t('pick_your_mood_and_service_will_generate')}</p>
+									<p>{t('welcome_to_our_awesome_boilerplate')}</p>
+									<p>{t('hope_you_will_enjoy_it')}</p>
 								</CardText>
 								<CardActions>
 									<FlatButton fullWidth primary={true} onClick={this.handleClick} label={t('ok')} />

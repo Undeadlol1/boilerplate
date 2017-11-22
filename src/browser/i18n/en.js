@@ -51,4 +51,6 @@ export default {
     skip: 'skip',
     dont_like_it_dont_show_again: 'i don\'t like it (you will never see this again here)',
     add_this_video: 'add this video',
+    welcome_to_our_awesome_boilerplate: 'Welcome to our awesome boilerplate.',
+    hope_you_will_enjoy_it: 'Hope you will enjoy it.',
 }
