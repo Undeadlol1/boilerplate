@@ -38,13 +38,10 @@ export const insertForum = payload => (dispatch, getState) => {
  */
 export const fetchForum = slug => (dispatch, getState) => {
 	const state = getState()
-	const nodeId = state.node.id
 	const forumSlug = slug || state.forum.get('slug')
 
-	dispatch(actions.fetchingForum())
-
 	return fetch(
-		forumsUrl + forumSlug + '/' + nodeId,
+		forumsUrl + forumSlug,
 		{ credentials: 'same-origin' }
 	)
 		.then(checkStatus)
@@ -63,8 +60,6 @@ export const fetchForums = slug => (dispatch, getState) => {
 	const state = getState()
 	const nodeId = state.node.id
 	const forumSlug = slug || state.forum.get('slug')
-
-	dispatch(actions.fetchingForum())
 
 	return fetch(
 		forumsUrl + forumSlug,
