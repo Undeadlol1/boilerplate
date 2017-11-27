@@ -3,7 +3,6 @@ import { stringify } from 'query-string'
 import { createAction, createActions } from 'redux-actions'
 import { checkStatus, parseJSON, headersAndBody } from'browser/redux/actions/actionHelpers'
 
-
 const moduleNamesUrl = process.env.API_URL + 'moduleNames/'
 
 export const actions = createActions({
@@ -38,13 +37,10 @@ export const insertModuleName = payload => (dispatch, getState) => {
  */
 export const fetchModuleName = slug => (dispatch, getState) => {
 	const state = getState()
-	const nodeId = state.node.id
 	const moduleNameSlug = slug || state.moduleName.get('slug')
 
-	dispatch(actions.fetchingModuleName())
-
 	return fetch(
-		moduleNamesUrl + moduleNameSlug + '/' + nodeId,
+		moduleNamesUrl + moduleNameSlug,
 		{ credentials: 'same-origin' }
 	)
 		.then(checkStatus)
@@ -61,10 +57,7 @@ export const fetchModuleName = slug => (dispatch, getState) => {
  */
 export const fetchModuleNames = slug => (dispatch, getState) => {
 	const state = getState()
-	const nodeId = state.node.id
 	const moduleNameSlug = slug || state.moduleName.get('slug')
-
-	dispatch(actions.fetchingModuleName())
 
 	return fetch(
 		moduleNamesUrl + moduleNameSlug,

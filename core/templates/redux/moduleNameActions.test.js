@@ -16,7 +16,7 @@ const mockStore = configureMockStore(middlewares)
 const { URL, API_URL } = process.env
 const authApi = '/api/auth/'
 const moduleNamesApi = '/api/moduleNames/'
-const moduleName = {moduleNamename: 'misha', id: 1}
+const moduleName = {name: 'misha', id: 1}
 /**
  * test async action by intercepting http call
  * and cheking if expected redux actions have been called
@@ -43,25 +43,10 @@ describe('ModuleNameActions', () => {
 
   afterEach(() => nock.cleanAll())
 
-
-  it('fetchCurrentModuleName calls fetchingModuleName and recieveCurrentModuleName', async () => {
-    const expectedActions = [
-                              actions.fetchingModuleName(),
-                              actions.recieveCurrentModuleName(moduleName)
-                            ]
-    await mockRequest(authApi + 'current_moduleName', fetchCurrentModuleName, undefined, expectedActions)
-  })
-
-  it('logoutCurrentModuleName calls removeCurrentModuleName', async () => {
-    const expectedActions = [actions.removeCurrentModuleName()]
-    await mockRequest(authApi + 'logout', logoutCurrentModuleName, undefined, expectedActions)
-  })
-
-  it('fetchModuleName calls fetchingModuleName and recieveFetchedModuleName', async () => {
+  it('fetchModuleName calls recieveModuleName', async () => {
     const { moduleNamename } = moduleName
     const expectedActions = [
-                              actions.fetchingModuleName(),
-                              actions.recieveFetchedModuleName(moduleName)
+                              actions.recieveModuleName(moduleName)
                             ]
     await mockRequest(moduleNamesApi + 'moduleName/' + moduleNamename, fetchModuleName, moduleNamename, expectedActions)
   })
