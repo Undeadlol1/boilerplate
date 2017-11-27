@@ -25,7 +25,7 @@ class IndexPage extends PureComponent {
 						<WelcomeCard />
 						<MoodsInsert />
 						<ThreadsList />
-						<MoodTabs />
+						{/* <MoodTabs /> */}
 					</Grid>
 				</PageWrapper>
     }

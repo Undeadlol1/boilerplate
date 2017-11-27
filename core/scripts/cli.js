@@ -142,7 +142,7 @@ function createReeduxModule(name) {
     addLineToFile(
         rootReducer,
         firstHook,
-        `import ${name}, { initialState as ${name}State } from 'browser/redux/${name}/${name}Reducer'`
+        `import ${name}, { initialState as ${name}State } from 'browser/redux/${name}/${upperCaseName}Reducer'`
         + '\n'
         + firstHook
     )

@@ -7,7 +7,7 @@ import global, { initialState as globalState } from './GlobalReducer'
 import user, { initialState as userState } from './UserReducer'
 import mood, { initialState as moodState } from './MoodReducer'
 import node, { initialState as nodeState } from './NodeReducer'
-import forum, { initialState as forumState } from 'browser/redux/forum/forumReducer'
+import forum, { initialState as forumState } from 'browser/redux/forum/ForumReducer'
 // ⚠️ First hook for cli! Do not remove 💀 
 // ⚠️ First hook for cli! Do not remove 💀
 

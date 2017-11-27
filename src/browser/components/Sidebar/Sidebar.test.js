@@ -24,17 +24,18 @@ describe('<Sidebar />', () => {
 
   describe('if user not logged component', () => {
     it('has 1 menu item', () => {
-      const menuItems = wrapper.find('MenuItem')
-      expect(menuItems).to.have.length(1)
-      expect(menuItems.props().children.props.onClick).to.be.a('function')
+      const link = wrapper.find('Link')
+      expect(link).to.have.length(1)
+      expect(link.props().onClick).to.be.a('function')
     })
 
     it('has "search" link', () => {
       const link = wrapper.find('Link')
       expect(link).to.have.length(1)
       expect(link.props().to).to.eq('search')
+      assert(link.hasClass('Sidebar__search-link'))
       expect(link.props().onClick).to.be.a('function')
-      expect(link.props().children).to.eq(translate('search'))
+      expect(link.props().children.props.children).to.eq(translate('search'))
     })
   })
 
@@ -63,8 +64,8 @@ describe('<Sidebar />', () => {
     it('has "profile" link', () => {
       const link = wrapper.find('.Sidebar__profile-link');
       expect(link).to.have.length(1)
-      expect(link.props().children).to.eq(translate("search"))
       expect(link.props().onClick).to.be.a('function')
+      expect(link.props().children.props.children).to.eq(translate("profile"))
     })
 
   })

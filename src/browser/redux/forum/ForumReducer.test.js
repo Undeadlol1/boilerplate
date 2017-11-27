@@ -1,8 +1,8 @@
 import chai, { expect } from 'chai'
 import { Map, List } from 'immutable'
 import chaiImmutable from 'chai-immutable'
-import { actions } from 'browser/redux/Forum/ForumActions'
-import reducer, { initialState } from 'browser/redux/Forum/ForumReducer'
+import { actions } from 'browser/redux/forum/ForumActions'
+import reducer, { initialState } from 'browser/redux/forum/ForumReducer'
 chai.should()
 chai.use(chaiImmutable)
 

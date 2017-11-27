@@ -12,7 +12,7 @@ if (process.env.NODE_ENV == 'production' && config.dialect == undefined) config 
 module.exports = {
   "development": {
     "username": "root",
-    "password": "root",
+    "password": null,
     "database": "boilerplat_dev",
     "host": "127.0.0.1",
     "dialect": "mysql",
@@ -20,7 +20,7 @@ module.exports = {
   },
   "test": {
     "username": "root",
-    "password": "root",
+    "password": null,
     "database": "boilerplat_test",
     "host": "127.0.0.1",
     "dialect": "mysql",

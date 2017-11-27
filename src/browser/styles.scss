@@ -4,7 +4,7 @@
 @import "~normalize.css/normalize.css";
 @import "~font-awesome/css/font-awesome.min.css";
 @import '~react-redux-toastr/src/styles/index.scss';
-@import '~react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+@import './react-draft-wysiwyg.css';
 /*
     app
 */
@@ -14,7 +14,7 @@
 @import "./components/NavBar.scss";
 @import "./components/Video.scss";
 @import "./components/Loading.scss";
-@import "./components/Sidebar.scss";
+@import "./components/Sidebar/Sidebar.scss";
 @import "./components/MoodsList.scss";
 @import "./components/LoginDialog.scss";
 @import "./components/PageWrapper.scss";
@@ -24,10 +24,10 @@
 @import "./components/MoodTabs/MoodTabs.scss";
 @import "./components/WelcomeCard/WelcomeCard.scss";
 @import "./components/ShareButton/ShareButton.scss";
-@import "./components/WysiwygEditor/WysiwygEditor.scss"; 
-@import "./components/WysiwygEditor/WysiwygEditor.scss"; 
-@import "./components/ThreadsList/ThreadsList.scss"; 
-@import "./pages/ThreadPage/ThreadPage.scss"; 
+@import "./components/WysiwygEditor/WysiwygEditor.scss";
+@import "./components/WysiwygEditor/WysiwygEditor.scss";
+@import "./components/ThreadsList/ThreadsList.scss";
+@import "./pages/ThreadPage/ThreadPage.scss";
 // ⚠️ Hook for cli! Do not remove 💀
 /*
     common styles

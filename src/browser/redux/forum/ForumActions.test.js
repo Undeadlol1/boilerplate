@@ -5,8 +5,8 @@ import chai, { expect } from 'chai'
 import chaiImmutable from 'chai-immutable'
 import configureMockStore from 'redux-mock-store'
 import { createAction, createActions } from 'redux-actions'
-import { initialState } from 'browser/redux/Forum/ForumReducer'
-import { updateForum, toggleLoginDialog, logoutCurrentForum, fetchCurrentForum, fetchForum, actions } from 'browser/redux/Forum/ForumActions'
+import { initialState } from 'browser/redux/forum/ForumReducer'
+import { updateForum, toggleLoginDialog, logoutCurrentForum, fetchCurrentForum, fetchForum, actions } from 'browser/redux/forum/ForumActions'
 chai.should();
 chai.use(chaiImmutable);
 
