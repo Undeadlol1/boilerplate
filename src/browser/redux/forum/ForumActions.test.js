@@ -16,7 +16,7 @@ const mockStore = configureMockStore(middlewares)
 const { URL, API_URL } = process.env
 const authApi = '/api/auth/'
 const forumsApi = '/api/forums/'
-const forum = {forumname: 'misha', id: 1}
+const forum = {name: 'misha', id: 1}
 /**
  * test async action by intercepting http call
  * and cheking if expected redux actions have been called
@@ -28,9 +28,10 @@ const forum = {forumname: 'misha', id: 1}
  * @returns
  */
 function mockRequest(url, action, param, result, method = 'get') {
+  console.log('url: ', url);
     // TODO rework this url (last character '/' was causing unmathing of url)
     // create request interceptor
-    nock('http://127.0.0.1:3000')[method](url).reply(200, forum)
+    nock('http://127.0.0.1:3000/api/forums/')[method](url).reply(200, forum)
     const store = mockStore()
     return store
       // call redux action
@@ -43,37 +44,23 @@ describe('ForumActions', () => {
 
   afterEach(() => nock.cleanAll())
 
-
-  it('fetchCurrentForum calls fetchingForum and recieveCurrentForum', async () => {
+  it('fetchForum calls recieveForum', async () => {
+    const { name } = forum
     const expectedActions = [
-                              actions.fetchingForum(),
-                              actions.recieveCurrentForum(forum)
-                            ]
-    await mockRequest(authApi + 'current_forum', fetchCurrentForum, undefined, expectedActions)
-  })
-
-  it('logoutCurrentForum calls removeCurrentForum', async () => {
-    const expectedActions = [actions.removeCurrentForum()]
-    await mockRequest(authApi + 'logout', logoutCurrentForum, undefined, expectedActions)
-  })
-
-  it('fetchForum calls fetchingForum and recieveFetchedForum', async () => {
-    const { forumname } = forum
-    const expectedActions = [
-                              actions.fetchingForum(),
-                              actions.recieveFetchedForum(forum)
-                            ]
-    await mockRequest(forumsApi + 'forum/' + forumname, fetchForum, forumname, expectedActions)
+      actions.recieveForum(forum)
+    ]
+    console.log('expectedActions: ', expectedActions);
+    await mockRequest( 'forum/' + name, fetchForum, name, expectedActions)
   })
 
 
   it('updateForum calls recieveCurrentForum', async () => {
-    const { forumname } = forum
+    const { name } = forum
     const expectedActions = [actions.recieveCurrentForum(forum)]
     await mockRequest(
-      forumsApi + 'forum/' + forumname,
+      forumsApi + 'forum/' + name,
       updateForum,
-      forumname,
+      name,
       expectedActions,
       'put'
     )
