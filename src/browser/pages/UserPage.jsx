@@ -16,7 +16,7 @@ import ChangeLanguageForm from 'browser/components/ChangeLanguageForm'
 
 export class UserPage extends Component {
 	@injectProps
-    render({moods, loading, location, UserId, displayName, isOwnPage}) {
+    render({moods, loading, image, location, UserId, displayName, isOwnPage}) {
 		const src = `https://api.adorable.io/avatars/300/${UserId}.png`
 		const imageText = displayName + translate('things_image')
 		return 	<PageWrapper
@@ -34,7 +34,7 @@ export class UserPage extends Component {
 						<Row center="xs">
 							<Col xs={12} className="UserPage__avatar">
 								<Avatar
-									src={src}
+									src={image || src}
 									size={300}
 									title={imageText}
 									alt={displayName + translate('things_image')}
@@ -46,18 +46,19 @@ export class UserPage extends Component {
 								{isOwnPage ? <ChangeLanguageForm /> : null}
 							</Col>
 						</Row>
-						<Row>
+						{/* <Row>
 							<Col xs={12}>
 								<center><h3>{t('created_moods')}</h3></center>
 							</Col>
 						</Row>
-						<MoodsList moods={moods} />
+						<MoodsList moods={moods} /> */}
 					</Grid>
 				</PageWrapper>
     }
 }
 
 UserPage.propTypes = {
+	image: PropTypes.string,
 	displayName: PropTypes.string,
 	loading: PropTypes.bool.isRequired,
 	isOwnPage: PropTypes.bool.isRequired,
@@ -66,11 +67,12 @@ UserPage.propTypes = {
 export default connect(
 	({user}, {params}) => {
 		const UserId = user.getIn(['fetchedUser', 'id'])
+		const fetchedUser = user.get('fetchedUser')
 		return {
 			UserId,
 			loading: user.get('loading'),
+			image: fetchedUser.get('image'),
 			isOwnPage: user.get('id') == UserId,
-			fetchedUser: user.get('fetchedUser'),
 			moods: user.getIn(['fetchedUser', 'moods']),
 			displayName: user.getIn(['fetchedUser', 'displayName']),
 		}
