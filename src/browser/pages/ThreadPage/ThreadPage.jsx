@@ -1,5 +1,6 @@
 // dependencies
 import PropTypes from 'prop-types'
+import { fromJS } from 'immutable'
 import { connect } from 'react-redux'
 import {VK, Comments} from 'react-vk'
 import React, { PureComponent } from 'react'
@@ -11,7 +12,7 @@ import { translate as t } from 'browser/containers/Translator'
 class ThreadPage extends PureComponent {
     render() {
 		const { props } = this
-		const thread = Mao({
+		const thread = fromJS({
 			name: 'Example',
 			text: 'This is some initial text',
 		})
