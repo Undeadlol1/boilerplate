@@ -3,7 +3,6 @@ import { stringify } from 'query-string'
 import { createAction, createActions } from 'redux-actions'
 import { checkStatus, parseJSON, headersAndBody } from'browser/redux/actions/actionHelpers'
 
-
 const forumsUrl = process.env.API_URL + 'forums/'
 
 export const actions = createActions({
@@ -39,14 +38,14 @@ export const insertForum = payload => (dispatch, getState) => {
 export const fetchForum = slug => (dispatch, getState) => {
 	const state = getState()
 	const forumSlug = slug || state.forum.get('slug')
-
 	return fetch(
-		forumsUrl + forumSlug,
+		forumsUrl + 'forum/' + forumSlug,
 		{ credentials: 'same-origin' }
 	)
 		.then(checkStatus)
 		.then(parseJSON)
 		.then(data => {
+			console.log('data: ', data);
 			return dispatch(actions.recieveForum((data)))
 		})
 		.catch(err => console.error('fetchforum failed!', err))

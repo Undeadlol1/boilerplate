@@ -3,13 +3,9 @@ import { Map, List } from 'immutable'
 
 const forumStructure = 	Map({
 							id: '',
-							url: '',
-							type: '',
+							name: '',
+							slug: '',
 							UserId: '',
-							ForumId: '',
-							rating: '',
-							provider: '',
-							contentId: '',
 						})
 
 export const initialState = Map({

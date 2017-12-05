@@ -75,6 +75,7 @@
     "react-styled-flexboxgrid": "^1.1.2",
     "react-tap-event-plugin": "^2.0.1",
     "react-ultimate-pagination-material-ui": "^1.0.3",
+    "react-vk": "^1.0.1",
     "react-youtube": "^7.3.0",
     "redux": "^3.6.0",
     "redux-actions": "^2.0.1",

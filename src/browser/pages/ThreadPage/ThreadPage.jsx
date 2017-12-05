@@ -1,6 +1,7 @@
 // dependencies
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import {VK, Comments} from 'react-vk'
 import React, { PureComponent } from 'react'
 import { Grid, Row, Col } from 'react-styled-flexboxgrid'
 // project files
@@ -10,6 +11,10 @@ import { translate as t } from 'browser/containers/Translator'
 class ThreadPage extends PureComponent {
     render() {
 		const { props } = this
+		const thread = Mao({
+			name: 'Example',
+			text: 'This is some initial text',
+		})
 		return 	<PageWrapper
 					className='ThreadPage'
 					loading={props.loading}
@@ -17,9 +22,10 @@ class ThreadPage extends PureComponent {
 					<Grid fluid>
 						<Row>
 							<Col xs={12}>
-								{
-									props.comments.map(com => <li key={com.id}>{com.text}</li>)
-								}
+								<VK apiId={5202075}>
+									<Comments />
+									{/* onNewComment={handleNewComment} */}
+								</VK>
 							</Col>
 						</Row>
 					</Grid>
@@ -27,28 +33,8 @@ class ThreadPage extends PureComponent {
     }
 }
 
-ThreadPage.defaultProps = {
-	comments: [
-		{
-			id: 1,
-			UserId: 123,
-			text: "Hey Guys!11",
-		},
-		{
-			id: 2,
-			UserId: 123,
-			text: "Hi dude.",
-		},
-		{
-			id: 3,
-			UserId: 123,
-			text: "What's up?",
-		}
-	]
-}
-
 ThreadPage.propTypes = {
-	comments: PropTypes.array,
+	thread: PropTypes.object.isRequired,
 }
 
 export { ThreadPage }
@@ -56,7 +42,7 @@ export { ThreadPage }
 export default
 connect(
 	(state, ownProps) => ({
-		// prop: state.mood.get('moods'),
-		...ownProps
+		...ownProps,
+		thread: state.thread,
 	}),
 )(ThreadPage)

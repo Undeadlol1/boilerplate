@@ -14,8 +14,6 @@ const middlewares = [ thunk ]
 const mockStore = configureMockStore(middlewares)
 // TODO add API_PREFIX instead of API_URL?
 const { URL, API_URL } = process.env
-const authApi = '/api/auth/'
-const forumsApi = '/api/forums/'
 const forum = {name: 'misha', id: 1}
 /**
  * test async action by intercepting http call
@@ -28,10 +26,9 @@ const forum = {name: 'misha', id: 1}
  * @returns
  */
 function mockRequest(url, action, param, result, method = 'get') {
-  console.log('url: ', url);
-    // TODO rework this url (last character '/' was causing unmathing of url)
-    // create request interceptor
-    nock('http://127.0.0.1:3000/api/forums/')[method](url).reply(200, forum)
+    // create request interceptor 
+    nock(API_URL + 'forums')[method](url).reply(200, forum)
+    // nock(API_URL + '/forums')[method](url).reply(200, forum)
     const store = mockStore()
     return store
       // call redux action
@@ -46,38 +43,13 @@ describe('ForumActions', () => {
 
   it('fetchForum calls recieveForum', async () => {
     const { name } = forum
-    const expectedActions = [
-      actions.recieveForum(forum)
-    ]
-    console.log('expectedActions: ', expectedActions);
-    await mockRequest( 'forum/' + name, fetchForum, name, expectedActions)
-  })
-
-
-  it('updateForum calls recieveCurrentForum', async () => {
-    const { name } = forum
-    const expectedActions = [actions.recieveCurrentForum(forum)]
+    const expectedActions = [actions.recieveForum(forum)]
     await mockRequest(
-      forumsApi + 'forum/' + name,
-      updateForum,
+      '/forum/' + name,
+      fetchForum,
       name,
-      expectedActions,
-      'put'
+      expectedActions
     )
   })
 
-  describe('toggleLoginDialog', () => {
-    it('toggles with argument', () => {
-      const store = mockStore({forum: initialState})
-      const expectedActions = [actions.toggleLoginDialog(true)]
-      store.dispatch(toggleLoginDialog(true))
-      expect(store.getActions()).to.deep.equal(expectedActions)
-    })
-    it('toggles without argument', () => {
-      const store = mockStore({forum: initialState})
-      const expectedActions = [actions.toggleLoginDialog(true)]
-      store.dispatch(toggleLoginDialog())
-      expect(store.getActions()).to.deep.equal(expectedActions)
-    })
-  })
 })
