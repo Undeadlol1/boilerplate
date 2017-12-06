@@ -25,7 +25,8 @@ const titleLink =   <Link
 
 export class NavBar extends Component {
     render() {
-        const { displayName, UserId, loading, className, children, toggleSidebar, ...rest } = this.props
+        const { displayName, UserId, image, loading, className, children, toggleSidebar, ...rest } = this.props
+        const src = `https://api.adorable.io/avatars/100/${UserId}.png`
 
         let loginOrAvatar
         // show loading animation if user is being fetched
@@ -35,9 +36,9 @@ export class NavBar extends Component {
             loginOrAvatar = UserId
                             ? <Link className="Navbar__profile-link" to={`/users/${UserId}`}>
                                 <Avatar
+                                    src={image || src}
                                     className="NavBar__avatar"
                                     alt={translate('your_avatar')}
-                                    src={`https://api.adorable.io/avatars/100/${UserId}.png`}
                                 />
                               </Link>
                             : <LoginLogoutButton style={LoginLogoutButtonStyles} />
@@ -67,9 +68,10 @@ export const dispatchToProps = dispatch => ({
 export default connect(
     ({ user, global  }, ownProps) => {
         const UserId = user.get('id')
+        const image = user.get('image')
         const loading = user.get('loading')
         const displayName = user.get('displayName')
-        return { UserId, displayName, loading, ...ownProps }
+        return { UserId, displayName, image, loading, ...ownProps }
     },
     dispatchToProps
 )(NavBar)
