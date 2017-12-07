@@ -34,9 +34,9 @@ export class UserPage extends Component {
 						<Row center="xs">
 							<Col xs={12} className="UserPage__avatar">
 								<Avatar
-									src={image || src}
 									size={300}
 									title={imageText}
+									src={image || src}
 									alt={displayName + translate('things_image')}
 								/>
 							</Col>

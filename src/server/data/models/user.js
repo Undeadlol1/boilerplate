@@ -1,6 +1,11 @@
 'use strict';
 module.exports = function(sequelize, DataTypes) {
   var User = sequelize.define('User', {
+    role: {
+      allowNull: false,
+      defaultValue: 'user',
+      type: DataTypes.STRING,
+    },
     // TODO comment
     image: DataTypes.STRING,
     /*
