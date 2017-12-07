@@ -97,9 +97,9 @@ app.use('/api/moods', moodsApi)
 app.use('/api/nodes', nodesApi)
 app.use('/api/decisions', decisionsApi)
 app.use('/api/externals', externalsApi)
-app.use('/api/forums', require('./middlewares/forumsApi').default) 
-app.use('/api/threads', require('./middlewares/threadsApi').default) 
-app.use('/api/comments', require('./middlewares/commentsApi').default) 
+app.use('/api/forums', require('./middlewares/forumsApi').default)
+app.use('/api/threads', require('./middlewares/threadsApi').default)
+app.use('/api/comments', require('./middlewares/commentsApi').default)
 // ⚠️ Hook for cli! Do not remove 💀
 
 // SPA

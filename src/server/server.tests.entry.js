@@ -140,6 +140,7 @@ after(async function() {
         await Mood.destroy({ where: {} })
         await Node.destroy({ where: {} })
         await Decision.destroy({ where: {} })
+        // TODO: add code to create lines here from cli (creation of api from templates)
     }
     catch(error) {
         console.log(error)
