@@ -1,8 +1,8 @@
 import 'babel-polyfill'
-import chai from 'chai'
 import slugify from 'slug'
 import request from 'supertest'
 import server from 'server/server'
+import chai, { assert, expect } from 'chai'
 import users from 'server/data/fixtures/users'
 import { Plural, User } from 'server/data/models'
 import { loginUser } from 'server/test/middlewares/authApi.test'
@@ -11,8 +11,8 @@ chai.should();
 const   user = request.agent(server),
         username = users[0].username,
         password = users[0].password,
-        singular = "random name",
-        slug = slugify(singular)
+        name = "random name",
+        slug = slugify(name)
 
 export default describe('/plural API', function() {
 
@@ -25,13 +25,13 @@ export default describe('/plural API', function() {
 
     // clean up
     after(function() {
-        Plural.destroy({where: { name: singular }})
+        return Plural.destroy({where: { name }})
     })
 
     it('POST singular', async function() {
         const agent = await loginUser(username, password)
         await agent.post('/api/plural')
-            .send({ name: singular })
+            .send({ name })
             .expect('Content-Type', /json/)
             .expect(200)
             .then(function(res) {
@@ -62,7 +62,7 @@ export default describe('/plural API', function() {
             .expect(200)
             .end(function(err, res) {
                 if (err) return done(err);
-                res.body.name.should.be.equal(singular)
+                res.body.name.should.be.equal(name)
                 done()
             });
     })
@@ -73,7 +73,7 @@ export default describe('/plural API', function() {
     it('fail to POST if not authorized', function(done) { // TODO move this to previous function?
         user
             .post('/api/plural')
-            .send({ name: singular })
+            .send({ name })
             .expect(401, done)
     })
 
