@@ -81,6 +81,7 @@ const routesConfig = {
         // .then(() => done())
       // }
     },
+{ path: 'admin', component: require('browser/pages/AdminPage').default },
 // ⚠️ Hook for cli! Do not remove 💀
     // 404 page must go after everything else
     { path: '*', component: NotFound },
