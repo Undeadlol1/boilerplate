@@ -34,6 +34,8 @@ router
   .get('/logout', (req, res) => {
     if (req.user) {
       req.logout()
+      req.session = null
+      // req.session.destroy()
       res.end()
     }
     else res.status(401).end()
