@@ -119,6 +119,7 @@
     "chai-enzyme": "^0.7.1",
     "chai-immutable": "^1.6.0",
     "chai-properties": "^1.2.1",
+    "chai-subset": "^1.6.0",
     "change-case": "^3.0.1",
     "compression-webpack-plugin": "^0.4.0",
     "concurrently": "^3.4.0",
