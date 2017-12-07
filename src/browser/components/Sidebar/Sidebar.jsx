@@ -25,12 +25,10 @@ export class Sidebar extends Component {
 					open={sidebarIsOpen}
 					onRequestChange={toggleSidebar}
 				>
+					<MenuItem onClick={toggleSidebar}><LoginLogoutButton inline /></MenuItem>
 					{
 						UserId
 						?	<div>
-								<MenuItem onClick={toggleSidebar}>
-									<LoginLogoutButton inline />
-								</MenuItem>
 								<Link
 									to={`users/${UserId}`}
 									onClick={toggleSidebar}
