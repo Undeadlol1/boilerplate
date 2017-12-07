@@ -32,6 +32,11 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 customMuiTheme.userAgent = navigator.userAgent
 const muiTheme = getMuiTheme(customMuiTheme)
 
+// scroll to top of the page on route change
+function scrollToTop() {
+  process.env.BROWER && window.scrollTo(0, 0)
+}
+
 class App extends Component {
   // if SSR provided logged in user, put object in state
   componentWillMount() {
@@ -47,7 +52,7 @@ class App extends Component {
                     <Translator>
                       {
                         process.env.BROWSER
-                        ? <Router history={syncHistoryWithStore(browserHistory, store)} routes={routesConfig} />
+                        ? <Router history={syncHistoryWithStore(browserHistory, store)} routes={routesConfig} onUpdate={scrollToTop} />
                         : <RouterContext {...this.props} />
                       }
                     </Translator>

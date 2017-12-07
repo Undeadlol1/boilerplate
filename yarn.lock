@@ -7930,6 +7930,10 @@ react-ultimate-pagination@1.0.2:
     prop-types "^15.0.0"
     ultimate-pagination "1.0.0"
 
+react-vk@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/react-vk/-/react-vk-1.0.1.tgz#f0a2cca8bba8e23e111dacf5e01ad0b37b605940"
+
 react-youtube@^7.3.0:
   version "7.5.0"
   resolved "https://registry.yarnpkg.com/react-youtube/-/react-youtube-7.5.0.tgz#3175a9c4e078164cf103ce4bc780a9e4ca4f1f94"

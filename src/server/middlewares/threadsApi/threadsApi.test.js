@@ -21,7 +21,6 @@ export default describe('/threads API', function() {
         // TODO add logout? to test proper user login?
         // Kill supertest server in watch mode to avoid errors
         server.close()
-
     })
 
     // clean up
