@@ -44,7 +44,6 @@ passport.use(new TwitterStrategy({
       else {
         // TODO rework this
         const user = await createUser('Twitter', payload)
-        console.log('user: ', user);
         done(null, user)
       }
     } catch (error) {

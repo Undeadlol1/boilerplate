@@ -44,7 +44,6 @@ passport.use(new VKontakteStrategy(
       }
       else {
         const user = await createUser('Vk', payload)
-        console.log('user: ', user);
         done(null, user)
       }
     } catch (error) {
