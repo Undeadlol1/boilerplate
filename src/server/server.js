@@ -24,7 +24,7 @@ import createLocaleMiddleware from 'express-locale';
 import RateLimiter from 'express-rate-limit'
 import exphbs from 'express-handlebars'
 
-const RedisStore = require('connect-redis')(session)
+// const RedisStore = require('connect-redis')(session)
 // const cache = require('express-redis-cache')();
 
 const port = process.env.PORT,
@@ -51,7 +51,7 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(cookieSession({
   name: 'session',
-  store: new RedisStore(),
+  // store: new RedisStore(),
   keys: [process.env.SESSION_KEY || 'keyboard cat'],
   maxAge: 24 * 60 * 60 * 1000 * 30 * 3 // 3 months
 }))
