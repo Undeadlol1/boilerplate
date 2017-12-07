@@ -6,7 +6,7 @@ import reducer, { initialState } from 'browser/redux/ModuleName/moduleNameReduce
 chai.should()
 chai.use(chaiImmutable)
 
-describe('user reducer', async () => {
+describe('moduleName reducer', async () => {
 
   const moduleName = {
     id: 1,
