@@ -80,7 +80,7 @@ fse
                         type: 'input',
                         message: 'module name (ex: post, message, user)?',
                     }])
-                    .then(({name}) => createReeduxModule(name))
+                    .then(({name}) => createReduxModule(name))
         case updateText:
             shell.exec('git remote add upstream https://github.com/developer-expirience/boilerplate')
             shell.exec('git pull upstream master --allow-unrelated-histories')
@@ -121,7 +121,7 @@ function createProject(name) {
     // start project
 }
 
-function createReeduxModule(name) {
+function createReduxModule(name) {
 
     const firtUpperCase = upperCaseFirst(name)
     const upperCaseName = upperCase(name)
