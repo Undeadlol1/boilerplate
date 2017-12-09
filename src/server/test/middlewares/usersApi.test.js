@@ -30,7 +30,7 @@ export default describe('/users API', function() {
                     assert(body.id, 'must have an id')
                     assert(body.Profile, 'must have Profile')
                     expect(body.moods).to.be.a('array')
-                    assert(body.moods[0].UserId == body.id)
+                    // assert(body.moods[0].UserId == body.id)
                     // TODO
                     // assert(!body.Local, 'must not have Local')
                 })

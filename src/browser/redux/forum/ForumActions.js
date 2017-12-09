@@ -19,15 +19,16 @@ export const actions = createActions({
 
 /**
  * create a forum
- * @param {object} payload content url
+ * @param {object} payload data to pass
+ * @param {function} callback callback function
  */
-export const insertForum = payload => (dispatch, getState) => {
+export const insertForum = (payload, callback) => (dispatch, getState) => {
 	return fetch(forumsUrl, headersAndBody(payload))
 		.then(checkStatus)
 		.then(parseJSON)
 		.then(function(response) {
-			dispatch(actions.toggleDialog())
-			return dispatch(actions.recieveForum(response))
+			dispatch(actions.recieveForum(response))
+			return callback && callback()
 		})
 }
 

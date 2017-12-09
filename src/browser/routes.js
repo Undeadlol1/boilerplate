@@ -18,6 +18,16 @@ import { fetchNodes, actions as nodeActions } from 'browser/redux/actions/NodeAc
 const routesConfig = {
   path: '/',
   component: Layout,
+  onEnter({params}, replace, done) {
+    // check if fetching is needed
+    const userId = store.getState().user.get('id')
+    if (userId) return done()
+    else {
+      store
+      .dispatch(fetchCurrentUser())
+      .then(() => done())
+    }
+  },
   indexRoute: {
     component: IndexPage,
     // fetch data

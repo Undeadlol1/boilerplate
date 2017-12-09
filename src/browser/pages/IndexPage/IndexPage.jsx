@@ -13,6 +13,7 @@ import MoodsInsert from 'browser/components/MoodsInsert'
 import PageWrapper from 'browser/components/PageWrapper'
 import WelcomeCard from 'browser/components/WelcomeCard'
 import ThreadsList from 'browser/components/ThreadsList'
+import CreateThreadForm from 'browser/components/CreateThreadForm'
 
 class IndexPage extends PureComponent {
     render() {
@@ -25,6 +26,7 @@ class IndexPage extends PureComponent {
 						<WelcomeCard />
 						<MoodsInsert />
 						<ThreadsList />
+						<CreateThreadForm />
 						{/* <MoodTabs /> */}
 					</Grid>
 				</PageWrapper>

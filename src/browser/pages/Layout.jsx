@@ -9,7 +9,7 @@ import { Grid } from 'react-styled-flexboxgrid'
 import Sidebar from 'browser/components/Sidebar'
 import LoginDialog from 'browser/components/LoginDialog'
 import LoginLogoutButton from 'browser/components/LoginLogoutButton'
-import { fetchCurrentUser, logoutCurrentUser } from 'browser/redux/actions/UserActions'
+import { logoutCurrentUser } from 'browser/redux/actions/UserActions'
 import styles from 'browser/theme'
 
 let timeout = null
@@ -22,9 +22,6 @@ let timeout = null
 		headerIsShown: global.get('headerIsShown'),
 	}),
 	(dispatch, ownProps) => ({
-		fetchCurrentUser() { // fetch user data on load
-			dispatch(fetchCurrentUser())
-		},
 		logout(event) {
 			event.preventDefault()
 			dispatch(logoutCurrentUser())

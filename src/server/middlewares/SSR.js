@@ -77,6 +77,10 @@ export default
                 <App user={req.user} {...renderProps}/>
               </StyleSheetManager>
             )
+            // get prefetched data from redux
+            const initialData = JSON.stringify(store.getState())//.replace(/</g, '\\u003c')
+            // reset redux store to make sure next request will have to load fresh data
+            store.dispatch({type: 'RESET'})
             // extract css from string
             const css = sheet.getStyleTags()
             // extract metaData for <header>
@@ -86,9 +90,6 @@ export default
               const tag = metaData[prop].toString()
               tag && headerTags.push(tag)
             }
-            // get prefetched data from redux
-            // TODO make sure to reset state afterwards
-            const initialData = JSON.stringify(store.getState())//.replace(/</g, '\\u003c')
             // send data to handlebars template
             res.render('index', { markup, css, themeConfig, headerTags, initialData })
           }

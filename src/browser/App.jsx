@@ -33,8 +33,8 @@ customMuiTheme.userAgent = navigator.userAgent
 const muiTheme = getMuiTheme(customMuiTheme)
 
 // scroll to top of the page on route change
-function scrollToTop() {
-  process.env.BROWER && window.scrollTo(0, 0)
+function scrollToTop () {
+  return window.scrollTo(0, 0)
 }
 
 class App extends Component {

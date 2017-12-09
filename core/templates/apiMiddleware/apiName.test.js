@@ -8,7 +8,7 @@ import { Plural, User } from 'server/data/models'
 import { loginUser } from 'server/test/middlewares/authApi.test'
 chai.should();
 
-const   user = request.agent(server),
+const   agent = request.agent(server),
         username = users[0].username,
         password = users[0].password,
         name = "random name",
@@ -29,8 +29,8 @@ export default describe('/plural API', function() {
     })
 
     it('POST singular', async function() {
-        const agent = await loginUser(username, password)
-        await agent.post('/api/plural')
+        const user = await loginUser(username, password)
+        await user.post('/api/plural')
             .send({ name })
             .expect('Content-Type', /json/)
             .expect(200)
@@ -44,7 +44,7 @@ export default describe('/plural API', function() {
     })
 
     it('GET plural', function(done) {
-        request(server)
+        agent
             .get('/api/plural')
             .expect('Content-Type', /json/)
             .expect(200)
@@ -56,7 +56,7 @@ export default describe('/plural API', function() {
     })
 
     it('GET single singular', function(done) {
-        user
+        agent
             .get('/api/plural/singular/' + slug )
             .expect('Content-Type', /json/)
             .expect(200)
@@ -71,7 +71,7 @@ export default describe('/plural API', function() {
 
     // TODO create test for "mustLogin" function and this kind of tests will be obsolete
     it('fail to POST if not authorized', function(done) { // TODO move this to previous function?
-        user
+        agent
             .post('/api/plural')
             .send({ name })
             .expect(401, done)

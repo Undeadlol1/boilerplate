@@ -34,7 +34,8 @@ const emptyTwitterObject = {
 }
 
 const emptyUserObject = {
-	id: undefined,
+	id: '',
+	role: '',
 	image: '',
 	displayName: '',
 	Vk: emptyVkObject,

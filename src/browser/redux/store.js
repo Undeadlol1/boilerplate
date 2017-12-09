@@ -1,9 +1,10 @@
 import thunk from 'redux-thunk'
 import { fromJS } from 'immutable'
 import promiseMiddleware from 'redux-promise'
-import rootReducer, { initialState as stateWithoutPlugins } from './reducers/RootReducer'
+import rootReducer, { initialState as stateWithoutPlugins } from 'browser/redux/reducers/RootReducer'
 import { createStore, applyMiddleware } from 'redux'
 import { composeWithDevTools } from 'redux-devtools-extension/logOnlyInProduction'
+import reduxReset from 'redux-reset'
 
 /**
  * create initial state
@@ -23,6 +24,7 @@ function getInitialState() {
          // in testing window.__data is undefined
         .keys(window.__data || {})
         .map(key => {
+            // TODO: very important!! Recursive immutable thingy
             // immutable and non-immutable modules differently
             state[key] = immutableKeys.includes(key) ? fromJS(window.__data[key]) : window.__data[key]
         })
@@ -37,7 +39,10 @@ const composeEnhancers = composeWithDevTools({})
 const store =   createStore(
                     rootReducer,
                     getInitialState(),
-                    composeEnhancers(applyMiddleware(thunk, promiseMiddleware)),
+                    composeEnhancers(
+                        applyMiddleware(thunk, promiseMiddleware),
+                        reduxReset(), // Will use 'RESET' as default action.type to trigger reset
+                    ),
                 )
 
 export default store
