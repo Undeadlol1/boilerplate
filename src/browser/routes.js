@@ -7,8 +7,8 @@ import SearchPage from './pages/SearchPage';
 import AboutPage from './pages/AboutPage';
 import NotFound from './pages/NotFound';
 import store from 'browser/redux/store'
-import { fetchUser } from 'browser/redux/actions/UserActions'
 import { fetchMoods, fetchMood } from 'browser/redux/actions/MoodActions'
+import { fetchUser, fetchCurrentUser  } from 'browser/redux/actions/UserActions'
 import { fetchNodes, actions as nodeActions } from 'browser/redux/actions/NodeActions'
 
 /**

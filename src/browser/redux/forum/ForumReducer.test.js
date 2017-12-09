@@ -74,14 +74,4 @@ describe('user reducer', async () => {
       .and.not.contain({id: 1})
   })
 
-  it('should handle RECIEVE_SEARCHED_VIDEOS action on initial state', () => {
-    const action = actions.recieveSearchedVideos([])
-    const newState = reducer(undefined, action)
-    const expectedState = initialState.merge({
-        searchedVideos: [],
-        searchIsActive: false,
-    })
-    expect(newState).to.deep.eq(expectedState)
-  })
-
 })

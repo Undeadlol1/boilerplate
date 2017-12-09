@@ -28,9 +28,9 @@ describe('<IndexPage />', () => {
     expect(wrapper.find('WelcomeCard')).to.have.length(1);
   });
 
-  it('has <MoodsInsert>', () => {
-    // TODO 'ReduxForm' does not seems right
-    expect(wrapper.find('ReduxForm')).to.have.length(1);
-  });
+  // it('has <MoodsInsert>', () => {
+  //   // TODO 'ReduxForm' does not seems right
+  //   expect(wrapper.find('ReduxForm')).to.have.length(1);
+  // });
 
 });

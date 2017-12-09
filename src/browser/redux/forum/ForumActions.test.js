@@ -52,4 +52,16 @@ describe('ForumActions', () => {
     )
   })
 
+
+  it('insertThread calls recieveForum', async () => {
+    const { name } = forum
+    const expectedActions = [actions.recieveForum(forum)]
+    await mockRequest(
+      '/forum/' + name,
+      fetchForum,
+      name,
+      expectedActions
+    )
+  })
+
 })

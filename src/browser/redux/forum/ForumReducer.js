@@ -11,12 +11,16 @@ const forumStructure = 	Map({
 export const initialState = Map({
 							error: '',
 							forums: List(),
+							threads: {
+								totalPages: 0,				
+								currentPage: 0,
+								values: List(),
+							},
 							loading: false,
 							finishedLoading: true,
 							dialogIsOpen: false,
 							contentNotFound: false,
 							searchIsActive: false, // TODO do i need this?
-							searchedVideos: List(),
 							...forumStructure.toJS()
 						})
 
@@ -71,11 +75,6 @@ export default (state = initialState, {type, payload}) => {
 							.get('forums')
 							.filter(forum => forum.get('id') !== payload)
 				})
-		case 'RECIEVE_SEARCHED_VIDEOS':
-			return state.merge({
-				searchIsActive: false,
-				searchedVideos: payload
-			})
 		default:
 			return state
 	}

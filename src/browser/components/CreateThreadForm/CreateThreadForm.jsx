@@ -8,67 +8,98 @@ import React, { Component } from 'react'
 import FlatButton from 'material-ui/FlatButton'
 import { TextField } from 'redux-form-material-ui'
 import { Form, Field, reduxForm } from 'redux-form'
+import RaisedButton from 'material-ui/RaisedButton'
 import { translate } from 'browser/containers/Translator'
 import { Grid, Row, Col } from 'react-styled-flexboxgrid'
 import ContentAdd from 'material-ui/svg-icons/content/add'
 import browserHistory from 'react-router/lib/browserHistory'
 import { actions } from 'browser/redux/actions/GlobalActions'
 import { parseJSON } from'browser/redux/actions/actionHelpers'
-import FloatingActionButton from 'material-ui/FloatingActionButton'
 import { insertThread } from 'browser/redux/forum/ForumActions'
+import FloatingActionButton from 'material-ui/FloatingActionButton'
 
 export class CreateThreadForm extends Component {
 	render() {
 		const { props } = this
-		const { insertThread, handleSubmit, dialogIsOpen, asyncValidating, className } = props
+		const { valid, insertThread, handleSubmit, dialogIsOpen, isValid, asyncValidating, className } = props
 		const classNames = cls(className, "CreateThreadForm")
 		const isDisabled = props.asyncValidating == 'name' || props.submitting
 	    return 	<Row>
 					<Col xs={12}>
 						<form onSubmit={handleSubmit(insertThread)}>
-							<Field name="name" component={TextField} hidden={asyncValidating} hintText={translate("add_something")} autoFocus fullWidth />
-							<button type="submit" hidden={true}>Submit</button>
+							<Field
+								fullWidth
+								autoFocus
+								name="name"
+								component={TextField}
+								hidden={asyncValidating}
+								hintText={translate("add_something")}
+							/>
+							<Field
+								rows={2}
+								fullWidth
+								name="text"
+								multiLine={true}
+								component={TextField}
+								hidden={asyncValidating}
+								hintText={translate("description")}
+							/>
+							<center>
+								<RaisedButton
+									type="submit"
+									primary={true}
+									label={translate('submit')}
+									disabled={!valid} />
+							</center>
 						</form>
 					</Col>
 				</Row>
 
 	}
 }
+
+CreateThreadForm.propTypes = {
+	parentId: PropTypes.string.isRequired,
+}
+
 // TODO reorganize this for better testing
 export default reduxForm({
 	form: 'CreateThreadForm',
-	asyncValidate({name}) {
-		return fetch('/api/moods/mood/' + '?' + stringify({name}))
-				.then(parseJSON)
-				.then(result => {
-					if (result) throw { name: translate('this_mood_already_exists') }
-					else return
-				})
-    },
 	validate(values) {
+		console.log('values: ', values);
 		let errors = {}
 		const user = store.getState().user.get('id')
 
 		if (!user) errors.name = translate('please_login')
 		if (!values.name) errors.name = translate('name_cant_be_empty')
+		if (!values.text) errors.text = translate('cant_be_empty')
 
 		return errors
 	},
-	asyncBlurFields: [ 'name' ]
+	// onSubmit(values, dispatch, props) {
+	// 		function insertSucces(slug) {
+	// 			ownProps.reset()
+	// 			browserHistory.push('/mood/' + slug);
+	// 		}
+    //         // dispatch(insertThread(values, insertSucces))
+	// }
 })
 (connect(
 	(state, ownProps) => ({
+		...ownProps,
 		dialogIsOpen: state.mood.get('dialogIsOpen'),
-		...ownProps
 	}),
     (dispatch, ownProps) => ({
-        insertThread({name}) {
+        insertThread(values) {
+			console.log('insertThread')
+			values.parentId = ownProps.parentId
+			
 			function insertSucces(slug) {
 				ownProps.reset()
-				browserHistory.push('/mood/' + slug);
+				browserHistory.push('/thread/' + slug);
 			}
             // dispatch(toggleDialog())
-            // dispatch(insertThread(name, insertSucces))
+            dispatch(insertThread(values, insertSucces))
 		}
     })
 )(CreateThreadForm))

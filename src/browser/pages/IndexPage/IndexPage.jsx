@@ -26,7 +26,7 @@ class IndexPage extends PureComponent {
 						<WelcomeCard />
 						<MoodsInsert />
 						<ThreadsList />
-						<CreateThreadForm />
+						<CreateThreadForm parentId="penises" />
 						{/* <MoodTabs /> */}
 					</Grid>
 				</PageWrapper>

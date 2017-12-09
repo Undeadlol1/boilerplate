@@ -4,6 +4,7 @@ import { createAction, createActions } from 'redux-actions'
 import { checkStatus, parseJSON, headersAndBody } from'browser/redux/actions/actionHelpers'
 
 const forumsUrl = process.env.API_URL + 'forums/'
+const threadsUrl = process.env.API_URL + 'threads/'
 
 export const actions = createActions({
   UNLOAD_FORUM: () => null,
@@ -30,6 +31,23 @@ export const insertForum = (payload, callback) => (dispatch, getState) => {
 			dispatch(actions.recieveForum(response))
 			return callback && callback()
 		})
+}
+
+/**
+ * create a thread
+ * @param {object} payload data to pass
+ * @param {function} callback callback function
+ */
+export const insertThread = (payload, callback) => (dispatch, getState) => {
+	console.log('insertThread')
+	console.warn("don't forget to implement it, dude")
+	// return fetch(threadsUrl, headersAndBody(payload))
+	// 	.then(checkStatus)
+	// 	.then(parseJSON)
+	// 	.then(function(response) {
+	// 		dispatch(actions.recieveForum(response))
+	// 		return callback && callback()
+	// 	})
 }
 
 /**
