@@ -5,8 +5,8 @@ import chai, { expect } from 'chai'
 import chaiImmutable from 'chai-immutable'
 import configureMockStore from 'redux-mock-store'
 import { createAction, createActions } from 'redux-actions'
-import { initialState } from 'browser/redux/moduleName/ModuleNameReducer'
-import { updateModuleName, toggleLoginDialog, logoutCurrentModuleName, fetchCurrentModuleName, fetchModuleName, actions } from 'browser/redux/moduleName/ModuleNameActions'
+import { initialState } from 'browser/redux/ui/UiReducer'
+import { togglePageLoading, toggleToast, actions } from 'browser/redux/ui/UiActions'
 chai.should();
 chai.use(chaiImmutable);
 
@@ -26,7 +26,7 @@ const { URL, API_URL } = process.env
  */
 function mockRequest(url, action, param, result, method = 'get') {
     // create request interceptor
-    nock(API_URL + 'moduleNames')[method](url).reply(200, moduleName)
+    nock(API_URL + 'uis')[method](url).reply(200, ui)
     const store = mockStore()
     return store
       // call redux action
@@ -35,16 +35,19 @@ function mockRequest(url, action, param, result, method = 'get') {
       .then(() => expect(store.getActions()).to.deep.equal(result))
 }
 
-describe('ModuleNameActions', () => {
+describe('UiActions', () => {
 
   afterEach(() => nock.cleanAll())
 
-  it('fetchModuleName calls recieveModuleName', async () => {
-    const { moduleNamename } = moduleName
-    const expectedActions = [
-                              actions.recieveModuleName(moduleName)
-                            ]
-    await mockRequest(moduleNamesApi + 'moduleName/' + moduleNameName, fetchModuleName, moduleNameName, expectedActions)
+  it('togglePageLoading calls toggleLoading', async () => {
+    const expectedActions = [actions.toggleLoading()]
+    const store = mockStore()
+    store.getActions()
+    // call redux action
+    store.dispatch(togglePageLoading())
+    const actualActions = store.getActions()
+    // compare called actions with expected result
+    expect(actualActions).to.deep.equal(expectedActions)
   })
 
 })
