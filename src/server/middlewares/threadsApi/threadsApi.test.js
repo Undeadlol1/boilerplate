@@ -5,7 +5,7 @@ import request from 'supertest'
 import server from 'server/server'
 import generateUuid from 'uuid/v4'
 import users from 'server/data/fixtures/users'
-import { Threads, User } from 'server/data/models'
+import { Threads, Forums, User } from 'server/data/models'
 import { loginUser } from 'server/test/middlewares/authApi.test'
 chai.should();
 
@@ -47,15 +47,16 @@ export default describe('/threads API', function() {
             })
     })
 
-    it('GET threads', function(done) {
-        request(server)
-            .get('/api/threads')
+    it('GET threads', async function() {
+        // const forum = await Forums.findOne({sort: 'rand()'})
+        await request(server)
+            .get('/api/threads/' + 'random id')
             .expect('Content-Type', /json/)
             .expect(200)
-            .end(function(err, res) {
-                if (err) return done(err);
-                res.body.threads.should.be.a('array')
-                done()
+            .then(function(res) {
+                res.body.totalPages.should.eq(1)
+                res.body.currentPage.should.eq(1)
+                res.body.values.should.be.a('array')
             });
     })
 
@@ -65,7 +66,6 @@ export default describe('/threads API', function() {
             .expect('Content-Type', /json/)
             .expect(200)
             .end(function(err, res) {
-                console.log('res: ', res.body);
                 if (err) return done(err);
                 res.body.name.should.be.equal(thread)
                 done()

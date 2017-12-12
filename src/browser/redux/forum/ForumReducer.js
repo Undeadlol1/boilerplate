@@ -1,31 +1,32 @@
 import isEmpty from 'lodash/isEmpty'
 import { Map, List, fromJS } from 'immutable'
 
-const forumStructure = 	Map({
+const forumStructure = 	{
 							id: '',
 							name: '',
 							slug: '',
 							UserId: '',
-						})
+						}
 
 export const initialState = fromJS({
 							error: '',
 							forums: {
 								totalPages: 0,
 								currentPage: 0,
-								values: List(),
+								values: [],
 							},
 							threads: {
 								totalPages: 0,
 								currentPage: 0,
-								values: List(),
+								values: [],
 							},
 							loading: false,
 							finishedLoading: true,
 							dialogIsOpen: false,
 							contentNotFound: false,
-							searchIsActive: false, // TODO do i need this?
-							...forumStructure.toJS()
+							// TODO: do i need this?
+							searchIsActive: false,
+							...forumStructure
 						})
 
 export default (state = initialState, {type, payload}) => {
@@ -46,8 +47,16 @@ export default (state = initialState, {type, payload}) => {
 		case 'RECIEVE_FORUMS':
 			return state
 				.mergeDeep({
-					forums: payload,
 					loading: false,
+					forums: payload,
+				})
+		// push thread into "threads" array
+		case 'RECIEVE_THREAD':
+			return state
+				.updateIn(['threads', 'values'], arr => {
+					return isEmpty(payload)
+						? arr
+						: arr.push(Map(payload))
 				})
 		case 'UPDATE_FORUM':
 			return state.mergeDeep(payload)

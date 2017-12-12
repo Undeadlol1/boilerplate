@@ -10,8 +10,9 @@ export const actions = createActions({
   UNLOAD_FORUM: () => null,
   REMOVE_FORUM: id => id,
   TOGGLE_DIALOG: () => null,
-  RECIEVE_FORUM: node => node,
-  RECIEVE_FORUMS: nodes => nodes,
+  RECIEVE_FORUM: forum => forum,
+  RECIEVE_FORUMS: forums => forums,
+  RECIEVE_THREAD: thread => thread,
   UPDATE_FORUM: object => object,
   TOGGLE_FORUM_FETCHING: boolean => boolean,
   FETCHING_ERROR: reason => reason,
@@ -39,15 +40,13 @@ export const insertForum = (payload, callback) => (dispatch, getState) => {
  * @param {function} callback callback function
  */
 export const insertThread = (payload, callback) => (dispatch, getState) => {
-	console.log('insertThread')
-	console.warn("don't forget to implement it, dude")
-	// return fetch(threadsUrl, headersAndBody(payload))
-	// 	.then(checkStatus)
-	// 	.then(parseJSON)
-	// 	.then(function(response) {
-	// 		dispatch(actions.recieveForum(response))
-	// 		return callback && callback()
-	// 	})
+	return fetch(threadsUrl, headersAndBody(payload))
+		.then(checkStatus)
+		.then(parseJSON)
+		.then((response) => {
+			dispatch(actions.recieveThread(response))
+			return callback && callback()
+		})
 }
 
 /**
@@ -64,25 +63,19 @@ export const fetchForum = slug => (dispatch, getState) => {
 		.then(checkStatus)
 		.then(parseJSON)
 		.then(data => {
-			console.log('data: ', data);
 			return dispatch(actions.recieveForum((data)))
 		})
 		.catch(err => console.error('fetchforum failed!', err))
 }
 
 /**
- * fetch forums using forum slug
- * @param {string} slug forum slug (optional)
+ * fetch forums
+ * @param {number} [page=1] forums page (optional)
  */
-export const fetchForums = slug => (dispatch, getState) => {
-	return fetch(
-		forumsUrl,
-		{ credentials: 'same-origin' }
-	)
+export const fetchForums = (page = 1) => (dispatch, getState) => {
+	return fetch(forumsUrl + page)
 		.then(checkStatus)
 		.then(parseJSON)
-		.then(data => {
-			return dispatch(actions.recieveForum((data)))
-		})
-		.catch(err => console.error('fetchforum failed!', err))
+		.then(data => dispatch(actions.recieveForums((data))))
+		.catch(err => console.error('fetchForums failed!', err))
 }

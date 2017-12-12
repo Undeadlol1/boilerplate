@@ -6,23 +6,17 @@ import { mustLogin } from 'server/services/permissions'
 
 const limit = 12
 
-export default Router()
+async function getThreads(parentId, currentPage=1) {
+    const totalThreads = await Threads.count(),
+          offset = currentPage ? limit * (currentPage -1) : 0
+    return {
+      currentPage,
+      totalPages: Math.ceil(totalThreads / limit),
+      values: await Threads.findAll({limit, offset}),
+    }
+}
 
-  // get all threads
-  .get('/:page?', async (req, res) => {
-    try {
-      const page = req.params.page,
-            totalThreadss = await Threads.count(),
-            offset = page ? limit * (page -1) : 0,
-            totalPages = Math.ceil(totalThreadss / limit),
-            threads = await Threads.findAll({limit, offset})
-      res.json({ threads, totalPages })
-    }
-    catch (error) {
-      console.log(error);
-      res.status(500).end(error)
-    }
-  })
+export default Router()
 
   // get single thread
   .get('/thread/:slug', async ({params}, res) => {
@@ -33,6 +27,24 @@ export default Router()
       res.json(thread)
     } catch (error) {
       console.log(error)
+      res.status(500).end(error)
+    }
+  })
+
+
+  // get all threads
+  .get('/:parentId/:page?', async ({params}, res) => {
+    try {
+      // const page = req.params.page,
+      //       totalThreads = await Threads.count(),
+      //       offset = page ? limit * (page -1) : 0,
+      //       totalPages = Math.ceil(totalThreads / limit),
+      //       threads = await Threads.findAll({limit, offset})
+      const response = await getThreads(params.parentId, params.page)
+      res.json(response)
+    }
+    catch (error) {
+      console.log(error);
       res.status(500).end(error)
     }
   })

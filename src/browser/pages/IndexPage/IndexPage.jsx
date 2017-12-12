@@ -9,11 +9,12 @@ import Loading from 'browser/components/Loading'
 import MoodTabs from 'browser/components/MoodTabs'
 import MoodsFind from 'browser/components/MoodsFind'
 import MoodsList from 'browser/components/MoodsList'
-import MoodsInsert from 'browser/components/MoodsInsert'
+import ForumsList from 'browser/components/ForumsList'
 import PageWrapper from 'browser/components/PageWrapper'
 import WelcomeCard from 'browser/components/WelcomeCard'
 import ThreadsList from 'browser/components/ThreadsList'
-import CreateThreadForm from 'browser/components/CreateThreadForm'
+import MoodsInsert from 'browser/components/MoodsInsert'
+import CreateForumForm from 'browser/components/CreateForumForm'
 
 class IndexPage extends PureComponent {
     render() {
@@ -25,8 +26,11 @@ class IndexPage extends PureComponent {
 					<Grid fluid>
 						<WelcomeCard />
 						<MoodsInsert />
+						<b>Список форумов:</b>
+						<ForumsList />
+						<b>Список тредов:</b>						
 						<ThreadsList />
-						<CreateThreadForm parentId="penises" />
+						<CreateForumForm />
 						{/* <MoodTabs /> */}
 					</Grid>
 				</PageWrapper>

@@ -52,21 +52,13 @@ export const fetchModuleName = slug => (dispatch, getState) => {
 }
 
 /**
- * fetch moduleNames using moduleName slug
- * @param {string} slug moduleName slug (optional)
+ * fetch moduleNames
+ * @param {number} [page=1] moduleNames page (optional)
  */
-export const fetchModuleNames = slug => (dispatch, getState) => {
-	const state = getState()
-	const moduleNameSlug = slug || state.moduleName.get('slug')
-
-	return fetch(
-		moduleNamesUrl + moduleNameSlug,
-		{ credentials: 'same-origin' }
-	)
+export const fetchModuleNames = (page=1) => (dispatch, getState) => {
+	return fetch(moduleNamesUrl + page)
 		.then(checkStatus)
 		.then(parseJSON)
-		.then(data => {
-			return dispatch(actions.recieveModuleName((data)))
-		})
+		.then(data => dispatch(actions.recieveModuleName((data))))
 		.catch(err => console.error('fetchmoduleName failed!', err))
 }

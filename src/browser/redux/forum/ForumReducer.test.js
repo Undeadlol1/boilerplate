@@ -30,6 +30,24 @@ describe('forum reducer', async () => {
     ]
   }
 
+  const thread = {
+    id: 1,
+    UserId: 2,
+    parentId: 3,
+    name: 'somename',
+  }
+
+  const threads = {
+    totalPages: 1,
+    currentPage: 1,
+    values: [
+      {id: 1},
+      {id: 2},
+      {id: 3},
+    ]
+  }
+
+
   it('should have initial state', () => {
     expect(reducer(undefined, {})).to.equal(initialState)
   })
@@ -46,6 +64,13 @@ describe('forum reducer', async () => {
     const action = actions.recieveForums(forums)
     const newState = reducer(undefined, action)
     expect(newState.get('forums').toJS()).to.deep.equal(forums)
+  })
+
+  it('should handle RECIEVE_THREAD action on initial state', () => {
+    const action = actions.recieveThread(thread)
+    const newState = reducer(undefined, action)
+    const threads = newState.getIn(['threads', 'values']).toJS()
+    expect(threads).to.deep.eq([thread])
   })
 
   it('should handle UPDATE_FORUM action', async () => {

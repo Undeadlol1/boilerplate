@@ -7,6 +7,7 @@ import SearchPage from './pages/SearchPage';
 import AboutPage from './pages/AboutPage';
 import NotFound from './pages/NotFound';
 import store from 'browser/redux/store'
+import { fetchForums, fetchForum } from 'browser/redux/forum/ForumActions'
 import { fetchMoods, fetchMood } from 'browser/redux/actions/MoodActions'
 import { fetchUser, fetchCurrentUser  } from 'browser/redux/actions/UserActions'
 import { fetchNodes, actions as nodeActions } from 'browser/redux/actions/NodeActions'
@@ -33,16 +34,19 @@ const routesConfig = {
     // fetch data
     onEnter({params}, replace, done) {
       // check if fetching is needed
-      const newMoods = store.getState().mood.getIn(['new', 'moods'])
-      if (newMoods.size) return done()
+      const fetchedForums = store.getState().forum.getIn(['forums', 'values'])
+      if (fetchedForums.size) return done()
       else {
-        Promise
-        .all([
-          store.dispatch(fetchMoods('new')),
-          store.dispatch(fetchMoods('random')),
-          store.dispatch(fetchMoods('popular')),
-        ])
+        store
+        .dispatch(fetchForums())
         .then(() => done())
+        // Promise
+        // .all([
+        //   store.dispatch(fetchMoods('new')),
+        //   store.dispatch(fetchMoods('random')),
+        //   store.dispatch(fetchMoods('popular')),
+        // ])
+        // .then(() => done())
       }
     }
   },
@@ -79,17 +83,35 @@ const routesConfig = {
     { path: 'search', component: SearchPage },
     { path: 'about', component: AboutPage },
     {
-      path: 'threads/(:slug)',
+      path: 'forums/(:forumSlug)',
+      component: require('browser/pages/ForumPage').default,
+      onEnter({params}, replace, done) {
+        const { forumSlug } = params
+        const fetchedForum = store.getState().forum
+        // check if fetching is needed
+        if (fetchedForum.get('slug') == forumSlug) return done()
+        else {
+          store
+          .dispatch(fetchForum(forumSlug))
+          .then(() => done())
+        }
+      }
+    },
+    {
+      path: 'forums/(:forumSlug)/(:threadSlug)',
       component: require('browser/pages/ThreadPage').default,
       // fetch data
-      // onEnter({params}, replace, done) {
-        // Promise
-        // .all([
-        //   store.dispatch(fetchMood(params.moodSlug)),
-        //   store.dispatch(fetchNodes(params.moodSlug)),
-        // ])
-        // .then(() => done())
-      // }
+      onEnter({params}, replace, done) {
+        const { forumSlug } = params
+        const fetchedThread = store.getState().forum.get('thread')
+        // check if fetching is needed
+        if (fetchedThread.get('slug') == threadSlug) return done()
+        else {
+          store
+          .dispatch(fetchForum(forumSlug))
+          .then(() => done())
+        }
+      }
     },
 // ⚠️ Hook for cli! Do not remove 💀
     // 404 page must go after everything else

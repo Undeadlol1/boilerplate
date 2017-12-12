@@ -7,22 +7,23 @@ import {List, ListItem} from 'material-ui/List'
 import { Row, Col } from 'react-styled-flexboxgrid'
 import { translate as t } from 'browser/containers/Translator'
 
-class ThreadsList extends Component {
+class ForumsList extends Component {
 	render() {
 		const {props} = this
-		const className = cls(props.className, "ThreadsList")
+		const className = cls(props.className, "ForumsList")
+		const forums = props.forums.get('values')
 		return 	<Row className={className}>
 					<Col xs={12}>
 						<List>
 							{
-								props.threads.length
-								? props.threads.map(
-									thread => 	<Link
-													key={thread.id}
-													to={'threads/' + thread.slug}
+								forums.size
+								? forums.map(
+									forum => 	<Link
+													key={forum.get('id')}
+													to={'forums/' + forum.get('slug')}
 												>
 													<ListItem
-														primaryText={thread.name}
+														primaryText={forum.get('name')}
 													/>
 												</Link>
 								)
@@ -35,29 +36,20 @@ class ThreadsList extends Component {
 	}
 }
 
-ThreadsList.defaultProps = {
-	threads: [
-		// {
-		// 	id: 12343,
-		// 	name: 'Penis',
-		// 	slug: 'Penis',
-		// },
-		// {
-		// 	id: 123234234243,
-		// 	name: 'Vagina',
-		// 	slug: 'Penis',
-		// }
-	]
+ForumsList.defaultProps = {
 }
 
-ThreadsList.PropTypes = {
-	threads: PropTypes.array,
+ForumsList.PropTypes = {
+	forums: PropTypes.object.isRequired,
+	
 }
 
-export { ThreadsList }
+export { ForumsList }
 export default connect(
 	// stateToProps
-	(state, ownProps) => ({ ...ownProps }),
+	(state, ownProps) => ({
+		forums: state.forum.get('forums')
+	}),
 	// dispatchToProps
     (dispatch, ownProps) => ({})
-)(ThreadsList)
+)(ForumsList)
