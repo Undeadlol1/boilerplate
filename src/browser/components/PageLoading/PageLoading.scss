@@ -1,2 +1,15 @@
 .PageLoading {
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    // full page minus navbar
+    position: fixed;
+    height: calc(100vh - 64px);
+    background-color: black;
+    .PageLoading__indicator {
+        left: 50%;
+        right: 50%;
+        z-index: 10000;
+        position: fixed;
+    }
 }

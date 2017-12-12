@@ -1,8 +1,9 @@
-import { checkStatus, parseJSON, headersAndBody } from'./actionHelpers'
-import { createAction, createActions } from 'redux-actions'
-import { SubmissionError } from 'redux-form'
 import selectn from 'selectn'
+import { SubmissionError } from 'redux-form'
 import { translate } from 'browser/containers/Translator'
+import { createAction, createActions } from 'redux-actions'
+import { togglePageLoading } from 'browser/redux/ui/UiActions'
+import { checkStatus, parseJSON, headersAndBody } from'./actionHelpers'
 
 const authUrl = process.env.API_URL + 'auth/'
 const usersUrl = process.env.API_URL + 'users/'
@@ -74,6 +75,7 @@ export const createUser = (payload, callback) => dispatch => {
 
 //
 export const fetchCurrentUser = () => dispatch => {
+	dispatch(togglePageLoading())
 	dispatch(fetchingUser())
 	return fetch(authUrl + 'current_user', {credentials: 'same-origin'})
 		.then(checkStatus)

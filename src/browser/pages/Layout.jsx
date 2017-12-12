@@ -8,6 +8,7 @@ import NavBar from 'browser/components/NavBar'
 import { Grid } from 'react-styled-flexboxgrid'
 import Sidebar from 'browser/components/Sidebar'
 import LoginDialog from 'browser/components/LoginDialog'
+import PageLoading from 'browser/components/PageLoading'
 import LoginLogoutButton from 'browser/components/LoginLogoutButton'
 import { logoutCurrentUser } from 'browser/redux/actions/UserActions'
 import styles from 'browser/theme'
@@ -98,6 +99,8 @@ export default class Layout extends React.Component {
 					</main>
 					<Sidebar />
 					<LoginDialog />
+					{/* global page loading indicator */}
+					<PageLoading />
 					<ReduxToastr position="top-left" progressBar />
 				</div>
 	}
