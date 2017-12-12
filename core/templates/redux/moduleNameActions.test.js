@@ -1,7 +1,8 @@
 import nock from 'nock'
-import isArray from 'lodash/isArray'
 import thunk from 'redux-thunk'
+import generateUuid from 'uuid/v4'
 import chai, { expect } from 'chai'
+import isArray from 'lodash/isArray'
 import chaiImmutable from 'chai-immutable'
 import configureMockStore from 'redux-mock-store'
 import { createAction, createActions } from 'redux-actions'
@@ -12,8 +13,15 @@ chai.use(chaiImmutable);
 
 const middlewares = [ thunk ]
 const mockStore = configureMockStore(middlewares)
-// TODO add API_PREFIX instead of API_URL?
-const { URL, API_URL } = process.env
+const { API_URL } = process.env
+const threadsApi = API_URL + 'moduleNames/'
+
+// TODO: edit this variables
+const moduleName = {
+  id: generateUuid()
+}
+const name = ""
+
 /**
  * test async action by intercepting http call
  * and cheking if expected redux actions have been called
@@ -40,11 +48,11 @@ describe('ModuleNameActions', () => {
   afterEach(() => nock.cleanAll())
 
   it('fetchModuleName calls recieveModuleName', async () => {
-    const { moduleNamename } = moduleName
+    const { slug } = moduleName
     const expectedActions = [
                               actions.recieveModuleName(moduleName)
                             ]
-    await mockRequest(moduleNamesApi + 'moduleName/' + moduleNameName, fetchModuleName, moduleNameName, expectedActions)
+    await mockRequest('/moduleName/' + slug, fetchModuleName, slug, expectedActions)
   })
 
 })

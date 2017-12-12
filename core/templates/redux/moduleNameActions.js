@@ -36,13 +36,9 @@ export const insertModuleName = payload => (dispatch, getState) => {
  * @param {string} slug moduleName slug (optional)
  */
 export const fetchModuleName = slug => (dispatch, getState) => {
-	const state = getState()
-	const moduleNameSlug = slug || state.moduleName.get('slug')
+	const moduleNameSlug = slug || getState().moduleName.get('slug')
 
-	return fetch(
-		moduleNamesUrl + moduleNameSlug,
-		{ credentials: 'same-origin' }
-	)
+	return fetch(moduleNamesUrl + 'moduleName/' + moduleNameSlug,)
 		.then(checkStatus)
 		.then(parseJSON)
 		.then(data => {
@@ -59,6 +55,6 @@ export const fetchModuleNames = (page=1) => (dispatch, getState) => {
 	return fetch(moduleNamesUrl + page)
 		.then(checkStatus)
 		.then(parseJSON)
-		.then(data => dispatch(actions.recieveModuleName((data))))
+		.then(data => dispatch(actions.recieveModuleNames((data))))
 		.catch(err => console.error('fetchmoduleName failed!', err))
 }
