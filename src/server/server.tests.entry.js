@@ -134,12 +134,13 @@ before(function(done) {
 // clean up db
 after(async function() {
     try {
-        await User.destroy({ where: {} })
-        await Local.destroy({ where: {} })
-        await Profile.destroy({ where: {} })
-        await Mood.destroy({ where: {} })
-        await Node.destroy({ where: {} })
-        await Decision.destroy({ where: {} })
+        const all = { where: {} }
+        await User.destroy(all)
+        await Local.destroy(all)
+        await Profile.destroy(all)
+        await Mood.destroy(all)
+        await Node.destroy(all)
+        await Decision.destroy(all)
         // TODO: add code to create lines here from cli (creation of api from templates)
     }
     catch(error) {
