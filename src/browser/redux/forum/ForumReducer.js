@@ -1,5 +1,5 @@
 import isEmpty from 'lodash/isEmpty'
-import { Map, List } from 'immutable'
+import { Map, List, fromJS } from 'immutable'
 
 const forumStructure = 	Map({
 							id: '',
@@ -8,11 +8,15 @@ const forumStructure = 	Map({
 							UserId: '',
 						})
 
-export const initialState = Map({
+export const initialState = fromJS({
 							error: '',
-							forums: List(),
+							forums: {
+								totalPages: 0,
+								currentPage: 0,
+								values: List(),
+							},
 							threads: {
-								totalPages: 0,				
+								totalPages: 0,
 								currentPage: 0,
 								values: List(),
 							},
@@ -26,16 +30,10 @@ export const initialState = Map({
 
 export default (state = initialState, {type, payload}) => {
 	switch(type) {
-		// case 'FETCHING_FORUM':
-		// 	return state.merge({
-		// 		loading: true,
-		// 		finishedLoading: false,
-		// 		contentNotFound: false,
-		// 	})
 		case 'RECIEVE_FORUM':
 			return state
 				.merge(payload)
-				.updateIn(['forums'], arr => {
+				.updateIn(['forums', 'values'], arr => {
 					return isEmpty(payload)
 						? arr
 						: arr.push(Map(payload))
@@ -48,11 +46,8 @@ export default (state = initialState, {type, payload}) => {
 		case 'RECIEVE_FORUMS':
 			return state
 				.mergeDeep({
-					...payload[0],
 					forums: payload,
 					loading: false,
-					// finishedLoading: true,
-					contentNotFound: isEmpty(payload),
 				})
 		case 'UPDATE_FORUM':
 			return state.mergeDeep(payload)

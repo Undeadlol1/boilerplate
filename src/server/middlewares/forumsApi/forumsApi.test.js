@@ -50,7 +50,9 @@ export default describe('/forums API', function() {
             .expect(200)
             .end(function(err, res) {
                 if (err) return done(err);
-                res.body.forums.should.be.a('array')
+                res.body.totalPages.should.eq(1)
+                res.body.currentPage.should.eq(1)
+                res.body.values.should.be.a('array')
                 done()
             });
     })

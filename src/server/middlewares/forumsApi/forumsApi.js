@@ -15,8 +15,8 @@ export default Router()
             totalForumss = await Forums.count(),
             offset = page ? limit * (page -1) : 0,
             totalPages = Math.ceil(totalForumss / limit),
-            forums = await Forums.findAll({limit, offset})
-      res.json({ forums, totalPages })
+            values = await Forums.findAll({limit, offset})
+      res.json({ values, totalPages, currentPage: page || 1 })
     }
     catch (error) {
       console.log(error);

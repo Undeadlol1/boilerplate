@@ -75,12 +75,8 @@ export const fetchForum = slug => (dispatch, getState) => {
  * @param {string} slug forum slug (optional)
  */
 export const fetchForums = slug => (dispatch, getState) => {
-	const state = getState()
-	const nodeId = state.node.id
-	const forumSlug = slug || state.forum.get('slug')
-
 	return fetch(
-		forumsUrl + forumSlug,
+		forumsUrl,
 		{ credentials: 'same-origin' }
 	)
 		.then(checkStatus)
