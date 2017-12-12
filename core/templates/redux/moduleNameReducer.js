@@ -1,5 +1,7 @@
 import isEmpty from 'lodash/isEmpty'
-import { Map, List } from 'immutable'
+import { Map, List, fromJS } from 'immutable'
+
+// TODO: rework into using "fromJS" which converts better (this way many bugs in reducer can be avoided)
 
 const moduleNameStructure = 	Map({
 							id: '',
