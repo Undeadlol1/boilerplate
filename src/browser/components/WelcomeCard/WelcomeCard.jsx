@@ -9,7 +9,6 @@ import { Row, Col } from 'react-styled-flexboxgrid'
 import { translate as t } from 'browser/containers/Translator'
 import { Card, CardText, CardActions } from 'material-ui/Card'
 
-@withCookies
 class WelcomeCard extends Component {
 
 	state = { isHidden: false }
@@ -51,4 +50,4 @@ WelcomeCard.defaultProps = {}
 WelcomeCard.PropTypes = {}
 
 export { WelcomeCard }
-export default WelcomeCard
+export default withCookies(WelcomeCard)
