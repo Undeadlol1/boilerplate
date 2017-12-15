@@ -52,12 +52,26 @@ describe('forum reducer', async () => {
     expect(reducer(undefined, {})).to.equal(initialState)
   })
 
+  it('should handle ADD_FORUM action on initial state', () => {
+    const action = actions.addForum(forum)
+    const newState = reducer(undefined, action)
+    const forums = newState.getIn(['forums', 'values']).toJS()
+    expect(forums).to.deep.eq([forum])
+  })
+
   it('should handle RECIEVE_FORUM action on initial state', async () => {
     const action = actions.recieveForum(forum)
     const newState = reducer(undefined, action)
     expect(newState).to.have.property('id', forum.id)
     expect(newState).to.have.property('loading', false)
     expect(newState).to.have.property('contentId', forum.contentId)
+  })
+
+  it('should handle ADD_THREAD action on initial state', () => {
+    const action = actions.addThread(thread)
+    const newState = reducer(undefined, action)
+    const threads = newState.getIn(['threads', 'values']).toJS()
+    expect(threads).to.deep.eq([thread])
   })
 
   it('should handle RECIEVE_FORUMS action on initial state', () => {
@@ -69,8 +83,8 @@ describe('forum reducer', async () => {
   it('should handle RECIEVE_THREAD action on initial state', () => {
     const action = actions.recieveThread(thread)
     const newState = reducer(undefined, action)
-    const threads = newState.getIn(['threads', 'values']).toJS()
-    expect(threads).to.deep.eq([thread])
+    const threadInState = newState.get('thread').toJS()
+    expect(threadInState).to.deep.eq(thread)
   })
 
   it('should handle UPDATE_FORUM action', async () => {

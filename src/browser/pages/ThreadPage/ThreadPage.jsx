@@ -12,18 +12,19 @@ import { translate as t } from 'browser/containers/Translator'
 class ThreadPage extends PureComponent {
     render() {
 		const { props } = this
-		const thread = fromJS({
-			name: 'Example',
-			text: 'This is some initial text',
-		})
 		return 	<PageWrapper
 					className='ThreadPage'
 					loading={props.loading}
 				>
 					<Grid fluid>
+						<Row className="ThreadPage__header">
+							<Col xs={12}>
+								<h1 className="ThreadPage__title">{props.name}</h1>
+							</Col>
+						</Row>
 						<Row>
 							<Col xs={12}>
-								<VK apiId={5202075}>
+								<VK apiId={Number(process.env.VK_ID)}>
 									<Comments />
 									{/* onNewComment={handleNewComment} */}
 								</VK>
@@ -35,15 +36,17 @@ class ThreadPage extends PureComponent {
 }
 
 ThreadPage.propTypes = {
-	thread: PropTypes.object.isRequired,
+	name: PropTypes.string.isRequired,
 }
 
 export { ThreadPage }
 
 export default
 connect(
-	(state, ownProps) => ({
-		...ownProps,
-		thread: state.thread,
-	}),
+	(state, ownProps) => {
+		const thread = state.forum.get('thread')
+		return {
+			...ownProps,
+			name: thread.get('name'),
+	}},
 )(ThreadPage)

@@ -66,7 +66,6 @@ CreateThreadForm.propTypes = {
 export default reduxForm({
 	form: 'CreateThreadForm',
 	validate(values) {
-		console.log('values: ', values);
 		let errors = {}
 		const user = store.getState().user.get('id')
 
@@ -96,7 +95,7 @@ export default reduxForm({
 			
 			function insertSucces(slug) {
 				ownProps.reset()
-				browserHistory.push('/thread/' + slug);
+				browserHistory.push('/threads/' + slug);
 			}
             // dispatch(toggleDialog())
             dispatch(insertThread(values, insertSucces))

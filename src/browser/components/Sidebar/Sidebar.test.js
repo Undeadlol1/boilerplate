@@ -23,19 +23,28 @@ describe('<Sidebar />', () => {
   })
 
   describe('if user not logged component', () => {
-    it('has 1 menu item', () => {
-      const link = wrapper.find('Link')
-      expect(link).to.have.length(1)
-      expect(link.props().onClick).to.be.a('function')
+    it('has 2 menu items', () => {
+      const links = wrapper.find('Link')
+      expect(wrapper.find('Link')).to.have.length(2)
+      links.nodes.forEach(link => {
+        expect(link.props.onClick).to.be.a('function')
+      })
     })
 
     it('has "search" link', () => {
-      const link = wrapper.find('Link')
+      const link = wrapper.find('.Sidebar__search-link')
       expect(link).to.have.length(1)
       expect(link.props().to).to.eq('search')
       assert(link.hasClass('Sidebar__search-link'))
       expect(link.props().onClick).to.be.a('function')
       expect(link.props().children.props.children).to.eq(translate('search'))
+    })
+
+    it('has "forum" link', () => {
+      const link = wrapper.find('.Sidebar__forum-link');
+      expect(link).to.have.length(1)
+      expect(link.props().onClick).to.be.a('function')
+      expect(link.props().children.props.children).to.eq(translate("forum"))
     })
   })
 
@@ -46,9 +55,9 @@ describe('<Sidebar />', () => {
     }
     const wrapper = shallow(<Sidebar {...props} />)
 
-    it('has 3 menu items', () => {
+    it('has 4 menu items', () => {
       const menuItems = wrapper.find('MenuItem')
-      expect(menuItems).to.have.length(3)
+      expect(menuItems).to.have.length(4)
     })
 
     it('has <div>', () => {
@@ -67,7 +76,6 @@ describe('<Sidebar />', () => {
       expect(link.props().onClick).to.be.a('function')
       expect(link.props().children.props.children).to.eq(translate("profile"))
     })
-
   })
 
   // it('dispatches actions', () => {

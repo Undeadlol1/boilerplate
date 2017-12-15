@@ -7,7 +7,7 @@ import chaiImmutable from 'chai-immutable'
 import configureMockStore from 'redux-mock-store'
 import { createAction, createActions } from 'redux-actions'
 import { initialState } from 'browser/redux/moduleName/ModuleNameReducer'
-import { updateModuleName, toggleLoginDialog, logoutCurrentModuleName, fetchCurrentModuleName, fetchModuleName, actions } from 'browser/redux/moduleName/ModuleNameActions'
+import { updateModuleName, insertThread, fetchModuleName, fetchModuleNames, actions } from 'browser/redux/moduleName/ModuleNameActions'
 chai.should();
 chai.use(chaiImmutable);
 

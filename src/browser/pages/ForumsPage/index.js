@@ -1,0 +1,1 @@
+export { default, ForumsPage } from './ForumsPage.jsx'

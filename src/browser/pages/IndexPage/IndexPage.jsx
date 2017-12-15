@@ -25,11 +25,11 @@ class IndexPage extends PureComponent {
 				>
 					<Grid fluid>
 						<WelcomeCard />
-						<MoodsInsert />
+						{/* <MoodsInsert /> */}
 						<b>Список форумов:</b>
 						<ForumsList />
-						<b>Список тредов:</b>						
-						<ThreadsList />
+						{/* <b>Список тредов:</b>						
+						<ThreadsList /> */}
 						<CreateForumForm />
 						{/* <MoodTabs /> */}
 					</Grid>

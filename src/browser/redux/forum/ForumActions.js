@@ -10,8 +10,10 @@ export const actions = createActions({
   UNLOAD_FORUM: () => null,
   REMOVE_FORUM: id => id,
   TOGGLE_DIALOG: () => null,
+  ADD_FORUM: forum => forum,
   RECIEVE_FORUM: forum => forum,
   RECIEVE_FORUMS: forums => forums,
+  ADD_THREAD: thread => thread,
   RECIEVE_THREAD: thread => thread,
   UPDATE_FORUM: object => object,
   TOGGLE_FORUM_FETCHING: boolean => boolean,
@@ -29,7 +31,7 @@ export const insertForum = (payload, callback) => (dispatch, getState) => {
 		.then(checkStatus)
 		.then(parseJSON)
 		.then(function(response) {
-			dispatch(actions.recieveForum(response))
+			dispatch(actions.addForum(response))
 			return callback && callback()
 		})
 }
@@ -44,7 +46,7 @@ export const insertThread = (payload, callback) => (dispatch, getState) => {
 		.then(checkStatus)
 		.then(parseJSON)
 		.then((response) => {
-			dispatch(actions.recieveThread(response))
+			dispatch(actions.addThread(response))
 			return callback && callback()
 		})
 }
@@ -78,4 +80,30 @@ export const fetchForums = (page = 1) => (dispatch, getState) => {
 		.then(parseJSON)
 		.then(data => dispatch(actions.recieveForums((data))))
 		.catch(err => console.error('fetchForums failed!', err))
+}
+
+/**
+ * fetch thread using thread slug
+ * @param {string} slug thread slug
+ */
+export const fetchThread = slug => (dispatch, getState) => {
+	return fetch(threadsUrl + 'thread/' + slug)
+		.then(checkStatus)
+		.then(parseJSON)
+		.then(data => {
+			return dispatch(actions.recieveThread((data)))
+		})
+		.catch(err => console.error('fetchthread failed!', err))
+}
+
+/**
+ * fetch threads
+ * @param {number} [page=1] threads page (optional)
+ */
+export const fetchThreads = (page=1) => (dispatch, getState) => {
+	return fetch(threadsUrl + page)
+		.then(checkStatus)
+		.then(parseJSON)
+		.then(data => dispatch(actions.recieveThreads((data))))
+		.catch(err => console.error('fetchthread failed!', err))
 }

@@ -1,6 +1,16 @@
 import isEmpty from 'lodash/isEmpty'
 import { Map, List, fromJS } from 'immutable'
 
+const threadStructure = {
+							id: '',
+							name: '',
+							slug: '',
+							text: '',
+							UserId: '',
+							parentId: '',
+							isClosed: null,
+						}
+
 const forumStructure = 	{
 							id: '',
 							name: '',
@@ -26,19 +36,39 @@ export const initialState = fromJS({
 							contentNotFound: false,
 							// TODO: do i need this?
 							searchIsActive: false,
+							thread: threadStructure,
 							...forumStructure
 						})
 
+function checkAndPush(array, payload) {
+	return isEmpty(payload)
+			? array
+			: array.push(Map(payload))
+}
+
 export default (state = initialState, {type, payload}) => {
 	switch(type) {
+		case 'ADD_FORUM':
+			return state
+				.updateIn(
+					['forums', 'values'],
+					arr => checkAndPush(arr, payload)
+				)
+		// push thread into "threads" array
+		case 'ADD_THREAD':
+			return state
+				.updateIn(
+					['threads', 'values'],
+					arr => checkAndPush(arr, payload)
+				)
 		case 'RECIEVE_FORUM':
 			return state
 				.merge(payload)
-				.updateIn(['forums', 'values'], arr => {
-					return isEmpty(payload)
-						? arr
-						: arr.push(Map(payload))
-				})
+				// .updateIn(['forums', 'values'], arr => {
+				// 	return isEmpty(payload)
+				// 		? arr
+				// 		: arr.push(Map(payload))
+				// })
 				.merge({
 					loading: false,
 					// finishedLoading: true,
@@ -50,14 +80,8 @@ export default (state = initialState, {type, payload}) => {
 					loading: false,
 					forums: payload,
 				})
-		// push thread into "threads" array
 		case 'RECIEVE_THREAD':
-			return state
-				.updateIn(['threads', 'values'], arr => {
-					return isEmpty(payload)
-						? arr
-						: arr.push(Map(payload))
-				})
+			return state.merge({thread: payload})
 		case 'UPDATE_FORUM':
 			return state.mergeDeep(payload)
 		case 'TOGGLE_DIALOG':

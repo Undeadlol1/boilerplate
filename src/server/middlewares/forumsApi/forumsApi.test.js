@@ -11,8 +11,8 @@ chai.should();
 const   user = request.agent(server),
         username = users[0].username,
         password = users[0].password,
-        forum = "random name",
-        slug = slugify(forum)
+        name = "random name",
+        slug = slugify(name)
 
 export default describe('/forums API', function() {
 
@@ -25,13 +25,13 @@ export default describe('/forums API', function() {
 
     // clean up
     after(function() {
-        Forums.destroy({where: { name: forum }})
+        Forums.destroy({where: { name }})
     })
 
     it('POST forum', async function() {
         const agent = await loginUser(username, password)
         await agent.post('/api/forums')
-            .send({ name: forum })
+            .send({ name })
             .expect('Content-Type', /json/)
             .expect(200)
             .then(function(res) {
@@ -57,16 +57,25 @@ export default describe('/forums API', function() {
             });
     })
 
-    it('GET single forum', function(done) {
-        user
-            .get('/api/forums/forum/' + slug )
+    it('GET single forum', async function() {
+        const forum = await Forums.findOne({sort: 'rand()'})
+        await user
+            .get('/api/forums/forum/' + forum.slug )
             .expect('Content-Type', /json/)
             .expect(200)
-            .end(function(err, res) {
-                if (err) return done(err);
-                res.body.name.should.be.equal(forum)
-                done()
-            });
+            .then(function(res) {
+                const { name, threads } = res.body
+                // has skill
+                name.should.be.equal(forum.name)
+                // includes threads
+                threads.totalPages.should.eq(1)
+                threads.currentPage.should.eq(1)
+                threads.values.should.be.a('array')
+                threads.values.map(thread => {
+                    thread.parentId.should.eq(forum.id)
+                })
+                threads.values.should.have.length(10)                
+            })
     })
 
     // TODO PUT test
@@ -75,7 +84,7 @@ export default describe('/forums API', function() {
     it('fail to POST if not authorized', function(done) { // TODO move this to previous function?
         user
             .post('/api/forums')
-            .send({ name: forum })
+            .send({ name })
             .expect(401, done)
     })
 

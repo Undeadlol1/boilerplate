@@ -304,7 +304,22 @@ function createPage(pageName, routePath) {
         silent: true,
         paths: [path.resolve(__dirname, '../../src/browser/routes.js')],
         // replace 'hook' text with route info, and add hook text again afterwards
-        replacement: `{ path: '${routePath}', component: require('browser/pages/${pageName}').default },\n${hook}`,
+        replacement: `{
+            path: '${routePath}',
+            component: require('browser/pages/${pageName}').default },\n${hook},
+            onEnter({params}, replace, done) {
+                console.warn("DON'T FORGET TO EDIT DATA FETCHING ON NEWELY CREATED PAGE")
+                const { threadSlug } = params
+                const fetchedThread = store.getState().thread
+                // check if fetching is needed
+                if (fetchedThread.get('slug') == threadSlug) return done()
+                else {
+                  store
+                  .dispatch(fetchThread(threadSlug))
+                  .then(() => done())
+                }
+              }
+        `,
     })
     // copy+paste page template folder to 'pages' directory
     copyFolderAndReplace(templatesPath, 'PageName', pageName, folderPath)

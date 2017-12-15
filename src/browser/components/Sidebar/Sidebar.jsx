@@ -46,6 +46,13 @@ export class Sidebar extends Component {
 					>
 						<MenuItem>{translate("search")}</MenuItem>
 					</Link>
+					<Link
+						to="forum"
+						onClick={toggleSidebar}
+						className="Sidebar__forum-link"
+					>
+						<MenuItem>{translate("forum")}</MenuItem>
+					</Link>
 					{/*<MenuItem><Link onClick={toggleSidebar} to="about">{translate("about")}</Link></MenuItem>*/}
 				</Drawer>
 	}

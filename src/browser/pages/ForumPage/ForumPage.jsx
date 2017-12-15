@@ -17,6 +17,11 @@ class ForumPage extends PureComponent {
 					loading={props.loading}
 				>
 					<Grid fluid>
+						<Row className="ForumPage__header">
+							<Col xs={12}>
+								<h1 className="ForumPage__title">{props.name}</h1>
+							</Col>
+						</Row>
 						<ThreadsList />
 						<CreateThreadForm parentId={props.ForumId} />
 					</Grid>
@@ -25,6 +30,7 @@ class ForumPage extends PureComponent {
 }
 
 ForumPage.propTypes = {
+	name: PropTypes.string.isRequired,
 	ForumId: PropTypes.string.isRequired,
 }
 
@@ -34,6 +40,7 @@ export default
 connect(
 	(state, ownProps) => ({
 		...ownProps,
+		name: state.forum.get('name'),
 		ForumId: state.forum.get('id'),
 	}),
 )(ForumPage)

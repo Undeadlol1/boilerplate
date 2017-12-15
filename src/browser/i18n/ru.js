@@ -54,5 +54,6 @@ export default {
     add_this_video: 'добавить это видео',
     welcome_to_our_awesome_boilerplate: 'Добро пожаловать в наш классный boilerplate.',
     hope_you_will_enjoy_it: 'Надеюсь он вам понравится.',
-    description: 'Описание',    
+    description: 'Описание',
+    forum: 'форум',    
 }

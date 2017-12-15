@@ -11,18 +11,20 @@ class ThreadsList extends Component {
 	render() {
 		const {props} = this
 		const className = cls(props.className, "ThreadsList")
+		const threads = props.threads.get('values')
+		// console.log('threads: ', threads.toJS());
 		return 	<Row className={className}>
 					<Col xs={12}>
 						<List>
 							{
-								props.threads.length
-								? props.threads.map(
+								threads.size
+								? threads.map(
 									thread => 	<Link
-													key={thread.id}
-													to={'threads/' + thread.slug}
+													key={thread.get('id')}
+													to={'/threads/' + thread.get('slug')}
 												>
 													<ListItem
-														primaryText={thread.name}
+														primaryText={thread.get('name')}
 													/>
 												</Link>
 								)
@@ -36,28 +38,19 @@ class ThreadsList extends Component {
 }
 
 ThreadsList.defaultProps = {
-	threads: [
-		// {
-		// 	id: 12343,
-		// 	name: 'Penis',
-		// 	slug: 'Penis',
-		// },
-		// {
-		// 	id: 123234234243,
-		// 	name: 'Vagina',
-		// 	slug: 'Penis',
-		// }
-	]
 }
 
 ThreadsList.PropTypes = {
-	threads: PropTypes.array,
+	threads: PropTypes.object.isRequired,
+	
 }
 
 export { ThreadsList }
 export default connect(
 	// stateToProps
-	(state, ownProps) => ({ ...ownProps }),
+	(state, ownProps) => ({
+		threads: state.forum.get('threads')
+	}),
 	// dispatchToProps
     (dispatch, ownProps) => ({})
 )(ThreadsList)

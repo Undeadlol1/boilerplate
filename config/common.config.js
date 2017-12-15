@@ -26,6 +26,7 @@ var stats = {
     modules: false,
     version: false,
     children: false,
+    chunkModules: false,
     errorDetails: true,
     timings: false,
 };

@@ -6,13 +6,18 @@ import { mustLogin } from 'server/services/permissions'
 
 const limit = 12
 
-async function getThreads(parentId, currentPage=1) {
-    const totalThreads = await Threads.count(),
+/**
+ * 
+ * @param {String} parentId parent UUID
+ * @param {Number} [currentPage=1] page number
+ */
+export async function getThreads(parentId, currentPage=1) {
+    const totalThreads = await Threads.count({where: {parentId}}),
           offset = currentPage ? limit * (currentPage -1) : 0
     return {
       currentPage,
-      totalPages: Math.ceil(totalThreads / limit),
-      values: await Threads.findAll({limit, offset}),
+      totalPages: Math.ceil(totalThreads / limit) || 1,
+      values: await Threads.findAll({limit, offset, where: {parentId}}),
     }
 }
 
