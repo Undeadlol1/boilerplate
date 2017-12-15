@@ -19,6 +19,7 @@ import routesConfig from './routes'
 import Translator from './containers/Translator'
 import { syncHistoryWithStore } from 'react-router-redux'
 import { actions } from 'browser/redux/actions/UserActions'
+import { CookiesProvider } from 'react-cookie'
 
 /* STYLES */
 if (process.env.BROWSER) require('./styles.scss')
@@ -46,16 +47,20 @@ class App extends Component {
   }
 
   render() {
+    const cookies = process.env.SERVER ? this.props.cookies : null
     return  <MuiThemeProvider muiTheme={muiTheme}>
                 <ThemeProvider theme={BASE_CONF}>
                   <ReduxProvider store={store} key="provider">
-                    <Translator>
-                      {
-                        process.env.BROWSER
-                        ? <Router history={syncHistoryWithStore(browserHistory, store)} routes={routesConfig} onUpdate={scrollToTop} />
-                        : <RouterContext {...this.props} />
-                      }
-                    </Translator>
+                    {/* universal cookies */}
+                    <CookiesProvider cookies={cookies}>
+                      <Translator>
+                        {
+                          process.env.BROWSER
+                          ? <Router history={syncHistoryWithStore(browserHistory, store)} routes={routesConfig} onUpdate={scrollToTop} />
+                          : <RouterContext {...this.props} />
+                        }
+                      </Translator>
+                    </CookiesProvider>
                   </ReduxProvider>
                 </ThemeProvider>
             </MuiThemeProvider>

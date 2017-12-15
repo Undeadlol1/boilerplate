@@ -16,7 +16,9 @@ describe('<WelcomeCard />', () => {
     cookies.expire('hideWelcomeCard')
   })
 
-  const props = {}
+  const props = {
+    cookies: {get: () => false}
+  }
   const wrapper = shallow(<WelcomeCard {...props} />)
 
   it('has <Row>', () => {
@@ -63,7 +65,7 @@ describe('<WelcomeCard />', () => {
     })
 
     it('handles click', () => {
-      const welcomeCard = shallow(<WelcomeCard />)
+      const welcomeCard = shallow(<WelcomeCard {...props} />)
       const button = welcomeCard.find('FlatButton')
       button.simulate('click')
       // wrapper.update()

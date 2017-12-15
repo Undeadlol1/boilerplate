@@ -1,15 +1,17 @@
 import 'isomorphic-fetch' // fetch polyfill
 import React from 'react'
 import express from "express"
-import themeConfig from 'browser/theme'
 import routes from 'browser/routes'
 import { Helmet } from 'react-helmet'
 import session from 'express-session'
 import { Provider } from 'react-redux'
+import Cookies from 'universal-cookie'
 import store from 'browser/redux/store'
+import themeConfig from 'browser/theme'
 import match from 'react-router/lib/match'
 import serialize from 'serialize-javascript'
 import { renderToString } from 'react-dom/server'
+import { CookiesProvider } from 'react-cookie'
 import { ServerStyleSheet, StyleSheetManager } from 'styled-components'
 // const cache = require('express-redis-cache')();
 
@@ -56,6 +58,7 @@ export default
           // render website content
           else if (renderProps) {
             const sheet = new ServerStyleSheet()
+            const cookies = new Cookies(req.headers.cookie)
             /*
               sometimes request language and browser language are not the same
               so we use browsers language (storred in cookie) as primary preference
@@ -74,7 +77,9 @@ export default
             // render App to string
             const markup = renderToString(
               <StyleSheetManager sheet={sheet.instance}>
-                <App user={req.user} {...renderProps}/>
+                  {/* pass down cookies to use universally */}
+                  {/* and pass down user object to prepopulate redux with user data */}
+                  <App user={req.user} cookies={cookies} {...renderProps}/>
               </StyleSheetManager>
             )
             // get prefetched data from redux

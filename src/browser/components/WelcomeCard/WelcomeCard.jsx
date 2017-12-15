@@ -3,8 +3,9 @@ import cookies from 'cookies-js'
 import PropTypes from 'prop-types'
 import Paper from 'material-ui/Paper'
 import React, { Component } from 'react'
-import { Row, Col } from 'react-styled-flexboxgrid'
+import { withCookies } from 'react-cookie'
 import FlatButton from 'material-ui/FlatButton'
+import { Row, Col } from 'react-styled-flexboxgrid'
 import { translate as t } from 'browser/containers/Translator'
 import { Card, CardText, CardActions } from 'material-ui/Card'
 
@@ -20,9 +21,7 @@ class WelcomeCard extends Component {
 	render() {
 		const {state, props} = this
 		const className = cls(props.className, "WelcomeCard")
-		// TODO provide cookies to app for SSR
-		// https://www.npmjs.com/package/react-cookie
-		if (process.env.SERVER || state.isHidden || cookies.get('hideWelcomeCard')) return null
+		if (state.isHidden || props.cookies.get('hideWelcomeCard')) return null
 		return 	<Row className={className}>
 					<Col xs={12}>
 						<Paper zDepth={5}>
@@ -32,7 +31,12 @@ class WelcomeCard extends Component {
 									<p>{t('hope_you_will_enjoy_it')}</p>
 								</CardText>
 								<CardActions>
-									<FlatButton fullWidth primary={true} onClick={this.handleClick} label={t('ok')} />
+									<FlatButton
+										fullWidth
+										label={t('ok')}
+										primary={true}
+										onClick={this.handleClick}
+									/>
 								</CardActions>
 							</Card>
 						</Paper>
@@ -46,4 +50,4 @@ WelcomeCard.defaultProps = {}
 WelcomeCard.PropTypes = {}
 
 export { WelcomeCard }
-export default WelcomeCard
+export default withCookies(WelcomeCard)
