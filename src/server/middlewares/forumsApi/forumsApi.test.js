@@ -28,21 +28,6 @@ export default describe('/forums API', function() {
         Forums.destroy({where: { name }})
     })
 
-    it('POST forum', async function() {
-        const agent = await loginUser(username, password)
-        await agent.post('/api/forums')
-            .send({ name })
-            .expect('Content-Type', /json/)
-            .expect(200)
-            .then(function(res) {
-                return res.body.slug.should.be.equal(slug)
-            })
-            .catch(error => {
-                console.error(error)
-                throw new Error(error)
-            })
-    })
-
     it('GET forums', function(done) {
         request(server)
             .get('/api/forums')
@@ -74,7 +59,22 @@ export default describe('/forums API', function() {
                 threads.values.map(thread => {
                     thread.parentId.should.eq(forum.id)
                 })
-                threads.values.should.have.length(10)                
+                threads.values.should.have.length(10)
+            })
+    })
+
+    it('POST forum', async function() {
+        const agent = await loginUser(username, password)
+        await agent.post('/api/forums')
+            .send({ name })
+            .expect('Content-Type', /json/)
+            .expect(200)
+            .then(function(res) {
+                return res.body.slug.should.be.equal(slug)
+            })
+            .catch(error => {
+                console.error(error)
+                throw new Error(error)
             })
     })
 
