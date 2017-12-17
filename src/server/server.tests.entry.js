@@ -33,7 +33,7 @@ const urls = [
 //     if (!amount) amount = 9
 //     for (let index = 0; index < amount; index++) {
 //         names.push(uniqid())
-        
+
 //     }
 //     return names
 // }
@@ -107,7 +107,7 @@ before(function(done) {
         // .then(() => Profile.findAll({where: {}, raw: true}))
         // .then(profiles => console.log('profiles', profiles))
         // create forums
-        .then(() => Forums.bulkCreate(forums))        
+        .then(() => Forums.bulkCreate(forums))
         .then(() => Forums.findAll({where: {}}))
         .each(forum => {
             randomNames.forEach(() => {
@@ -123,7 +123,7 @@ before(function(done) {
             })
         })
         // create threads
-        .then(() => Threads.bulkCreate(threads))        
+        .then(() => Threads.bulkCreate(threads))
         // create moods
         .then(() => Mood.bulkCreate(moods))
         .then(() => Mood.findAll({where: {}}))
@@ -198,13 +198,13 @@ describe('fixture data setup', function() {
             const forums = await Forums.findAll({raw: true})
             const threads = await Threads.findAll({raw: true})
 
-            expect(users).to.have.length(10)
-            expect(locals).to.have.length(10)
-            expect(profiles).to.have.length(10)
-            expect(moods).to.have.length(10)
-            expect(nodes).to.have.length(100) // 10 moods * 10 nodes
-            expect(forums).to.have.length(10)
-            expect(threads).to.have.length(100) // 10 forums * 10 threads
+            expect(users).to.have.length(10, '10 users')
+            expect(locals).to.have.length(10, '10 local profiles')
+            expect(moods).to.have.length(10, '10 moods')
+            expect(nodes).to.have.length(100, '100 nodes') // 10 moods * 10 nodes
+            expect(profiles).to.have.length(10, '10 profiles')
+            expect(forums).to.have.length(10, '10 forums')
+            expect(threads).to.have.length(100, '100 threads') // 10 forums * 10 threads
             // expect(decisions).to.have.length(1000) // 10 moods * 10 nodes * 10 decisions
 
             moods.forEach(mood => {
