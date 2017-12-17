@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import React, { Component } from 'react'
+import { Grid } from 'react-styled-flexboxgrid'
 import Loading from 'browser/components/Loading'
 import MetaData from 'browser/components/MetaData'
 import { translate as t } from 'browser/containers/Translator'
@@ -70,7 +71,7 @@ export default class PageWrapper extends Component {
         //                                 <div style={childrenStyles} className="PageWrapper_children">{children}</div>
         //                             </div>
         //                         </div>
-        return  <div className={cx}>
+        return  <Grid fluid className={cx}>
                     <div style={rootStyles}>
                         <MetaData {...metaTags} />
                         {/*<Loading
@@ -80,7 +81,7 @@ export default class PageWrapper extends Component {
                             {children}
                         {/*</Loading>*/}
                     </div>
-                </div>
+                </Grid>
 		// return  <RouteTransition
         //             className={cx}
         //             {...presets[preset]}

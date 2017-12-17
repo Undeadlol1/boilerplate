@@ -23,16 +23,14 @@ class IndexPage extends PureComponent {
 					className='IndexPage'
 					loading={props.loading}
 				>
-					<Grid fluid>
-						<WelcomeCard />
-						{/* <MoodsInsert /> */}
-						<b>Список форумов:</b>
-						<ForumsList />
-						{/* <b>Список тредов:</b>						
-						<ThreadsList /> */}
-						<CreateForumForm />
-						{/* <MoodTabs /> */}
-					</Grid>
+					<WelcomeCard />
+					{/* <MoodsInsert /> */}
+					<b>Список форумов:</b>
+					<ForumsList />
+					{/* <b>Список тредов:</b>
+					<ThreadsList /> */}
+					<CreateForumForm />
+					{/* <MoodTabs /> */}
 				</PageWrapper>
     }
 }

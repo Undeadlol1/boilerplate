@@ -16,15 +16,13 @@ class ForumPage extends PureComponent {
 					className='ForumPage'
 					loading={props.loading}
 				>
-					<Grid fluid>
-						<Row className="ForumPage__header">
-							<Col xs={12}>
-								<h1 className="ForumPage__title">{props.name}</h1>
-							</Col>
-						</Row>
-						<ThreadsList />
-						<CreateThreadForm parentId={props.ForumId} />
-					</Grid>
+					<Row className="ForumPage__header">
+						<Col xs={12}>
+							<h1 className="ForumPage__title">{props.name}</h1>
+						</Col>
+					</Row>
+					<ThreadsList />
+					<CreateThreadForm parentId={props.ForumId} />
 				</PageWrapper>
     }
 }

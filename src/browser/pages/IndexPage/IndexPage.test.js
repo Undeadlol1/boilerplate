@@ -20,10 +20,6 @@ describe('<IndexPage />', () => {
     expect(wrapper.type().name).to.eq('PageWrapper')
   });
 
-  it('has <Grid>', () => {
-    expect(wrapper.find('Styled(Grid)')).to.have.length(1);
-  });
-
   it('has <WelcomeCard>', () => {
     expect(wrapper.find('withCookies(WelcomeCard)')).to.have.length(1);
   });

@@ -25,34 +25,32 @@ export class UserPage extends Component {
 					location={location}
 					className='UserPage'
 				>
-					<Grid fluid>
-						<Row center="xs">
-							<Col xs={12}>
-								<h2 className="UserPage__username">{displayName}</h2>
-							</Col>
-						</Row>
-						<Row center="xs">
-							<Col xs={12} className="UserPage__avatar">
-								<Avatar
-									size={300}
-									title={imageText}
-									src={image || src}
-									alt={displayName + translate('things_image')}
-								/>
-							</Col>
-						</Row>
-						<Row>
-							<Col xs={12}>
-								{isOwnPage ? <ChangeLanguageForm /> : null}
-							</Col>
-						</Row>
-						{/* <Row>
-							<Col xs={12}>
-								<center><h3>{t('created_moods')}</h3></center>
-							</Col>
-						</Row>
-						<MoodsList moods={moods} /> */}
-					</Grid>
+					<Row center="xs">
+						<Col xs={12}>
+							<h2 className="UserPage__username">{displayName}</h2>
+						</Col>
+					</Row>
+					<Row center="xs">
+						<Col xs={12} className="UserPage__avatar">
+							<Avatar
+								size={300}
+								title={imageText}
+								src={image || src}
+								alt={displayName + translate('things_image')}
+							/>
+						</Col>
+					</Row>
+					<Row>
+						<Col xs={12}>
+							{isOwnPage ? <ChangeLanguageForm /> : null}
+						</Col>
+					</Row>
+					{/* <Row>
+						<Col xs={12}>
+							<center><h3>{t('created_moods')}</h3></center>
+						</Col>
+					</Row>
+					<MoodsList moods={moods} /> */}
 				</PageWrapper>
     }
 }

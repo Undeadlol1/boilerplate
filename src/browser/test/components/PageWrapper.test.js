@@ -37,6 +37,10 @@ describe('<PageWrapper />', () => {
   //   expect(loading).to.have.length(1);
   // });
 
+  it('has <Grid>', () => {
+    expect(wrapper.find('Styled(Grid)')).to.have.length(1);
+  })
+
   it('has <MetaData>', () => {
     const el = wrapper.find('withRouter(MetaData)')
     expect(el).to.have.length(1)

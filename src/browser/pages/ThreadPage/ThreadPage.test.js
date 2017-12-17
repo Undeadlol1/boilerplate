@@ -25,10 +25,6 @@ describe('<ThreadPage />', () => {
     expect(wrapper.type().name).to.eq('PageWrapper')
   })
 
-  it('has <Grid>', () => {
-    expect(wrapper.find('Styled(Grid)')).to.have.length(1);
-  })
-
   describe('header', () => {
     const header = wrapper.find('.ThreadPage__header')
 
@@ -43,6 +39,15 @@ describe('<ThreadPage />', () => {
       expect(el).to.exist
       expect(el).to.have.text(props.name)
       expect(el).to.have.className('ThreadPage__title')
+    })
+
+    it('has <Chip> and <Avatar>', () => {
+      const chip = header.find('Chip')
+      const avatar = chip.find('Avatar')
+      expect(chip).to.exist
+      expect(chip.props().children[1]).to.eq(props.username)
+      expect(avatar).to.exist
+      expect(avatar.props().src).to.eq(props.userImage)
     })
   })
 

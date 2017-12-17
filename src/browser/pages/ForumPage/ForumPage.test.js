@@ -21,10 +21,6 @@ describe('<ForumPage />', () => {
     expect(wrapper.type().name).to.eq('PageWrapper')
   })
 
-  it('has <Grid>', () => {
-    expect(wrapper.find('Styled(Grid)')).to.exist
-  })
-
   describe('header', () => {
     const header = wrapper.find('.ForumPage__header')
 

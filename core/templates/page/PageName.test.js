@@ -20,10 +20,6 @@ describe('<PageName />', () => {
     expect(wrapper.type().name).to.eq('PageWrapper')
   })
 
-  it('has <Grid>', () => {
-    expect(wrapper.find('Styled(Grid)')).to.have.length(1);
-  })
-
   it('has <Row>', () => {
     expect(wrapper.find('Styled(Row)')).to.have.length(1);
   })
