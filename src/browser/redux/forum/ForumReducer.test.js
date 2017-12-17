@@ -35,6 +35,7 @@ describe('forum reducer', async () => {
     UserId: 2,
     parentId: 3,
     name: 'somename',
+    User: {id: 1},
   }
 
   const threads = {

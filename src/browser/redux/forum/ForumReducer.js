@@ -9,6 +9,7 @@ const threadStructure = {
 							UserId: '',
 							parentId: '',
 							isClosed: null,
+							User: {},
 						}
 
 const forumStructure = 	{
