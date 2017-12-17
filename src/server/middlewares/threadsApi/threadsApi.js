@@ -1,13 +1,13 @@
 import slugify from 'slug'
 import { Router } from 'express'
 import generateUuid from 'uuid/v4'
-import { Threads } from 'server/data/models'
+import { Threads, User } from 'server/data/models'
 import { mustLogin } from 'server/services/permissions'
 
 const limit = 12
 
 /**
- * 
+ *
  * @param {String} parentId parent UUID
  * @param {Number} [currentPage=1] page number
  */
@@ -27,7 +27,8 @@ export default Router()
   .get('/thread/:slug', async ({params}, res) => {
     try {
       const thread = await Threads.findOne({
-                        where: { slug: params.slug }
+                        include: [User],
+                        where: { slug: params.slug },
                       })
       res.json(thread)
     } catch (error) {

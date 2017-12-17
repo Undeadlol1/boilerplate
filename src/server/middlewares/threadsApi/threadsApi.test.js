@@ -68,6 +68,8 @@ export default describe('/threads API', function() {
             .end(function(err, res) {
                 if (err) return done(err);
                 res.body.name.should.be.equal(thread)
+                // includes user object
+                res.body.User.id.should.be.defined
                 done()
             });
     })
