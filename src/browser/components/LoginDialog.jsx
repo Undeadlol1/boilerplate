@@ -18,7 +18,7 @@ export class LoginDialog extends Component {
 
 	render() {
 		const { open, toggleDialog } = this.props
-		const iconStyle = {paddingBottom: '1.2rem'}
+		const iconStyle = {marginBottom: '1.2rem'}
 		const iconColor = 'rgb(48, 48, 48)'
 		return <Dialog
 					open={open}
