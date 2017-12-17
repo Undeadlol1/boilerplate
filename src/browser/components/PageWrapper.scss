@@ -1,3 +1,10 @@
+// reduce grid's outer paddings on extra small devices
+@media (max-width: 48rem) {
+	.PageWrapper__Grid {
+		padding-left: 1rem !important;
+		padding-right: 1rem !important;
+	}
+}
 // this styles are absolute since they are moved to components
 // TODO remove them
 .PageWrapper {

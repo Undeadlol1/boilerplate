@@ -34,7 +34,7 @@ export default class PageWrapper extends Component {
 		const isServer = process.env.SERVER
 		const isBrowser = process.env.BROWSER
 		const {location, loading, children, preset} = this.props
-        const cx = classNames('PageWrapper', this.props.className)
+        const cx = classNames('PageWrapper PageWrapper__Grid', this.props.className)
         const metaTags = {
             title: props.title,
             image: props.image,
