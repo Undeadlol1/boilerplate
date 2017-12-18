@@ -13,7 +13,9 @@ class PageLoading extends Component {
 		console.log('props.loading: ', props.loading);
 		if (!props.loading) return null
 		return 	<div className={className}>
-					<CircularProgress className="PageLoading__indicator" />
+					<div className="PageLoading__indicator-container">
+						<CircularProgress className="PageLoading__indicator" />
+					</div>
 				</div>
 	}
 }
