@@ -10,7 +10,6 @@ class PageLoading extends Component {
 	render() {
 		const {props} = this
 		const className = cls(props.className, "PageLoading")
-		console.log('props.loading: ', props.loading);
 		if (!props.loading) return null
 		return 	<div className={className}>
 					<div className="PageLoading__indicator-container">
