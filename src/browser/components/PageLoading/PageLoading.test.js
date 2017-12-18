@@ -21,7 +21,6 @@ describe('<PageLoading />', () => {
   it('has container and  <CircularProgress /> if "loading" true', () => {
     const props = { loading: true }
     const wrapper = shallow(<PageLoading {...props} />)
-    console.log('wrapper: ', wrapper.debug());
     expect(wrapper).to.exist
     expect(wrapper).to.have.className('PageLoading')
     const container = wrapper.find('.PageLoading__indicator-container')

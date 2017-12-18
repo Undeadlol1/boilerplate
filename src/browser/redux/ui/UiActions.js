@@ -12,6 +12,5 @@ export const actions = createActions({
  * @param {boolean} [boolean] value to set on renderer
  */
 export const togglePageLoading = boolean => (dispatch, getState) => {
-	console.log('togglePageLoading!!');
 	return dispatch(actions.toggleLoading(boolean))
 }
