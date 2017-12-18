@@ -1,8 +1,9 @@
-import { checkStatus, parseJSON, headersAndBody } from'./actionHelpers'
-import { createAction, createActions } from 'redux-actions'
-import { SubmissionError } from 'redux-form'
 import selectn from 'selectn'
+import { SubmissionError } from 'redux-form'
 import { translate } from 'browser/containers/Translator'
+import { createAction, createActions } from 'redux-actions'
+import { togglePageLoading } from 'browser/redux/ui/UiActions'
+import { checkStatus, parseJSON, headersAndBody } from'./actionHelpers'
 
 const authUrl = process.env.API_URL + 'auth/'
 const usersUrl = process.env.API_URL + 'users/'
@@ -78,7 +79,10 @@ export const fetchCurrentUser = () => dispatch => {
 	return fetch(authUrl + 'current_user', {credentials: 'same-origin'})
 		.then(checkStatus)
 		.then(parseJSON)
-		.then(user => dispatch(recieveCurrentUser((user))))
+		.then(user => {
+			return dispatch(recieveCurrentUser((user)))
+			// return dispatch(togglePageLoading())
+		})
 		.catch(err => console.error('fetchCurrentUser failed!', err)) // TODO add client side error handling
 }
 
@@ -100,11 +104,14 @@ export const toggleLoginDialog = value => (dispatch, getState) => {
 }
 
 export const fetchUser = username => dispatch => {
-	dispatch(fetchingUser())
+	dispatch(togglePageLoading())
 	return fetch(`${usersUrl}user/${username}`)
 		.then(checkStatus)
 		.then(parseJSON)
-		.then(user => dispatch(recieveFetchedUser((user))))
+		.then(user => {
+			dispatch(recieveFetchedUser((user)))
+			return dispatch(togglePageLoading())
+		})
 		.catch(err => console.error('fetchUser failed!', err)) // TODO add client side error handling
 }
 /**

@@ -18,12 +18,16 @@ describe('<PageLoading />', () => {
     expect(el.get(0)).to.be.undefined
   })
 
-  it('has <CircularProgress /> if "loading" true', () => {
+  it('has container and  <CircularProgress /> if "loading" true', () => {
     const props = { loading: true }
     const wrapper = shallow(<PageLoading {...props} />)
-    const el = wrapper.find('CircularProgress')
-    expect(el).to.have.length(1)
-    expect(el).to.have.className('PageLoading')
+    expect(wrapper).to.exist
+    expect(wrapper).to.have.className('PageLoading')
+    const container = wrapper.find('.PageLoading__indicator-container')
+    expect(container).to.exist
+    const indicator = container.find('CircularProgress')
+    expect(indicator).to.exist
+    expect(indicator).to.have.className('PageLoading__indicator')
   })
 
 })

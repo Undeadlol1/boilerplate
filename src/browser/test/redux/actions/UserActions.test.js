@@ -6,6 +6,7 @@ import chaiImmutable from 'chai-immutable'
 import configureMockStore from 'redux-mock-store'
 import { createAction, createActions } from 'redux-actions'
 import { initialState } from 'browser/redux/reducers/UserReducer'
+import { togglePageLoading, actions as uiActions } from 'browser/redux/ui/UiActions'
 import { updateUser, toggleLoginDialog, logoutCurrentUser, fetchCurrentUser, fetchUser, actions } from 'browser/redux/actions/UserActions'
 chai.should();
 chai.use(chaiImmutable);
@@ -57,11 +58,12 @@ describe('UserActions', () => {
     await mockRequest(authApi + 'logout', logoutCurrentUser, undefined, expectedActions)
   })
 
-  it('fetchUser calls fetchingUser and recieveFetchedUser', async () => {
+  it('fetchUser calls togglePageLoading and recieveFetchedUser', async () => {
     const { username } = user
     const expectedActions = [
-                              actions.fetchingUser(),
-                              actions.recieveFetchedUser(user)
+                              uiActions.toggleLoading(),
+                              actions.recieveFetchedUser(user),
+                              uiActions.toggleLoading(),
                             ]
     await mockRequest(usersApi + 'user/' + username, fetchUser, username, expectedActions)
   })

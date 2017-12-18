@@ -11,16 +11,25 @@ class PageLoading extends Component {
 		const {props} = this
 		const className = cls(props.className, "PageLoading")
 		if (!props.loading) return null
-		return 	<CircularProgress className={className} />
+		return 	<div className={className}>
+					<div className="PageLoading__indicator-container">
+						<CircularProgress className="PageLoading__indicator" />
+					</div>
+				</div>
 	}
 }
 
-PageLoading.PropTypes = {}
+PageLoading.PropTypes = {
+	loading: PropTypes.bool.isRequired
+}
 
 export { PageLoading }
 export default connect(
 	// stateToProps
-	(state, ownProps) => ({ ...ownProps }),
+	({ui}, ownProps) => ({
+		...ownProps,
+		loading: ui.get('loading'),
+	 }),
 	// dispatchToProps
     (dispatch, ownProps) => ({})
 )(PageLoading)
