@@ -75,12 +75,14 @@ export const createUser = (payload, callback) => dispatch => {
 
 //
 export const fetchCurrentUser = () => dispatch => {
-	dispatch(togglePageLoading())
 	dispatch(fetchingUser())
 	return fetch(authUrl + 'current_user', {credentials: 'same-origin'})
 		.then(checkStatus)
 		.then(parseJSON)
-		.then(user => dispatch(recieveCurrentUser((user))))
+		.then(user => {
+			return dispatch(recieveCurrentUser((user)))
+			// return dispatch(togglePageLoading())
+		})
 		.catch(err => console.error('fetchCurrentUser failed!', err)) // TODO add client side error handling
 }
 
@@ -102,11 +104,14 @@ export const toggleLoginDialog = value => (dispatch, getState) => {
 }
 
 export const fetchUser = username => dispatch => {
-	dispatch(fetchingUser())
+	dispatch(togglePageLoading())
 	return fetch(`${usersUrl}user/${username}`)
 		.then(checkStatus)
 		.then(parseJSON)
-		.then(user => dispatch(recieveFetchedUser((user))))
+		.then(user => {
+			dispatch(recieveFetchedUser((user)))
+			return dispatch(togglePageLoading())
+		})
 		.catch(err => console.error('fetchUser failed!', err)) // TODO add client side error handling
 }
 /**
