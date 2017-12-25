@@ -9,8 +9,8 @@ chai.use(chaiEnzyme())
 
 describe('<Decision />', () => {
   const props = {
+    decisionVote: 0,
     vote: sinon.spy(),
-    decisionVote: false,
     nextVideo: sinon.spy(),
   }
   const wrapper = shallow(<Decision {...props} />)
