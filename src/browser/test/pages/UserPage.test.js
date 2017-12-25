@@ -1,5 +1,6 @@
 import React from 'react'
 import sinon from 'sinon'
+import faker from 'faker'
 import chaiEnzyme from 'chai-enzyme'
 import chai, { expect, assert } from 'chai'
 import { shallow, mount, render } from 'enzyme'
@@ -15,26 +16,26 @@ function findAndConfirm(selector) {
 }
 
 const username = 'test'
-
 const props = {
                 username,
                 loading: false,
                 isOwnPage: false,
-                fetchUser: sinon.spy(),
                 params: { username },
+                image: faker.image.imageUrl(),
               }
-// sinon.spy(UserPage.prototype, 'componentWillMount');
-const wrapper = shallow(<UserPage {...props} />)
+// const wrapper = shallow(<UserPage {...props} />)
 
 describe('<UserPage />', () => {
-  // it('calls componentWillMount', () => {
-  //   assert(UserPage.prototype.componentWillMount.calledOnce)
-  //   assert(props.fetchUser.calledOnce, 'called fetchUser()')
-  // })
 
-  // it('has className and tagName', () => {
-  //   expect(wrapper).to.have.className('UserPage')
-  //   expect(wrapper.type().name).to.eq('PageWrapper')
+  // it('has PageWrapper and className', () => {
+  //   const el = wrapper.first()
+  //   expect(el.name()).to.eq('PageWrapper')
+  //   expect(el).to.have.className('UserPage')
+  //   expect(el).to.have.props({
+  //     title: props.title,
+  //     image: props.image,
+  //     description: props.description,
+  //   })
   // })
 
   // it('has proper dom structure', () => {

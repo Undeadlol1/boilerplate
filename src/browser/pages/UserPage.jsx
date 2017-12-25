@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
 import { injectProps } from 'relpers'
 import { connect } from 'react-redux'
+import { injectIntl } from 'react-intl'
 import Avatar from 'material-ui/Avatar'
 import React, { Component } from 'react'
 import Loading from 'browser/components/Loading'
@@ -14,16 +15,25 @@ import YoutubeSearch from 'browser/components/YoutubeSearch'
 import { translate as t } from 'browser/containers/Translator'
 import ChangeLanguageForm from 'browser/components/ChangeLanguageForm'
 
+@injectIntl
 export class UserPage extends Component {
-	@injectProps
-    render({moods, loading, image, location, UserId, displayName, isOwnPage}) {
+    render() {
+		const {moods, loading, image, location, UserId, displayName, isOwnPage, intl} = this.props
 		const src = `https://api.adorable.io/avatars/300/${UserId}.png`
 		const imageText = displayName + translate('things_image')
+		const title = intl.formatMessage(
+			{id: 'user_on_APP_NAME'},
+			{username: displayName},
+		)
+
+		console.log('title: ', title);
 		return 	<PageWrapper
-					preset={'pop'}
+					title={title}
+					// description={}
 					loading={loading}
 					location={location}
 					className='UserPage'
+					image={image || src}
 				>
 					<Row center="xs">
 						<Col xs={12}>
