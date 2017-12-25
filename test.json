@@ -1,6 +1,6 @@
 {
     "NODE_ENV": "test",
-    "APP_NAME": "MooD",
+    "APP_NAME": "Boilerplate",
     "URL": "http://127.0.0.1:3000/",
     "API_URL": "http://127.0.0.1:3000/api/",
     "PORT": "3000",
