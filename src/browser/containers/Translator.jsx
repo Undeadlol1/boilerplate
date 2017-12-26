@@ -57,7 +57,7 @@ function detectLocale() {
                 || navigator.userLanguage
                 : DEFAULT_LANGUAGE
     // Split locales with a region code (ie. 'en-EN' to 'en')
-    const languageWithoutRegionCode = ret.toLowerCase().split(/[_-]+/)[0];
+    const languageWithoutRegionCode = ret && ret.toLowerCase().split(/[_-]+/)[0];
     return languageWithoutRegionCode || DEFAULT_LANGUAGE
 }
 
