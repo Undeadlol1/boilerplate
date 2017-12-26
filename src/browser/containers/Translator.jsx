@@ -46,14 +46,19 @@ let translate = id => {
 function detectLocale() {
     if (process.env.BROWSER) {
         const localeCookie = cookies.get('locale')
-        if (localeCookie) return localeCookie
+        if (localeCookie) {
+            // Split locales with a region code (ie. 'en-EN' to 'en')
+            return localeCookie.toLowerCase().split(/[_-]+/)[0]
+        }
     }
     const ret = navigator
                 ? (navigator.languages && navigator.languages[0])
                 || navigator.language
                 || navigator.userLanguage
                 : DEFAULT_LANGUAGE
-    return ret || DEFAULT_LANGUAGE
+    // Split locales with a region code (ie. 'en-EN' to 'en')
+    const languageWithoutRegionCode = ret.toLowerCase().split(/[_-]+/)[0];
+    return languageWithoutRegionCode || DEFAULT_LANGUAGE
 }
 
 @connect(
