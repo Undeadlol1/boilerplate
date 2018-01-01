@@ -6,9 +6,10 @@ import injectTapEventPlugin from 'react-tap-event-plugin'
 injectTapEventPlugin();
 
 /* DEPENDENCIES */
-import React, { Component } from 'react';
+import { VK } from 'react-vk'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
+import React, { Component } from 'react'
 import Router from 'react-router/lib/Router'
 import RouterContext from 'react-router/lib/RouterContext'
 import browserHistory from 'react-router/lib/browserHistory'
@@ -54,11 +55,16 @@ class App extends Component {
                     {/* universal cookies */}
                     <CookiesProvider cookies={cookies}>
                       <Translator>
-                        {
-                          process.env.BROWSER
-                          ? <Router history={syncHistoryWithStore(browserHistory, store)} routes={routesConfig} onUpdate={scrollToTop} />
-                          : <RouterContext {...this.props} />
-                        }
+                        {/* provide context info for VK widgets */}
+                        {/* this also somehow helps to fix issue with error on multiple widgets loading */}
+                        {/* TODO: move this to boilerplate */}
+                        <VK apiId={Number(process.env.VK_ID)}>
+                          {
+                            process.env.BROWSER
+                            ? <Router history={syncHistoryWithStore(browserHistory, store)} routes={routesConfig} onUpdate={scrollToTop} />
+                            : <RouterContext {...this.props} />
+                          }
+                        </VK>
                       </Translator>
                     </CookiesProvider>
                   </ReduxProvider>
