@@ -15,14 +15,14 @@ describe('<CommentsList />', () => {
 
   it('has <Row>', () => {
     const el = wrapper.find('Styled(Row)')
-    expect(el).to.have.length(1)
+    expect(el).to.exist
     expect(el).to.have.className('CommentsList')
   })
 
   it('has <Col>', () => {
     const el = wrapper.find('Styled(Col)')
-    expect(el).to.have.length(1)
-    expect(el.props().xs).to.eq(12)
+    expect(el).to.exist
+    expect(el).to.have.prop('xs', 12)
   })
 
   it('has <VK>', () => {
@@ -30,6 +30,12 @@ describe('<CommentsList />', () => {
     const appId = Number(process.env.VK_ID)
     expect(el).exist
     expect(el).have.prop('apiId', appId)
+  })
+
+  it('has <Paper>', () => {
+    const el = wrapper.find('Paper')
+    expect(el).to.exist
+    expect(el).to.have.prop('zDepth', 3)
   })
 
   it('has <Comments>', () => {
