@@ -53,10 +53,11 @@ describe('<LoginDialog />', () => {
 
   it('has vk <Icon>', () => {
       const props = buttons.nodes[0].props
+      const icon = props.icon
       expect(props.label).to.eq('vk.com')
       expect(props.href).to.eq('/api/auth/vkontakte')
       expect(props.className).to.eq('LoginDialog__icon')
-      expect(props.icon).to.deep.eq(<Icon name="vk" color="rgb(48, 48, 48)" />)
+      expect(props.icon.props.name).to.eq('vk')
   })
 
   it('has twitter <Icon>', () => {
@@ -64,7 +65,7 @@ describe('<LoginDialog />', () => {
       expect(props.label).to.eq('twitter.com')
       expect(props.href).to.eq('/api/auth/twitter')
       expect(props.className).to.eq('LoginDialog__icon')
-      expect(props.icon).to.deep.eq(<Icon name="twitter" color="rgb(48, 48, 48)" />)
+      expect(props.icon.props.name).to.eq('twitter')
   })
 
     // TODO test actions (modal opens and closes)

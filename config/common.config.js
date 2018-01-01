@@ -23,6 +23,7 @@ const developmentPlugins = isDevelopment || isTest ? [
 var stats = {
     hash: false,
     chunks: false,
+    assets: false,
     modules: false,
     version: false,
     children: false,
