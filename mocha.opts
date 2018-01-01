@@ -1,4 +1,4 @@
-  --reporter nyan
+  --reporter min
   --ui bdd
   --no-exit
   --watch
