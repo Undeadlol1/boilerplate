@@ -37,19 +37,17 @@ class ThreadsList extends Component {
 	}
 }
 
-ThreadsList.defaultProps = {
-}
-
 ThreadsList.PropTypes = {
 	threads: PropTypes.object.isRequired,
-	
 }
 
 export { ThreadsList }
 export default connect(
 	// stateToProps
 	(state, ownProps) => ({
-		threads: state.forum.get('threads')
+		threads: state.forum.get('threads'),
+		// ownProps must be the last one in object to overwrite threads if they are passed through property
+		...ownProps
 	}),
 	// dispatchToProps
     (dispatch, ownProps) => ({})
