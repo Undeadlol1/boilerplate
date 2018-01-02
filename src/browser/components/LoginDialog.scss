@@ -1,6 +1,8 @@
 .LoginDialog {
-	.LoginDialog__icon {
-		// display: block;
-		// margin: 0 auto;
+	// small devices
+	@media (max-width: 48rem) {
+		.LoginDialog__icon {
+			margin-bottom: 21px;
+		}
 	}
 }
