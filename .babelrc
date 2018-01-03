@@ -9,6 +9,9 @@
     //   }
     // }
   ],
+  // include white space and line trails
+  // https://stackoverflow.com/a/29857361
+  "compact": false,
 
   "plugins": [
     // TODO try this
