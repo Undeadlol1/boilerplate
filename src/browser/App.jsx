@@ -55,16 +55,16 @@ class App extends Component {
                     {/* universal cookies */}
                     <CookiesProvider cookies={cookies}>
                       <Translator>
-                        {/* provide context info for VK widgets */}
-                        {/* this also somehow helps to fix issue with error on multiple widgets loading */}
-                        {/* TODO: move this to boilerplate */}
-                        <VK apiId={Number(process.env.VK_ID)}>
-                          {
-                            process.env.BROWSER
-                            ? <Router history={syncHistoryWithStore(browserHistory, store)} routes={routesConfig} onUpdate={scrollToTop} />
-                            : <RouterContext {...this.props} />
-                          }
-                        </VK>
+                        {
+                          process.env.BROWSER
+                          /* provide context info for VK widgets */
+                          /* this also somehow helps to fix issue with error on multiple widgets loading */
+                          /* this code is placed here because otherwise it breaks SSR */
+                          ? <VK apiId={Number(process.env.VK_ID)}>
+                              <Router history={syncHistoryWithStore(browserHistory, store)} routes={routesConfig} onUpdate={scrollToTop} />
+                            </VK>
+                          : <RouterContext {...this.props} />
+                        }
                       </Translator>
                     </CookiesProvider>
                   </ReduxProvider>
