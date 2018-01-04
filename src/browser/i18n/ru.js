@@ -57,4 +57,5 @@ export default {
     description: 'Описание',
     forum: 'форум',
     user_on_APP_NAME: 'Пользователь {username} на ' + process.env.APP_NAME,
+    about_us: 'О нас',
 }
