@@ -6,6 +6,8 @@ import reducer, { initialState } from 'browser/redux/ui/UiReducer'
 chai.should()
 chai.use(chaiImmutable)
 
+// TODO: clean up
+
 describe('ui reducer', async () => {
 
   const ui = {

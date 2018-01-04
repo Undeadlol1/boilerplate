@@ -1,4 +1,3 @@
-import isEmpty from 'lodash/isEmpty'
 import { Map, List } from 'immutable'
 
 export const initialState = Map({
