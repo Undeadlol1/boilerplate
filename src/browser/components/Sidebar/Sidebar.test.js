@@ -22,7 +22,7 @@ describe('<Sidebar />', () => {
     expect(wrapper.type()).to.eq(Drawer)
   })
 
-  describe('if user not logged component', () => {
+  describe('always', () => {
     it('has 2 menu items', () => {
       const links = wrapper.find('Link')
       expect(wrapper.find('Link')).to.have.length(2)
@@ -46,6 +46,16 @@ describe('<Sidebar />', () => {
       expect(link.props().onClick).to.be.a('function')
       expect(link.props().children.props.children).to.eq(translate("forum"))
     })
+
+    // it('has "about" link', () => {
+    //   const link = wrapper.find('.Sidebar__about-link')
+    //   const menuItem = link.find('MenuItem')
+    //   expect(link).to.exist
+    //   expect(menuItem).to.exist
+    //   expect(link).to.have.prop('to', 'about')
+    //   expect(link.props().onClick).to.be.a('function')
+    //   expect(menuItem).to.have.prop('children', translate('about'))
+    // })
   })
 
   describe('if user is logged in component', () => {

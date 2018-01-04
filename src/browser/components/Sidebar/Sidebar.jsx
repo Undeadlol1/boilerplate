@@ -53,7 +53,13 @@ export class Sidebar extends Component {
 					>
 						<MenuItem>{translate("forum")}</MenuItem>
 					</Link>
-					{/*<MenuItem><Link onClick={toggleSidebar} to="about">{translate("about")}</Link></MenuItem>*/}
+					{/* <Link
+						to="about"
+						onClick={toggleSidebar}
+						className="Sidebar__about-link"
+					>
+						<MenuItem>{translate("about")}</MenuItem>
+					</Link> */}
 				</Drawer>
 	}
 }
