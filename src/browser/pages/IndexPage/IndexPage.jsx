@@ -6,6 +6,7 @@ import { Grid, Row } from 'react-styled-flexboxgrid'
 // project files
 import store from 'browser/redux/store'
 import Loading from 'browser/components/Loading'
+import { t } from 'browser/containers/Translator'
 import MoodTabs from 'browser/components/MoodTabs'
 import MoodsFind from 'browser/components/MoodsFind'
 import MoodsList from 'browser/components/MoodsList'
@@ -25,7 +26,7 @@ class IndexPage extends PureComponent {
 				>
 					<WelcomeCard />
 					{/* <MoodsInsert /> */}
-					<b>Список форумов:</b>
+					<b>{t('forums_list')}:</b>
 					<ForumsList />
 					{/* <b>Список тредов:</b>
 					<ThreadsList /> */}
