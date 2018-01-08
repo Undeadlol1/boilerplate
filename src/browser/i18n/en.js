@@ -58,4 +58,6 @@ export default {
     forum: 'forum',
     user_on_APP_NAME: 'User {username} on ' + process.env.APP_NAME,
     about_us: 'About Us',
+    forums_list: 'Forums list',
+    feedback: 'Feedback',
 }

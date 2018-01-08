@@ -25,11 +25,10 @@ describe('<CommentsList />', () => {
     expect(el).to.have.prop('xs', 12)
   })
 
-  it('has <VK>', () => {
-    const el = wrapper.find('VK')
-    const appId = Number(process.env.VK_ID)
-    expect(el).exist
-    expect(el).have.prop('apiId', appId)
+  it('has #vk_comments>', () => {
+    const el = wrapper.find('#vk_comments')
+    expect(el).to.exist
+    expect(el).have.type('div')
   })
 
   it('has <Paper>', () => {
@@ -38,9 +37,5 @@ describe('<CommentsList />', () => {
     expect(el).to.have.prop('zDepth', 3)
   })
 
-  it('has <Comments>', () => {
-    const el = wrapper.find('Comments')
-    expect(el).exist
-  })
 
 })
