@@ -63,6 +63,8 @@ export default
               sometimes request language and browser language are not the same
               so we use browsers language (storred in cookie) as primary preference
             */
+            // TODO:
+            // https://www.codeproject.com/Tips/1156391/How-To-Detect-Users-Locale-Right
             const cookieLocale = req.cookies.locale
             const requestLocale = req.locale.language
             const language = cookieLocale || requestLocale
