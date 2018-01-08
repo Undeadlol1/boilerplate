@@ -26,28 +26,28 @@ export default describe('/externals API', function() {
     })
 
 
-    describe('/search?selector', async function() {
-        const route = '/api/externals/search'
-        try {
-            it('fails without "selector"', async function() {
-                await user.get(`${route}?`).expect(400)
-            })
-            it('gets response properly', async function() {
-                const query = stringify({query: 'highly suspect'})
-                await user
-                        .get(`${route}?${query}`)
-                        .expect(200)
-                        .expect('Content-Type', /json/)
-                        .then(({body}) => {
-                            expect(body.length).to.be.equal(4)
-                            body.map(video => {
-                                return expect(video.id.videoId).to.be.an('string')
-                            })
-                        })
-            })
-        } catch (error) {
-            throw new Error(error)
-        }
-    })
+    // describe('/search?selector', async function() {
+    //     const route = '/api/externals/search'
+    //     try {
+    //         it('fails without "selector"', async function() {
+    //             await user.get(`${route}?`).expect(400)
+    //         })
+    //         it('gets response properly', async function() {
+    //             const query = stringify({query: 'highly suspect'})
+    //             await user
+    //                     .get(`${route}?${query}`)
+    //                     .expect(200)
+    //                     .expect('Content-Type', /json/)
+    //                     .then(({body}) => {
+    //                         expect(body.length).to.be.equal(4)
+    //                         body.map(video => {
+    //                             return expect(video.id.videoId).to.be.an('string')
+    //                         })
+    //                     })
+    //         })
+    //     } catch (error) {
+    //         throw new Error(error)
+    //     }
+    // })
 
 })
