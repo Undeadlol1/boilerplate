@@ -3,12 +3,12 @@ import PropTypes from 'prop-types'
 import { fromJS } from 'immutable'
 import Chip from 'material-ui/Chip'
 import { connect } from 'react-redux'
-import {VK, Comments} from 'react-vk'
 import Avatar from 'material-ui/Avatar'
 import React, { PureComponent } from 'react'
 import { Grid, Row, Col } from 'react-styled-flexboxgrid'
 // project files
 import PageWrapper from 'browser/components/PageWrapper'
+import CommentsList from 'browser/components/CommentsList'
 import { translate as t } from 'browser/containers/Translator'
 
 class ThreadPage extends PureComponent {
@@ -28,14 +28,7 @@ class ThreadPage extends PureComponent {
 							<h1 className="ThreadPage__title">{props.name}</h1>
 						</Col>
 					</Row>
-					<Row>
-						<Col xs={12}>
-							<VK apiId={Number(process.env.VK_ID)}>
-								<Comments />
-								{/* onNewComment={handleNewComment} */}
-							</VK>
-						</Col>
-					</Row>
+					<CommentsList />
 				</PageWrapper>
     }
 }
