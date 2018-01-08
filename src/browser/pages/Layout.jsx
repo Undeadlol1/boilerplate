@@ -12,6 +12,7 @@ import PageLoading from 'browser/components/PageLoading'
 import LoginLogoutButton from 'browser/components/LoginLogoutButton'
 import { logoutCurrentUser } from 'browser/redux/actions/UserActions'
 import styles from 'browser/theme'
+import { Feedback } from '../components/Feedback/Feedback';
 
 let timeout = null
 
@@ -102,6 +103,7 @@ export default class Layout extends React.Component {
 					{/* global page loading indicator */}
 					<PageLoading />
 					<ReduxToastr position="top-left" progressBar />
+					<Feedback />
 				</div>
 	}
 }

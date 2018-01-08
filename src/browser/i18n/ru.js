@@ -59,4 +59,5 @@ export default {
     user_on_APP_NAME: 'Пользователь {username} на ' + process.env.APP_NAME,
     about_us: 'О нас',
     forums_list: 'Список форумов',
+    feedback: 'Обратная связь',
 }
