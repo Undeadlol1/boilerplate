@@ -14,7 +14,6 @@ class Feedback extends Component {
 				onlyWidgets: true,
 				apiId: process.env.VK_ID,
 			})
-			console.log('process.env.VK_GROUP_ID: ', process.env.VK_GROUP_ID);
 			VK.Widgets.CommunityMessages(
 				"vk_community_messages",
 				process.env.VK_GROUP_ID,
