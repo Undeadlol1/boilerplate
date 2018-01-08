@@ -12,7 +12,7 @@ class SocialLike extends Component {
 				onlyWidgets: true,
 				apiId: process.env.VK_ID,
 			})
-			VK.Widgets.Like('vk_like')
+			VK.Widgets.Like('vk_like', this.props.options)
 		}
 	}
 	render() {
@@ -22,7 +22,10 @@ class SocialLike extends Component {
 	}
 }
 
-SocialLike.PropTypes = {}
+SocialLike.PropTypes = {
+	// ability to rewrite widgets options
+	options: PropTypes.object,
+}
 
 export { SocialLike }
 export default connect(
