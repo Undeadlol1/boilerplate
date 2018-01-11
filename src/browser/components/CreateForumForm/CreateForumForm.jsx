@@ -21,9 +21,9 @@ import FloatingActionButton from 'material-ui/FloatingActionButton'
 export class CreateForumForm extends Component {
 	render() {
 		const { props } = this
-		const { valid, insertForum, handleSubmit, dialogIsOpen, isValid, asyncValidating, className } = props
-		const classNames = cls(className, "CreateForumForm")
-		const isDisabled = props.asyncValidating == 'name' || props.submitting
+		const { insertForum, handleSubmit, asyncValidating } = props
+		const classNames = cls(props.className, "CreateForumForm")
+		const isDisabled = asyncValidating == 'name' || props.submitting
 	    return 	<Row>
 					<Col xs={12}>
 						<form onSubmit={handleSubmit(insertForum)}>
@@ -48,8 +48,8 @@ export class CreateForumForm extends Component {
 								<RaisedButton
 									type="submit"
 									primary={true}
-									label={translate('submit')}
-									disabled={!valid} />
+									disabled={!props.valid}
+									label={translate('submit')} />
 							</center>
 						</form>
 					</Col>
