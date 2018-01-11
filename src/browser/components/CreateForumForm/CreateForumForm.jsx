@@ -20,11 +20,13 @@ import FloatingActionButton from 'material-ui/FloatingActionButton'
 
 export class CreateForumForm extends Component {
 	render() {
+		// hide component if user is not admin
+		if (this.props.UserId !== process.env.ADMIN_ID) return null
 		const { props } = this
 		const { insertForum, handleSubmit, asyncValidating } = props
 		const classNames = cls(props.className, "CreateForumForm")
 		const isDisabled = asyncValidating == 'name' || props.submitting
-	    return 	<Row>
+	    return 	<Row className={classNames}>
 					<Col xs={12}>
 						<form onSubmit={handleSubmit(insertForum)}>
 							<Field
@@ -59,7 +61,8 @@ export class CreateForumForm extends Component {
 }
 
 CreateForumForm.propTypes = {
-	// parentId: PropTypes.string.isRequired,
+	UserId: PropTypes.string,
+	handleSubmit: PropTypes.func.isRequired,
 }
 
 // TODO reorganize this for better testing

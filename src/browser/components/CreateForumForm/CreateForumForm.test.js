@@ -10,19 +10,32 @@ chai.use(chaiEnzyme())
 
 describe('<CreateForumForm />', () => {
 
-  const props = {}
-  // const wrapper = shallow(<CreateForumForm {...props} />)
+  const props = {
+    handleSubmit: () => {},
+    UserId: process.env.ADMIN_ID,    
+  }
+  const wrapper = shallow(<CreateForumForm {...props} />)
 
-  // it('has <Row>', () => {
-  //   const el = wrapper.find('Styled(Row)')
-  //   expect(el).to.have.length(1)
-  //   expect(el).to.have.className('CreateForumForm')
-  // })
+  it('has <Row>', () => {
+    const el = wrapper.find('Styled(Row)')
+    expect(el).to.exist
+    expect(el).to.have.className('CreateForumForm')
+  })
 
-  // it('has <Col>', () => {
-  //   const el = wrapper.find('Styled(Col)')
-  //   expect(el).to.have.length(1)
-  //   expect(el.props().xs).to.eq(12)
-  // })
+  it('has <Col>', () => {
+    const el = wrapper.find('Styled(Col)')
+    expect(el).to.exist
+    expect(el.props().xs).to.eq(12)
+  })
+
+
+  it('must return nothing if UserId is not admin', () => {
+    const props = {
+      handleSubmit: () => {},
+      UserId: "something random",
+    }
+    const wrapper = shallow(<CreateForumForm {...props} />)
+    expect(wrapper).to.be.empty
+  })
 
 })
