@@ -1,4 +1,5 @@
 import Boom from 'boom'
+import selectn from 'selectn'
 
 /**
  * TODO
@@ -14,7 +15,7 @@ export function mustLogin(req, res, next) {
  * check administrator permissions
  */
 export function isAdmin(req, res, next) {
-    req.user.id === process.env.ADMIN_ID
+    selectn('user.id', req) === process.env.ADMIN_ID
     ? next()
     : res.boom.unauthorized('You must be an administrator to do this')
 }
