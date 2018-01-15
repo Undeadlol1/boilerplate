@@ -1,3 +1,6 @@
+// missing colors in terminal was spotted on windows machines
+// this line allows to packages like "colors" and "chalk" work as intendent
+process.stdout.isTTY = true
 // this prevents babel to parse css as javascript
 import csshook from 'css-modules-require-hook/preset'
 import path from 'path'

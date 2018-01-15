@@ -3,14 +3,14 @@ require('babel-register')();
 require('source-map-support').install();
 const chai = require('chai')
 const slugify = require('slug')
+const casual = require('casual')
 const uniqid = require('uniqid')
 const { expect } = require('chai')
 const isEqual = require('lodash/isEqual')
 const extend = require('lodash/assignIn')
 const { parseUrl } = require('shared/parsers.js')
-const getRandomDate = require('random-date-generator').getRandomDate
 const userFixtures = require('server/data/fixtures/users.js')
-const casual = require('casual')
+const getRandomDate = require('random-date-generator').getRandomDate
 const { User, Local, Forums, Threads, Mood, Node, Decision, Profile } = require('server/data/models/index.js')
 chai.should()
 
@@ -160,13 +160,14 @@ before(function(done) {
         .then(() => done())
         .catch(error => {
             console.error(error)
-            // throw new Error(error)
-            throw new Error(error)
+            throw error
         })
 })
 
 // clean up db
-after(async function() {
+after(cleanUpDB)
+
+async function cleanUpDB() {
     try {
         const all = { where: {} }
         await User.destroy(all)
@@ -183,7 +184,7 @@ after(async function() {
         console.log(error)
         throw new Error(error)
     }
-})
+}
 
 // TODO make proper names
 describe('fixture data setup', function() {

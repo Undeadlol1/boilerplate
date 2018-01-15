@@ -2,8 +2,8 @@ import slugify from 'slug'
 import { Router } from 'express'
 import generateUuid from 'uuid/v4'
 import { Forums } from 'server/data/models'
-import { mustLogin } from 'server/services/permissions'
 import { getThreads } from 'server/middlewares/threadsApi'
+import { mustLogin, isAdmin } from 'server/services/permissions'
 const limit = 12
 
 export default Router()
@@ -39,7 +39,7 @@ export default Router()
   })
 
   // update forum
-  .put('/:forumsId', mustLogin, async ({user, body, params}, res) => {
+  .put('/:forumsId', isAdmin, async ({user, body, params}, res) => {
     try {
       const UserId = user.id
       const forum = await Forums.findById(params.forumsId)
@@ -55,7 +55,7 @@ export default Router()
   })
 
   // create forum
-  .post('/', mustLogin, async ({user, body}, res) => {
+  .post('/', isAdmin, async ({user, body}, res) => {
     try {
       const UserId = user.id
       const slug = slugify(body.name)
