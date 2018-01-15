@@ -60,4 +60,5 @@ export default {
     about_us: 'О нас',
     forums_list: 'Список форумов',
     feedback: 'Обратная связь',
+    create_thread: 'Создать тему',
 }

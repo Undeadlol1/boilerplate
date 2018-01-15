@@ -33,7 +33,7 @@ export class CreateThreadForm extends Component {
 								name="name"
 								component={TextField}
 								hidden={asyncValidating}
-								hintText={translate("add_something")}
+								hintText={props.title || translate("create_thread")}
 							/>
 							<Field
 								rows={2}
@@ -59,6 +59,8 @@ export class CreateThreadForm extends Component {
 }
 
 CreateThreadForm.propTypes = {
+	// hint to display in "name" input
+	title: PropTypes.string,
 	parentId: PropTypes.string.isRequired,
 }
 
@@ -92,7 +94,7 @@ export default reduxForm({
         insertThread(values) {
 			console.log('insertThread')
 			values.parentId = ownProps.parentId
-			
+
 			function insertSucces(slug) {
 				ownProps.reset()
 				browserHistory.push('/threads/' + slug);

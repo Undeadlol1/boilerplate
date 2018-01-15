@@ -60,4 +60,5 @@ export default {
     about_us: 'About Us',
     forums_list: 'Forums list',
     feedback: 'Feedback',
+    create_thread: 'Create thread',
 }
