@@ -29,7 +29,6 @@ export class CreateThreadForm extends Component {
 						<form onSubmit={handleSubmit(insertThread)}>
 							<Field
 								fullWidth
-								autoFocus
 								name="name"
 								component={TextField}
 								hidden={asyncValidating}

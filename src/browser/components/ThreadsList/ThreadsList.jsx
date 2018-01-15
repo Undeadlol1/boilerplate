@@ -1,6 +1,8 @@
 import cls from 'classnames'
+import { fromJS } from 'immutable'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import Paper from 'material-ui/Paper'
 import React, { Component } from 'react'
 import Link from 'react-router/lib/Link'
 import {List, ListItem} from 'material-ui/List'
@@ -12,32 +14,46 @@ class ThreadsList extends Component {
 		const {props} = this
 		const className = cls(props.className, "ThreadsList")
 		const threads = props.threads.get('values')
-		// console.log('threads: ', threads.toJS());
 		return 	<Row className={className}>
 					<Col xs={12}>
-						<List>
-							{
-								threads.size
-								? threads.map(
-									thread => 	<Link
-													key={thread.get('id')}
-													to={'/threads/' + thread.get('slug')}
-												>
-													<ListItem
-														primaryText={thread.get('name')}
-													/>
-												</Link>
-								)
-								// TODO
-								: <ListItem primaryText={t('list_is_empty')} />
-							}
-						</List>
+						<Paper zDepth={props.zDepth}>
+							<List>
+								{
+									threads.size
+									? threads.map(
+										thread => 	<Link
+														key={thread.get('id')}
+														to={'/threads/' + thread.get('slug')}
+													>
+														<ListItem
+															primaryText={thread.get('name')}
+														/>
+													</Link>
+									)
+									: 	<ListItem
+											disabled={true}
+											className="ThreadsList__empty"
+											primaryText={t('list_is_empty')}
+										/>
+								}
+							</List>
+						</Paper>
 					</Col>
 				</Row>
 	}
 }
 
+ThreadsList.defaultProps = {
+	zDepth: 5,
+	// TODO: rework this
+	threads: fromJS({
+		values: []
+	})
+}
+
 ThreadsList.PropTypes = {
+	title: PropTypes.string,
+	zDepth: PropTypes.number,
 	threads: PropTypes.object.isRequired,
 }
 
