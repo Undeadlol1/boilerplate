@@ -61,7 +61,7 @@ export class CreateForumForm extends Component {
 }
 
 CreateForumForm.propTypes = {
-	UserId: PropTypes.string,
+	UserId: PropTypes.number,
 }
 
 // TODO reorganize this for better testing
