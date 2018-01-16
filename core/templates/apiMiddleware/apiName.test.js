@@ -69,12 +69,8 @@ export default describe('/plural API', function() {
 
     // TODO PUT test
 
-    // TODO create test for "mustLogin" function and this kind of tests will be obsolete
-    it('fail to POST if not authorized', function(done) { // TODO move this to previous function?
-        agent
-            .post('/api/plural')
-            .send({ name })
-            .expect(401, done)
+    it('fail to POST if not authorized', function(done) {
+        agent.post('/api/plural').expect(401, done)
     })
 
 })
