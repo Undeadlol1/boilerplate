@@ -4,14 +4,15 @@ import thunk from 'redux-thunk'
 import chaiImmutable from 'chai-immutable'
 import chai, { expect, assert } from 'chai'
 import configureMockStore from 'redux-mock-store'
-import { insertThread, fetchThread } from './ForumActions'
-import { createAction, createActions } from 'redux-actions'
 import { initialState } from 'browser/redux/forum/ForumReducer'
 import {
   actions,
   fetchForum,
   fetchForums,
+  insertForum,
   updateForum,
+  fetchThread,
+  insertThread,
   toggleLoginDialog,
   fetchCurrentForum,
   logoutCurrentForum,
@@ -79,18 +80,6 @@ describe('ForumActions', () => {
     await mockRequest("/1", fetchForums, "1", expectedActions, 'get', forums)
   })
 
-  it('insertThread calls recieveThread', async () => {
-    // const { name } = forum
-    const store = mockStore()
-    const expectedActions = [actions.addThread(thread)]
-    nock(API_URL).post('/threads/', thread).reply(200, thread)
-    return store
-      // call redux action
-      .dispatch(insertThread(thread))
-      // compare called actions with expected result
-      .then(() => expect(store.getActions()).to.deep.equal(expectedActions))
-  })
-
   it('fetchThread calls recieveThread', async () => {
     const store = mockStore()
     const expectedActions = [actions.recieveThread(thread)]
@@ -99,7 +88,27 @@ describe('ForumActions', () => {
       // call redux action
       .dispatch(fetchThread(thread.slug))
       // compare called actions with expected result
-      .then(() => expect(store.getActions()).to.deep.equal(expectedActions))
+      .then(() => {
+        expect(store.getActions()).to.deep.equal(expectedActions)
+      })
+  })
+
+  it('insertForum calls addThread and callback', async () => {
+    const callback = spy()
+    const store = mockStore()
+    const expectedActions = [actions.addForum(forum)]
+    // intercept request
+    nock(API_URL).post('/forums/', forum).reply(200, forum)
+    return store
+      // call redux action
+      .dispatch(insertForum(forum, callback))
+      // compare called actions with expected result
+      .then(() => {
+        expect(store.getActions()).to.deep.equal(expectedActions)
+        // make sure callback is called
+        assert(callback.calledOnce, 'callback not called')
+        assert(callback.calledWith(forum), 'callback not called with proper params')
+      })
   })
 
   it('insertThread calls addThread and callback', async () => {

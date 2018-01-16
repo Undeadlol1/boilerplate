@@ -32,7 +32,7 @@ export const insertForum = (payload, callback) => (dispatch, getState) => {
 		.then(parseJSON)
 		.then((response) => {
 			dispatch(actions.addForum(response))
-			return callback && callback()
+			return callback && callback(response)
 		})
 }
 
