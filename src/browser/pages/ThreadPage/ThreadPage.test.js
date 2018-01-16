@@ -34,11 +34,18 @@ describe('<ThreadPage />', () => {
       expect(header.find('Styled(Col)').props().xs).to.eq(12)
     })
 
-    it('has <h1>', () => {
+    it('has title', () => {
       const el = header.find('h1')
       expect(el).to.exist
       expect(el).to.have.text(props.name)
       expect(el).to.have.className('ThreadPage__title')
+    })
+
+    it('has text', () => {
+      const el = header.find('p')
+      expect(el).to.exist
+      expect(el).to.have.text(props.text)
+      expect(el).to.have.className('ThreadPage__text')
     })
 
     it('has <Chip> and <Avatar>', () => {
@@ -53,6 +60,6 @@ describe('<ThreadPage />', () => {
 
   it('has <CommentsList>', () => {
     expect(wrapper.find('Connect(CommentsList)')).to.exist
-})
+  })
 
 })

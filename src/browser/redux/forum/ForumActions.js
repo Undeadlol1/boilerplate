@@ -30,9 +30,9 @@ export const insertForum = (payload, callback) => (dispatch, getState) => {
 	return fetch(forumsUrl, headersAndBody(payload))
 		.then(checkStatus)
 		.then(parseJSON)
-		.then(function(response) {
+		.then((response) => {
 			dispatch(actions.addForum(response))
-			return callback && callback()
+			return callback && callback(response)
 		})
 }
 
@@ -47,7 +47,7 @@ export const insertThread = (payload, callback) => (dispatch, getState) => {
 		.then(parseJSON)
 		.then((response) => {
 			dispatch(actions.addThread(response))
-			return callback && callback()
+			return callback && callback(response)
 		})
 }
 

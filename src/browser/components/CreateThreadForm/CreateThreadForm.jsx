@@ -97,9 +97,9 @@ export default reduxForm({
 			console.log('insertThread')
 			values.parentId = ownProps.parentId
 
-			function insertSucces(slug) {
+			function insertSucces(thread) {
 				ownProps.reset()
-				browserHistory.push('/threads/' + slug);
+				browserHistory.push('/threads/' + thread.slug);
 			}
             // dispatch(toggleDialog())
             dispatch(insertThread(values, insertSucces))

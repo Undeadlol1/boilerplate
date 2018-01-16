@@ -26,6 +26,7 @@ class ThreadPage extends PureComponent {
 								{props.username}
 							</Chip>
 							<h1 className="ThreadPage__title">{props.name}</h1>
+							<p className="ThreadPage__text">{props.text}</p>
 						</Col>
 					</Row>
 					<CommentsList />
@@ -35,6 +36,7 @@ class ThreadPage extends PureComponent {
 
 ThreadPage.propTypes = {
 	name: PropTypes.string.isRequired,
+	text: PropTypes.string.isRequired,
 	username: PropTypes.string.isRequired,
 	userImage: PropTypes.string.isRequired,
 }
@@ -46,12 +48,11 @@ connect(
 	(state, ownProps) => {
 		const thread = state.forum.get('thread')
 		const user = thread.get('User')
-		console.log('user: ', user.toJS());
-		console.log('thread: ', thread.toJS());
 		return {
 			...ownProps,
 			name: thread.get('name'),
-			username: user.get('displayName'),
+			text: thread.get('text'),
 			userImage: user.get('image'),
+			username: user.get('displayName'),
 	}},
 )(ThreadPage)
