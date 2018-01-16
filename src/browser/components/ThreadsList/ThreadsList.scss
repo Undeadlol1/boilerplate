@@ -1,7 +1,12 @@
 .ThreadsList {
+    // padding: 8px 0;
     .ThreadsList__empty {
         font-weight: bold;
         font-style: italic;
+        text-align: center;
+    }
+    .ThreadsList__pagination-wrapper {
+        margin: 0 auto;
         text-align: center;
     }
 }

@@ -98,10 +98,11 @@ export const fetchThread = slug => (dispatch, getState) => {
 
 /**
  * fetch threads
+ * @param {number} parentId parent identificator
  * @param {number} [page=1] threads page (optional)
  */
-export const fetchThreads = (page=1) => (dispatch, getState) => {
-	return fetch(threadsUrl + page)
+export const fetchThreads = (parentId, page=1) => (dispatch, getState) => {
+	return fetch(threadsUrl + parentId + '/' + page)
 		.then(checkStatus)
 		.then(parseJSON)
 		.then(data => dispatch(actions.recieveThreads((data))))
