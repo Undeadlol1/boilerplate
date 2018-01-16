@@ -21,7 +21,7 @@ import FloatingActionButton from 'material-ui/FloatingActionButton'
 export class CreateForumForm extends Component {
 	render() {
 		// hide component if user is not admin
-		if (this.props.UserId !== process.env.ADMIN_ID) return null
+		if (this.props.UserId != process.env.ADMIN_ID) return null
 		const { props } = this
 		const { insertForum, handleSubmit, asyncValidating } = props
 		const classNames = cls(props.className, "CreateForumForm")
@@ -62,7 +62,6 @@ export class CreateForumForm extends Component {
 
 CreateForumForm.propTypes = {
 	UserId: PropTypes.string,
-	handleSubmit: PropTypes.func.isRequired,
 }
 
 // TODO reorganize this for better testing
@@ -89,13 +88,13 @@ export default reduxForm({
 (connect(
 	(state, ownProps) => ({
 		...ownProps,
-		dialogIsOpen: state.mood.get('dialogIsOpen'),
+		UserId: state.user.get('id'),
 	}),
     (dispatch, ownProps) => ({
         insertForum(values) {
 			console.log('insertForum')
 			// values.parentId = ownProps.parentId
-			
+
 			function insertSucces(slug) {
 				ownProps.reset()
 				// browserHistory.push('/thread/' + slug);
