@@ -23,7 +23,7 @@ const isDevelopment = NODE_ENV === 'development'
 const isProduction = NODE_ENV === 'production'
 const isTest = NODE_ENV === 'test'
 
-// variables to exclude from liking to client
+// variables to exclude from leaking to client
 const notSafeVariables = [
     'PORT',
     "SESSION_KEY",
