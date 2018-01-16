@@ -1,5 +1,6 @@
 import cls from 'classnames'
 import PropTypes from 'prop-types'
+import Paper from 'material-ui/Paper'
 import { connect } from 'react-redux'
 import store from 'browser/redux/store'
 import Dialog from 'material-ui/Dialog'
@@ -24,33 +25,35 @@ export class CreateThreadForm extends Component {
 		const { valid, insertThread, handleSubmit, dialogIsOpen, isValid, asyncValidating, className } = props
 		const classNames = cls(className, "CreateThreadForm")
 		const isDisabled = props.asyncValidating == 'name' || props.submitting
-	    return 	<Row>
+	    return 	<Row className={classNames}>
 					<Col xs={12}>
-						<form onSubmit={handleSubmit(insertThread)}>
-							<Field
-								fullWidth
-								name="name"
-								component={TextField}
-								hidden={asyncValidating}
-								hintText={props.title || translate("create_thread")}
-							/>
-							<Field
-								rows={2}
-								fullWidth
-								name="text"
-								multiLine={true}
-								component={TextField}
-								hidden={asyncValidating}
-								hintText={translate("description")}
-							/>
-							<center>
-								<RaisedButton
-									type="submit"
-									primary={true}
-									label={translate('submit')}
-									disabled={!valid} />
-							</center>
-						</form>
+						<Paper zDepth={5} className="CreateThreadForm__paper">
+							<form onSubmit={handleSubmit(insertThread)}>
+								<Field
+									fullWidth
+									name="name"
+									component={TextField}
+									hidden={asyncValidating}
+									hintText={props.title || translate("create_thread")}
+								/>
+								<Field
+									rows={2}
+									fullWidth
+									name="text"
+									multiLine={true}
+									component={TextField}
+									hidden={asyncValidating}
+									hintText={translate("description")}
+								/>
+								<center>
+									<RaisedButton
+										type="submit"
+										primary={true}
+										label={translate('submit')}
+										disabled={!valid} />
+								</center>
+							</form>
+						</Paper>
 					</Col>
 				</Row>
 

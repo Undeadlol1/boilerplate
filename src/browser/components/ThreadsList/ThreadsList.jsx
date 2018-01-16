@@ -33,7 +33,7 @@ class ThreadsList extends Component {
 									: 	<ListItem
 											disabled={true}
 											className="ThreadsList__empty"
-											primaryText={t('list_is_empty')}
+											primaryText={t('list_is_empty') + '...'}
 										/>
 								}
 							</List>
