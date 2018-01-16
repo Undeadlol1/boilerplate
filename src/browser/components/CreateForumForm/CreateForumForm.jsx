@@ -95,9 +95,9 @@ export default reduxForm({
 			console.log('insertForum')
 			// values.parentId = ownProps.parentId
 
-			function insertSucces(slug) {
+			function insertSucces(forum) {
 				ownProps.reset()
-				// browserHistory.push('/thread/' + slug);
+				// browserHistory.push('/forum/' + forum.slug);
 			}
             // dispatch(toggleDialog())
             dispatch(insertForum(values, insertSucces))
