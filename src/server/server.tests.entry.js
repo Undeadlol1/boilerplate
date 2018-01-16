@@ -178,7 +178,7 @@ async function cleanUpDB() {
         await Decision.destroy(all)
         await Forums.destroy(all)
         await Threads.destroy(all)
-        // TODO: add code to create lines here from cli (creation of api from templates)
+        // ⚠️ Hook for cli! Do not remove 💀
     }
     catch(error) {
         console.log(error)
