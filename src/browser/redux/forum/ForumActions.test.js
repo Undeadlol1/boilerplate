@@ -1,13 +1,21 @@
 import nock from 'nock'
-import isArray from 'lodash/isArray'
+import { spy } from 'sinon'
 import thunk from 'redux-thunk'
-import chai, { expect } from 'chai'
 import chaiImmutable from 'chai-immutable'
+import chai, { expect, assert } from 'chai'
 import configureMockStore from 'redux-mock-store'
+import { insertThread, fetchThread } from './ForumActions'
 import { createAction, createActions } from 'redux-actions'
 import { initialState } from 'browser/redux/forum/ForumReducer'
-import { updateForum, toggleLoginDialog, logoutCurrentForum, fetchCurrentForum, fetchForum, fetchForums, actions } from 'browser/redux/forum/ForumActions'
-import { insertThread, fetchThread } from './ForumActions';
+import {
+  actions,
+  fetchForum,
+  fetchForums,
+  updateForum,
+  toggleLoginDialog,
+  fetchCurrentForum,
+  logoutCurrentForum,
+} from 'browser/redux/forum/ForumActions'
 chai.should();
 chai.use(chaiImmutable);
 
@@ -39,7 +47,7 @@ const forums = {
  * @returns
  */
 function mockRequest(url, action, param, result, method = 'get', response=forum) {
-    // create request interceptor 
+    // create request interceptor
     nock(API_URL + 'forums')[method](url).reply(200, response)
     // nock(API_URL + '/forums')[method](url).reply(200, forum)
     const store = mockStore()
@@ -75,7 +83,7 @@ describe('ForumActions', () => {
     // const { name } = forum
     const store = mockStore()
     const expectedActions = [actions.addThread(thread)]
-    nock(API_URL).post('/threads/', thread).reply(200, thread)    
+    nock(API_URL).post('/threads/', thread).reply(200, thread)
     return store
       // call redux action
       .dispatch(insertThread(thread))
@@ -91,18 +99,25 @@ describe('ForumActions', () => {
       // call redux action
       .dispatch(fetchThread(thread.slug))
       // compare called actions with expected result
-      .then(() => expect(store.getActions()).to.deep.equal(expectedActions))      
+      .then(() => expect(store.getActions()).to.deep.equal(expectedActions))
   })
 
-  it('insertThread calls addThread', async () => {
-    const store = mockStore()    
+  it('insertThread calls addThread and callback', async () => {
+    const callback = spy()
+    const store = mockStore()
     const expectedActions = [actions.addThread(thread)]
+    // intercept request
     nock(API_URL).post('/threads/', thread).reply(200, thread)
     return store
       // call redux action
-      .dispatch(insertThread(thread))
+      .dispatch(insertThread(thread, callback))
       // compare called actions with expected result
-      .then(() => expect(store.getActions()).to.deep.equal(expectedActions))
+      .then(() => {
+        expect(store.getActions()).to.deep.equal(expectedActions)
+        // make sure callback is called
+        assert(callback.calledOnce, 'callback not called')
+        assert(callback.calledWith(thread), 'callback not called with proper params')
+      })
   })
 
 })
