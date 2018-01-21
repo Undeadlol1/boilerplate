@@ -1,5 +1,8 @@
 .ThreadsList {
-    // padding: 8px 0;
+    .ThreadsList_paper {
+        padding-top: 0;
+        padding-bottom: 0;
+    }
     .ThreadsList__empty {
         font-weight: bold;
         font-style: italic;
