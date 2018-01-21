@@ -7,6 +7,8 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 // TODO webpack-build-notifier (seems better tgeb webpack-notifier)
 var merge = require('webpack-merge');
 var nodeExternals = require('webpack-node-externals');
+var omit = require('lodash/omit')
+var pick = require('lodash/pick')
 var extend = require('lodash/assignIn')
 var commonConfig = require('./common.config.js')
 var config = require('../config.js')
@@ -21,6 +23,22 @@ const isDevelopment = NODE_ENV === 'development'
 const isProduction = NODE_ENV === 'production'
 const isTest = NODE_ENV === 'test'
 
+// variables to exclude from leaking to client
+const notSafeVariables = [
+    'PORT',
+    "SESSION_KEY",
+    "DB_HOST",
+    "DB_PORT",
+    "DB_USER",
+    "DB_PASS",
+    "DB_NAME",
+    "DB_DIALECT",
+    "VK_SECRET",
+    "TWITTTER_ID",
+    "YOUTUBE_KEY",
+    "TWITTER_SECRET",
+]
+
 const serverVariables =  extend({
                             BROWSER: false,
                             isBrowser: false,
@@ -28,12 +46,15 @@ const serverVariables =  extend({
                             isServer: true,
                         }, config)
 
-const clientVariables =  extend({
-                            BROWSER: true,
-                            isBrowser: true,
-                            SERVER: false,
-                            isServer: false,
-                        }, config)
+const clientVariables =  omit(
+                            extend({
+                                BROWSER: true,
+                                isBrowser: true,
+                                SERVER: false,
+                                isServer: false,
+                            }, config),
+                            notSafeVariables
+                        )
 
 const clientProductionPlugins = isProduction ? [
     new webpack.optimize.ModuleConcatenationPlugin(),
