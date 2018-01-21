@@ -56,6 +56,7 @@ export default {
     hope_you_will_enjoy_it: 'Надеюсь он вам понравится.',
     description: 'Описание',
     forum: 'форум',
+    image_of_user_username: 'Изображение пользователя {username}',
     user_on_APP_NAME: 'Пользователь {username} на ' + process.env.APP_NAME,
     about_us: 'О нас',
     forums_list: 'Список форумов',

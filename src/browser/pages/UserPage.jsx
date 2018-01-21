@@ -18,20 +18,21 @@ import ChangeLanguageForm from 'browser/components/ChangeLanguageForm'
 @injectIntl
 export class UserPage extends Component {
     render() {
-		const {moods, loading, image, location, UserId, displayName, isOwnPage, intl} = this.props
+		const { props } = this
+		const {moods, loading, image, UserId, displayName, isOwnPage, intl} = this.props
 		const src = `https://api.adorable.io/avatars/300/${UserId}.png`
-		const imageText = displayName + translate('things_image')
+		const imageText = intl.formatMessage(
+			{id: 'image_of_user_username'},
+			{username: displayName},
+		)
 		const title = intl.formatMessage(
 			{id: 'user_on_APP_NAME'},
 			{username: displayName},
 		)
 
-		console.log('title: ', title);
 		return 	<PageWrapper
 					title={title}
-					// description={}
 					loading={loading}
-					location={location}
 					className='UserPage'
 					image={image || src}
 				>
@@ -44,9 +45,9 @@ export class UserPage extends Component {
 						<Col xs={12} className="UserPage__avatar">
 							<Avatar
 								size={300}
+								alt={imageText}
 								title={imageText}
 								src={image || src}
-								alt={displayName + translate('things_image')}
 							/>
 						</Col>
 					</Row>

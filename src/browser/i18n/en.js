@@ -56,6 +56,7 @@ export default {
     hope_you_will_enjoy_it: 'Hope you will enjoy it.',
     description: 'Description',
     forum: 'forum',
+    image_of_user_username: 'Image of user {username}',
     user_on_APP_NAME: 'User {username} on ' + process.env.APP_NAME,
     about_us: 'About Us',
     forums_list: 'Forums list',

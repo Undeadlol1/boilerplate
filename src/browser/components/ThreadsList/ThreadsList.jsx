@@ -21,7 +21,7 @@ class ThreadsList extends Component {
 		const threads = props.threads.get('values')
 		return 	<Row className={className}>
 					<Col xs={12}>
-						<Paper zDepth={props.zDepth}>
+						<Paper zDepth={props.zDepth} className="ThreadsList_paper">
 							<List>
 								{
 									threads.size
