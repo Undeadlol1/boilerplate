@@ -38,7 +38,7 @@ export class MoodPage extends Component {
 		const image = contentId && `http://img.youtube.com/vi/${contentId}/hqdefault.jpg`
 		// TODO https://stackoverflow.com/a/42956044/4380989 might get you better preview images
 		return 	<PageWrapper
-					grid={false}
+					fluid={false}
 					title={title}
 					image={image}
 					loading={isLoading}

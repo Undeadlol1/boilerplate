@@ -8,51 +8,36 @@ chai.use(chaiEnzyme())
 
 describe('<PageWrapper />', () => {
   const props = {
-    loading: true,
-    preset: 'pop',
-    location: {pathname: 'some'}
+    children: <h1>test</h1>,
   }
   const wrapper = shallow(<PageWrapper {...props} />);
-
-  // after(() => {
-  //     // TODO does this breaks anything else in code?
-  //     process.env = JSON.stringify({BROWSER: true});
-  // });
-
-  // it('has <RouteTransition />', () => {
-  //   const transitionProps = wrapper.find('RouteTransition').props()
-  //   expect(wrapper.find('RouteTransition')).to.have.length(1);
-  //   expect(wrapper.find('.PageWrapper')).to.have.length(1);
-  //   expect(transitionProps).to.have.property('pathname', props.location.pathname)
-  // });
 
   it('inherits classNames properly', () => {
     const className = 'test'
     wrapper.setProps({className})
-    expect(wrapper.hasClass(className)).to.equal(true);
+    expect(wrapper.hasClass(className)).to.equal(true)
   });
 
-  // it('has <Loading />', () => {
-  //   const loading = wrapper.find('Loading')
-  //   expect(loading).to.have.length(1);
-  // });
-
   it('has <Grid>', () => {
-    expect(wrapper.find('Styled(Grid)')).to.have.length(1);
+    const el = wrapper.find('Styled(Grid)')
+    expect(el).to.exist
+    // must have fluid grid by default
+    expect(el).to.have.prop('fluid', true)
+    // must change "grid" prop value properly
+    wrapper.setProps({fluid: false})
+    const afterUpdate = wrapper.find('Styled(Grid)')
+    expect(afterUpdate).to.have.prop('fluid', false)
   })
 
   it('has <MetaData>', () => {
     const el = wrapper.find('withRouter(MetaData)')
-    expect(el).to.have.length(1)
+    expect(el).to.exist
   })
 
-  // it('returns children in SSR', () => {
-  //   process.env = JSON.stringify({BROWSER: false});
-  //   const wrapper = shallow(<PageWrapper {...props}><section /></PageWrapper>)
-
-  //   expect(wrapper.type()).to.eq('div')
-  //   expect(wrapper).to.have.className('PageWrapper')
-  //   expect(wrapper.find('section')).to.have.length(1)
-  // });
+  it('has children', () => {
+    const el = wrapper.find('h1')
+    expect(el).to.exist
+    expect(el).to.have.text('test')
+  })
 
 });
