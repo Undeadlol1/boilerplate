@@ -38,10 +38,11 @@ export class MoodPage extends Component {
 		const image = contentId && `http://img.youtube.com/vi/${contentId}/hqdefault.jpg`
 		// TODO https://stackoverflow.com/a/42956044/4380989 might get you better preview images
 		return 	<PageWrapper
-					loading={isLoading}
-					className="MoodPage"
+					grid={false}
 					title={title}
 					image={image}
+					loading={isLoading}
+					className="MoodPage"
 				>
 					{/* TODO remove h1 (use css instead) */}
 					{

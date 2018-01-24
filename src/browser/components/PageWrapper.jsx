@@ -5,11 +5,6 @@ import { Grid } from 'react-styled-flexboxgrid'
 import Loading from 'browser/components/Loading'
 import MetaData from 'browser/components/MetaData'
 import { translate as t } from 'browser/containers/Translator'
-// import { RouteTransition } from 'react-router-transition'
-// import presets from 'react-router-transition/src/presets'
-
-// TODO make this a decorator?
-// TODO get location from react-router directly in order not to pass it eveyrime
 
 /**
  * Wrapper for *Page.jsx components
@@ -19,22 +14,21 @@ import { translate as t } from 'browser/containers/Translator'
 export default class PageWrapper extends Component {
 
     static defaultProps = {
+        grid: true,
         loading: false
     }
 
     static propTypes = {
-        // TODO add defaultValue?
-        loading: PropTypes.bool.isRequired,
         preset: PropTypes.string,
         location: PropTypes.object,
+        grid: PropTypes.bool.isRequired,
+        loading: PropTypes.bool.isRequired,
     }
 
     render() {
         const { props } = this
-		const isServer = process.env.SERVER
-		const isBrowser = process.env.BROWSER
 		const {location, loading, children, preset} = this.props
-        const cx = classNames('PageWrapper PageWrapper__Grid', this.props.className)
+        const cx = classNames('PageWrapper PageWrapper__Grid', props.className)
         const metaTags = {
             title: props.title,
             image: props.image,
@@ -47,50 +41,15 @@ export default class PageWrapper extends Component {
             minHeight: '100%',
             // position: 'relative',
         }
-        const childrenStyles = {
-            opacity: '0',
-            pointerEvents: 'none',
-        }
-        const textStyles = {
-            top: '50%',
-            right: '50%',
-            fontSize: '1.5rem',
-            position: 'absolute',
-            fontFamily: 'sans-serif',
-            transform: 'translate(50%, -50%)',
-        }
 
-        /*
-            while server side rendered content is on page show loading screen and
-            hide children beneath it so they can still be crawled for SEO
-        */
-        // if (isServer) return  <div className={cx}>
-        //                             <div style={rootStyles}>
-        //                                 <MetaData {...metaTags} />
-        //                                 <span style={textStyles}>{t('loading')}...</span>
-        //                                 <div style={childrenStyles} className="PageWrapper_children">{children}</div>
-        //                             </div>
-        //                         </div>
-        return  <Grid fluid className={cx}>
-                    <div style={rootStyles}>
+        return  props.grid
+                ?   <Grid fluid className={cx}>
                         <MetaData {...metaTags} />
-                        {/*<Loading
-                            className={this.props.className}
-                            condition={isBrowser && loading}
-                        >*/}
-                            {children}
-                        {/*</Loading>*/}
+                        {children}
+                    </Grid>
+                :   <div className={classNames('PageWrapper', props.className)}>
+                        <MetaData {...metaTags} />
+                        {children}
                     </div>
-                </Grid>
-		// return  <RouteTransition
-        //             className={cx}
-        //             {...presets[preset]}
-        //             /* TODO remove location required proptype (take it automatically) */
-        //             pathname={location.pathname}
-        //         >
-                    // <Loading condition={isBrowser && loading}>
-                        // {children}
-                    // </Loading>
-				// </RouteTransition>
     }
 }
