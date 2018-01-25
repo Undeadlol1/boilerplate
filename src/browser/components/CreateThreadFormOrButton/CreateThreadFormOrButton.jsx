@@ -6,16 +6,14 @@ import RaisedButton from 'material-ui/RaisedButton'
 import { translate as t } from 'browser/containers/Translator'
 import CreateThreadForm from 'browser/components/CreateThreadForm'
 
-// FIXME: add comments
+/*
+	display button or thread creation form
+*/
 
 class CreateThreadFormOrButton extends Component {
-	state = {
-		showButton: true,
-	}
+	state = {showButton: true}
 
-	showForm = () => {
-		this.setState({showButton: false})
-	}
+	showForm = () => this.setState({showButton: false})
 
 	render() {
 		const {props, state} = this
@@ -40,6 +38,7 @@ CreateThreadFormOrButton.defaultProps = {
 }
 
 CreateThreadFormOrButton.propTypes = {
+	// button label
 	label: PropTypes.string
 }
 

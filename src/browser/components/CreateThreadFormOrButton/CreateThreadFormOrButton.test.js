@@ -8,12 +8,15 @@ import CreateThreadFormOrButton from 'browser/components/CreateThreadFormOrButto
 chai.should()
 chai.use(chaiEnzyme())
 
-// FIXME: add comments
+// code is self explanatory.
+// read "desribe" and "it" labels
+// also read comments in
 
 describe('<CreateThreadFormOrButton />', () => {
 
   const props = {
     className: 'test1',
+    label: 'test label',
   }
   const wrapper = shallow(<CreateThreadFormOrButton {...props} />)
 
@@ -34,7 +37,7 @@ describe('<CreateThreadFormOrButton />', () => {
         const el = wrapper.find('RaisedButton')
         expect(el).to.exist
         expect(el.props().onClick).to.be.a('function')
-        expect(el).to.have.prop('label', t('create_thread'))
+        expect(el).to.have.prop('label', props.label)
         expect(el).to.have.className('CreateThreadFormOrButton__button')
       })
 
@@ -43,8 +46,10 @@ describe('<CreateThreadFormOrButton />', () => {
       })
 
       it('default props', () => {
-        const defaultProps = wrapper.instance().props
-        expect(defaultProps.label).to.eq(t('create_thread'))
+        expect(CreateThreadFormOrButton.defaultProps)
+        .to
+        .deep
+        .eq({label: t('create_thread')})
       })
   })
 
