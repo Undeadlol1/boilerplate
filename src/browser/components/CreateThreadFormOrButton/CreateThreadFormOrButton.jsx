@@ -7,7 +7,8 @@ import { translate as t } from 'browser/containers/Translator'
 import CreateThreadForm from 'browser/components/CreateThreadForm'
 
 /*
-	display button or thread creation form
+	display button
+	on button click display thread creation form
 */
 
 class CreateThreadFormOrButton extends Component {
