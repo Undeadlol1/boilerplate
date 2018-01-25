@@ -55,11 +55,15 @@ describe('<CreateThreadFormOrButton />', () => {
 
   describe('after click on button', () => {
     it('returns <CreateThreadForm />', () => {
-      const button = wrapper.find('RaisedButton')
-      expect(button).to.exist
-      button.simulate('click')
+      // click button
+      wrapper
+      .find('RaisedButton')
+      .simulate('click')
+      // find animation and form components
       const form = wrapper.find('ReduxForm')
+      const animation = wrapper.find('Fade')
       expect(form).to.exist
+      expect(animation).to.exist
       // make sure props inheritance works
       expect(form).to.have.className(props.className)
     })

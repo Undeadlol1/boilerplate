@@ -1,5 +1,6 @@
 import cls from 'classnames'
 import PropTypes from 'prop-types'
+import { Fade } from 'react-reveal'
 import React, { Component } from 'react'
 import { Row, Col } from 'react-styled-flexboxgrid'
 import RaisedButton from 'material-ui/RaisedButton'
@@ -30,7 +31,11 @@ class CreateThreadFormOrButton extends Component {
 				</Col>
 			</Row>
 		)
-		else return <CreateThreadForm {...props} />
+		else return (
+			<Fade> {/* animation */}
+				<CreateThreadForm {...props} />
+			</Fade>
+		)
 	}
 }
 
