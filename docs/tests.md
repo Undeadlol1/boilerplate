@@ -1,0 +1,1 @@
+If you want to exlude file from being tested, just find special "if" statement in the end of appropriate .tests.entry.js file.
