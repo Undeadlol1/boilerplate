@@ -32,20 +32,16 @@ export const initialState = fromJS({
 
 export default (state = initialState, {type, payload}) => {
 	switch(type) {
-		// case 'FETCHING_MODULENAME':
-		// 	return state.merge({
-		// 		loading: true,
-		// 		finishedLoading: false,
-		// 		contentNotFound: false,
-		// 	})
-		case 'RECIEVE_MODULENAME':
+		case 'ADD_MODULENAME':
 			return state
-				.merge(payload)
 				.updateIn(['moduleNames'], arr => {
 					return isEmpty(payload)
 						? arr
 						: arr.push(Map(payload))
 				})
+		case 'RECIEVE_MODULENAME':
+			return state
+				.merge(payload)
 				.merge({
 					loading: false,
 					// finishedLoading: true,
