@@ -11,6 +11,7 @@ const extend = require('lodash/assignIn')
 const { parseUrl } = require('shared/parsers.js')
 const userFixtures = require('server/data/fixtures/users.js')
 const getRandomDate = require('random-date-generator').getRandomDate
+const models = require('server/data/models/index.js')
 const { User, Local, Forums, Threads, Mood, Node, Decision, Profile } = require('server/data/models/index.js')
 chai.should()
 
