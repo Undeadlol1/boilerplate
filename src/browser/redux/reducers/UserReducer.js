@@ -34,7 +34,8 @@ const emptyTwitterObject = {
 }
 
 const emptyUserObject = {
-	id: '',
+	// use "undfined" to avoid proptypes errors
+	id: undefined,
 	role: '',
 	image: '',
 	displayName: '',
