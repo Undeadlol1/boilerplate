@@ -14,7 +14,7 @@ import { checkStatus, parseJSON } from'browser/redux/actions/actionHelpers'
 
 export class LoginOrSignUpForm extends Component {
 	render() {
-		// TODO
+		// TODO:
 		const { isLogin, valid, onSubmit, handleSubmit, asyncValidating } = this.props
 		const buttonStyle = {paddingTop: '1rem'}
 	    return  <Form
@@ -23,7 +23,7 @@ export class LoginOrSignUpForm extends Component {
 				>
 					<Row>
 						<Col xs={12}>
-							{/* TODO check why is this not async validating */}
+							{/* TODO: check why is this not async validating */}
 							{
 								isLogin
 								? null
@@ -59,9 +59,10 @@ export const dispatchToProps = (dispatch, ownProps) => ({
 	}
 })
 
-// TODO reorganize this for better testing
+// TODO: reorganize this for better testing
 export default reduxForm({
 	form: 'LoginOrSignUpForm',
+	asyncBlurFields: ['email', 'username'],
 	asyncValidate(values, dispatch, {isLogin}) {
 		return fetch('/api/auth/validate/' + values.username)
 			.then(checkStatus)
@@ -69,14 +70,13 @@ export default reduxForm({
 			.then(user => {
 				if (isLogin && isEmpty(user)) throw {username: t('user_does_not_exists')}
 				else if (!isLogin && !isEmpty(user)) throw {
-					// TODO add better errors so user will know about email + username constraint
+					// TODO: add better errors so user will know about email + username constraint
 					email: t('user_already_exists'),
 					username: t('user_already_exists'),
 				}
 				return
 			})
     },
-	asyncBlurFields: ['email', 'username'],
 	validate({username = '', password = '', email = ''}, ownProps) {
 		let errors = {}
 
