@@ -9,8 +9,9 @@ export const actions = createActions({
   UNLOAD_MODULENAME: () => null,
   REMOVE_MODULENAME: id => id,
   TOGGLE_DIALOG: () => null,
-  RECIEVE_MODULENAME: node => node,
-  RECIEVE_MODULENAMES: nodes => nodes,
+  ADD_MODULENAME: moduleName => moduleName,
+  RECIEVE_MODULENAME: moduleName => moduleName,
+  RECIEVE_MODULENAMES: moduleNames => moduleNames,
   UPDATE_MODULENAME: object => object,
   TOGGLE_MODULENAME_FETCHING: boolean => boolean,
   FETCHING_ERROR: reason => reason,
@@ -42,7 +43,7 @@ export const fetchModuleName = slug => (dispatch, getState) => {
 		.then(checkStatus)
 		.then(parseJSON)
 		.then(data => {
-			return dispatch(actions.recieveModuleName((data)))
+			return dispatch(actions.addModuleName((data)))
 		})
 		.catch(err => console.error('fetchmoduleName failed!', err))
 }

@@ -198,7 +198,7 @@ function createApi(name) {
     addLineToFile(
         path.resolve(__dirname, '../../src/server/server.tests.entry.js'),
         hook,
-        `await ${upperCase}.destroy(all)`
+        `await models.${upperCase}.destroy(all)`
     )
     /*
         controller files should be created when
