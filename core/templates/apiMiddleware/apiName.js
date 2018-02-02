@@ -38,12 +38,12 @@ export default Router()
   })
 
   // update singular
-  .put('/:apiNameId', mustLogin, async ({user, body, params}, res) => {
+  .put('/:SingularId', mustLogin, async ({user, body, params}, res) => {
     try {
       const UserId = user.id
-      const singular = await Plural.findById(params.apiNameId)
+      const singular = await Plural.findById(params.SingularId)
 
-      // check permissions
+      // check permissions and respond
       if (Plural.UserId != UserId) return res.status(401).end()
       else res.json(await singular.update(body))
 
