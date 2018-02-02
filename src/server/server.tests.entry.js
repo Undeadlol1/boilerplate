@@ -179,7 +179,8 @@ async function cleanUpDB() {
         await Decision.destroy(all)
         await Forums.destroy(all)
         await Threads.destroy(all)
-        // ⚠️ Hook for cli! Do not remove 💀
+        await models.Subscriptions.destroy(all) 
+// ⚠️ Hook for cli! Do not remove 💀
     }
     catch(error) {
         console.log(error)
