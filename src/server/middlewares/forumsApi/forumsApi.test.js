@@ -50,7 +50,7 @@ export default describe('/forums API', function() {
             .expect(200)
             .then(function(res) {
                 const { name, threads } = res.body
-                // has skill
+                // has forum
                 name.should.be.equal(forum.name)
                 // includes threads
                 threads.totalPages.should.eq(1)
@@ -91,7 +91,7 @@ export default describe('/forums API', function() {
             .catch(error => {
                 console.log(error)
                 throw error
-            })                        
+            })
     })
 
     it('fail to POST if user is not an admin', async function() {
@@ -105,14 +105,14 @@ export default describe('/forums API', function() {
     })
 
     it('fail to PUT if user is not an admin', async function() {
-        // const user = await Local.findOne({where: {username}})        
+        // const user = await Local.findOne({where: {username}})
         // assert(user.UserId != process.env.ADMIN_ID)
         const agent = await loginUser(username, password)
         await agent
             .put('/api/forums/' + 'random name')
             .send({ name })
             .expect(401)
-            .catch(error => {throw error})            
+            .catch(error => {throw error})
     })
 
 

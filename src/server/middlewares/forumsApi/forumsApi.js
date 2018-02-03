@@ -12,9 +12,9 @@ export default Router()
   .get('/:page?', async (req, res) => {
     try {
       const page = req.params.page,
-            totalForumss = await Forums.count(),
+            totalForums = await Forums.count(),
             offset = page ? limit * (page -1) : 0,
-            totalPages = Math.ceil(totalForumss / limit),
+            totalPages = Math.ceil(totalForums / limit),
             values = await Forums.findAll({limit, offset})
       res.json({ values, totalPages, currentPage: page || 1 })
     }
