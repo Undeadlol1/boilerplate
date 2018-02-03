@@ -1,9 +1,9 @@
 /**
  * detect if string is a url
- * @param {String} str 
- * @returns Boolean
+ * @param {string} str
+ * @return {boolean}
  */
-function isUrl(str) {
+export function isUrl(str) {
   var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
   '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|'+ // domain name
   '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
@@ -12,5 +12,3 @@ function isUrl(str) {
   '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
   return pattern.test(str);
 }
-
-export { isUrl }
