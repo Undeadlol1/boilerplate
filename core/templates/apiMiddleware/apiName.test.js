@@ -16,18 +16,10 @@ const   agent = request.agent(server),
         slug = slugify(name)
 
 export default describe('/plural API', function() {
-
-    before(async function() {
-        // TODO add logout? to test proper user login?
-        // Kill supertest server in watch mode to avoid errors
-        server.close()
-
-    })
-
+    // Kill supertest server in watch mode to avoid errors
+    before(() => server.close())
     // clean up
-    after(function() {
-        return Plural.destroy({where: { name }})
-    })
+    after(async () => await Plural.destroy({where: {name}}))
 
     it('POST singular', async function() {
         const user = await loginUser(username, password)
@@ -42,6 +34,10 @@ export default describe('/plural API', function() {
                 console.error(error)
                 throw new Error(error)
             })
+    })
+
+    it('fail to POST if not authorized', function(done) {
+        agent.post('/api/plural').expect(401, done)
     })
 
     it('GET plural', function(done) {
@@ -69,9 +65,5 @@ export default describe('/plural API', function() {
     })
 
     // TODO PUT test
-
-    it('fail to POST if not authorized', function(done) {
-        agent.post('/api/plural').expect(401, done)
-    })
 
 })
