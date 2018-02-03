@@ -6,6 +6,10 @@
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/@types/geojson/-/geojson-1.0.6.tgz#3e02972728c69248c2af08d60a48cbb8680fffdf"
 
+"@types/node@*":
+  version "9.4.0"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-9.4.0.tgz#b85a0bcf1e1cc84eb4901b7e96966aedc6f078d1"
+
 "@types/node@^7.0.18":
   version "7.0.52"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-7.0.52.tgz#8990d3350375542b0c21a83cd0331e6a8fc86716"
@@ -1803,6 +1807,17 @@ cheerio@0.22.0, cheerio@^0.22.0:
     lodash.reject "^4.4.0"
     lodash.some "^4.4.0"
 
+cheerio@1.0.0-rc.1:
+  version "1.0.0-rc.1"
+  resolved "https://registry.yarnpkg.com/cheerio/-/cheerio-1.0.0-rc.1.tgz#2af37339eab713ef6b72cde98cefa672b87641fe"
+  dependencies:
+    css-select "~1.2.0"
+    dom-serializer "~0.1.0"
+    entities "~1.1.1"
+    htmlparser2 "^3.9.1"
+    lodash "^4.15.0"
+    parse5 "^3.0.1"
+
 chokidar@1.7.0, chokidar@^1.0.0, chokidar@^1.4.3, chokidar@^1.6.1, chokidar@^1.7, chokidar@^1.7.0:
   version "1.7.0"
   resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-1.7.0.tgz#798e689778151c8076b4b360e5edd28cda2bb468"
@@ -3289,6 +3304,10 @@ esdoc-coverage-plugin@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/esdoc-coverage-plugin/-/esdoc-coverage-plugin-1.1.0.tgz#3869869cd7f87891f972625787695a299aece45c"
 
+esdoc-ecmascript-proposal-plugin@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/esdoc-ecmascript-proposal-plugin/-/esdoc-ecmascript-proposal-plugin-1.0.0.tgz#390dc5656ba8a2830e39dba3570d79138df2ffd9"
+
 esdoc-external-ecmascript-plugin@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/esdoc-external-ecmascript-plugin/-/esdoc-external-ecmascript-plugin-1.0.0.tgz#78f565d4a0c5185ac63152614dce1fe1a86688db"
@@ -3302,6 +3321,10 @@ esdoc-integrate-manual-plugin@^1.0.0:
 esdoc-integrate-test-plugin@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/esdoc-integrate-test-plugin/-/esdoc-integrate-test-plugin-1.0.0.tgz#e2d0d00090f7f0c35e5d2f2c033327a79e53e409"
+
+esdoc-jsx-plugin@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/esdoc-jsx-plugin/-/esdoc-jsx-plugin-1.0.0.tgz#937ef5d7d2de5a17dd20ff7464be4259a78641d1"
 
 esdoc-lint-plugin@^1.0.0:
   version "1.0.1"
@@ -3318,6 +3341,12 @@ esdoc-publish-html-plugin@^1.0.0:
     ice-cap "0.0.4"
     marked "0.3.6"
     taffydb "2.7.2"
+
+esdoc-react-plugin@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/esdoc-react-plugin/-/esdoc-react-plugin-1.0.1.tgz#214a1215d0e61659f51a2d99efe48e340c3fa6f4"
+  dependencies:
+    cheerio "1.0.0-rc.1"
 
 esdoc-standard-plugin@^1.0.0:
   version "1.0.0"
@@ -6163,7 +6192,7 @@ lodash@^3.10.1:
   version "3.10.1"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-3.10.1.tgz#5bf45e8e49ba4189e17d482789dfd15bd140b7b6"
 
-lodash@^4, lodash@^4.0.0, lodash@^4.1.0, lodash@^4.13.1, lodash@^4.14.0, lodash@^4.17.0, lodash@^4.17.3, lodash@^4.17.4, lodash@^4.2.0, lodash@^4.2.1, lodash@^4.3.0, lodash@^4.5.1, lodash@~4.17.2, lodash@~4.17.4:
+lodash@^4, lodash@^4.0.0, lodash@^4.1.0, lodash@^4.13.1, lodash@^4.14.0, lodash@^4.15.0, lodash@^4.17.0, lodash@^4.17.3, lodash@^4.17.4, lodash@^4.2.0, lodash@^4.2.1, lodash@^4.3.0, lodash@^4.5.1, lodash@~4.17.2, lodash@~4.17.4:
   version "4.17.4"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.4.tgz#78203a4d1c328ae1d86dca6460e369b57f4055ae"
 
@@ -7393,6 +7422,12 @@ parse-passwd@^1.0.0:
 parse5@^1.5.1:
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/parse5/-/parse5-1.5.1.tgz#9b7f3b0de32be78dc2401b17573ccaf0f6f59d94"
+
+parse5@^3.0.1:
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/parse5/-/parse5-3.0.3.tgz#042f792ffdd36851551cf4e9e066b3874ab45b5c"
+  dependencies:
+    "@types/node" "*"
 
 parseqs@0.0.5:
   version "0.0.5"
