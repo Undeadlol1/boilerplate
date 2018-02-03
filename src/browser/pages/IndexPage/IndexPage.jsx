@@ -16,6 +16,7 @@ import WelcomeCard from 'browser/components/WelcomeCard'
 import ThreadsList from 'browser/components/ThreadsList'
 import MoodsInsert from 'browser/components/MoodsInsert'
 import CreateForumForm from 'browser/components/CreateForumForm'
+import Wysiwyg from 'browser/components/Wysiwyg'
 
 class IndexPage extends PureComponent {
     render() {
@@ -25,6 +26,7 @@ class IndexPage extends PureComponent {
 					loading={props.loading}
 				>
 					<WelcomeCard />
+					<Wysiwyg />
 					{/* <MoodsInsert /> */}
 					<b>{t('forums_list')}:</b>
 					<ForumsList />

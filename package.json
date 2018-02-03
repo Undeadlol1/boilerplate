@@ -78,6 +78,7 @@
     "react-router-transition": "^0.1.1",
     "react-styled-flexboxgrid": "^1.1.2",
     "react-tap-event-plugin": "^2.0.1",
+    "react-tinymce": "^0.7.0",
     "react-ultimate-pagination-material-ui": "^1.0.3",
     "react-youtube": "^7.3.0",
     "redux": "^3.6.0",
