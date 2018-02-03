@@ -6,8 +6,12 @@ import React, { Component } from 'react'
 import { Row, Col } from 'react-styled-flexboxgrid'
 import { translate as t } from 'browser/containers/Translator'
 
-// TODO: comment
 
+/**
+ * Wysiwig editor based on TinyMCE
+ * @class Wysiwyg
+ * @extends {Component}
+ */
 class Wysiwyg extends Component {
 	handleEditorChange(e) {
 		this.props.onChange(e.target.getContent())
