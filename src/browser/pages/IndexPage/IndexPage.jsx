@@ -26,7 +26,6 @@ class IndexPage extends PureComponent {
 					loading={props.loading}
 				>
 					<WelcomeCard />
-					<Wysiwyg />
 					{/* <MoodsInsert /> */}
 					<b>{t('forums_list')}:</b>
 					<ForumsList />
