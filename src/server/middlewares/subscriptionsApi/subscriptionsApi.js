@@ -1,4 +1,5 @@
 import slugify from 'slug'
+import selectn from 'selectn'
 import { Router } from 'express'
 import generateUuid from 'uuid/v4'
 import { Subscriptions } from 'server/data/models'
@@ -8,31 +9,33 @@ const limit = 12
 
 export default Router()
 
-  // get all subscriptions
-  .get('/:page?', async (req, res) => {
+  // get single subscription
+  .get('/subscription/:id', async ({params}, res) => {
     try {
-      const page = req.params.page,
-            totalSubscriptionss = await Subscriptions.count(),
-            offset = page ? limit * (page -1) : 0,
-            totalPages = Math.ceil(totalSubscriptionss / limit),
-            subscriptions = await Subscriptions.findAll({limit, offset})
-      res.json({ subscriptions, totalPages })
-    }
-    catch (error) {
-      console.log(error);
+      res.json(
+        await Subscriptions.findOne({
+          where: {id: params.id}
+        })
+      )
+    } catch (error) {
+      console.log(error)
       res.status(500).end(error)
     }
   })
 
-  // get single subscription
-  .get('/subscription/:id', async ({params}, res) => {
+  // get subscriptions by UserId
+  .get('/:UserId/:page?', async (req, res) => {
     try {
-      const subscription =  await Subscriptions.findOne({
-                          where: {id: params.id}
-                        })
-      res.json(subscription)
-    } catch (error) {
-      console.log(error)
+      const {page, UserId} = req.params,
+            where = {UserId},
+            totalSubscriptions = await Subscriptions.count({where}),
+            offset = page ? limit * (page -1) : 0,
+            totalPages = Math.ceil(totalSubscriptions / limit),
+            values = await Subscriptions.findAll({where, limit, offset})
+      res.json({ values, totalPages, currentPage: page || 1 })
+    }
+    catch (error) {
+      console.log(error);
       res.status(500).end(error)
     }
   })
@@ -44,7 +47,7 @@ export default Router()
       const subscription = await Subscriptions.findById(params.subscriptionsId)
 
       // check permissions
-      if (Subscriptions.UserId != UserId) return res.status(401).end()
+      if (selectn('UserId', subscription) != UserId) return res.status(401).end()
       else res.json(await subscription.update(body))
 
     } catch (error) {
