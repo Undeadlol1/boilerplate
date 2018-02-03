@@ -7,6 +7,7 @@
   "license": "MIT",
   "scripts": {
     "cli": "node core/scripts/cli.js",
+    "doc": "./node_modules/.bin/esdoc",
     "migrate": "cross-env NODE_ENV=test sequelize db:migrate && cross-env NODE_ENV=development sequelize db:migrate",
     "undo": "cross-env NODE_ENV=test sequelize db:migrate:undo && cross-env NODE_ENV=development sequelize db:migrate:undo",
     "test": "cross-env NODE_ENV=test webpack --config ./config/tests.config.js --watch",
@@ -132,6 +133,8 @@
     "cross-env": "^5.1.1",
     "css-loader": "^0.27.1",
     "enzyme": "^2.8.2",
+    "esdoc": "^1.0.4",
+    "esdoc-standard-plugin": "^1.0.0",
     "eslint": "^3.17.1",
     "eslint-config-airbnb": "^14.1.0",
     "eslint-plugin-import": "^2.2.0",
