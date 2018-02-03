@@ -2,10 +2,7 @@ import Boom from 'boom'
 import selectn from 'selectn'
 
 /**
- * TODO
- *
- * @param {string} redirectRoute // TODO
- * @returns
+ * check if user logged in or not
  */
 export function mustLogin(req, res, next) {
     req.isAuthenticated() ? next() : res.boom.unauthorized('Please, log in to do this')

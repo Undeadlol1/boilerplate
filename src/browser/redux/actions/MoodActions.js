@@ -33,7 +33,7 @@ export const fetchingInProgress = createAction('FETCHING_MOOD')
  */
 export const fetchingError = createAction('FETCHING_ERROR', reason => reason)
 /**
- * @param {null}
+ *
  */
 export const unloadMood = createAction('UNLOAD_MOOD')
 
@@ -73,6 +73,7 @@ export const fetchMood = (slug) => dispatch => {
 /**
  * create mood
  * @param {String} name mood name
+ * @param {Function} callback
  */
 export const insertMood = (name, callback) => dispatch => {
 	dispatch(fetchingInProgress())
