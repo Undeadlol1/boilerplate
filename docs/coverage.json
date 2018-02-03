@@ -1,0 +1,502 @@
+{
+  "coverage": "22.98%",
+  "expectCount": 174,
+  "actualCount": 40,
+  "files": {
+    "src/browser/browser.tests.entry.js": {
+      "expectCount": 5,
+      "actualCount": 0,
+      "undocumentLines": [
+        10,
+        11,
+        12,
+        14,
+        30
+      ]
+    },
+    "src/browser/redux/actions/actionHelpers.js": {
+      "expectCount": 3,
+      "actualCount": 1,
+      "undocumentLines": [
+        7,
+        28
+      ]
+    },
+    "src/browser/redux/actions/GlobalActions.js": {
+      "expectCount": 1,
+      "actualCount": 0,
+      "undocumentLines": [
+        3
+      ]
+    },
+    "src/browser/redux/actions/MoodActions.js": {
+      "expectCount": 12,
+      "actualCount": 10,
+      "undocumentLines": [
+        6,
+        105
+      ]
+    },
+    "src/browser/redux/actions/NodeActions.js": {
+      "expectCount": 11,
+      "actualCount": 5,
+      "undocumentLines": [
+        6,
+        7,
+        8,
+        9,
+        11,
+        24
+      ]
+    },
+    "src/browser/redux/actions/UserActions.js": {
+      "expectCount": 11,
+      "actualCount": 2,
+      "undocumentLines": [
+        8,
+        9,
+        11,
+        23,
+        25,
+        50,
+        77,
+        90,
+        106
+      ]
+    },
+    "src/browser/redux/forum/ForumActions.js": {
+      "expectCount": 9,
+      "actualCount": 6,
+      "undocumentLines": [
+        6,
+        7,
+        9
+      ]
+    },
+    "src/browser/redux/forum/ForumReducer.js": {
+      "expectCount": 5,
+      "actualCount": 0,
+      "undocumentLines": [
+        4,
+        15,
+        22,
+        44,
+        50
+      ]
+    },
+    "src/browser/redux/reducers/GlobalReducer.js": {
+      "expectCount": 2,
+      "actualCount": 0,
+      "undocumentLines": [
+        6,
+        13
+      ]
+    },
+    "src/browser/redux/reducers/MoodReducer.js": {
+      "expectCount": 4,
+      "actualCount": 0,
+      "undocumentLines": [
+        6,
+        13,
+        19,
+        29
+      ]
+    },
+    "src/browser/redux/reducers/NodeReducer.js": {
+      "expectCount": 4,
+      "actualCount": 0,
+      "undocumentLines": [
+        4,
+        14,
+        26,
+        38
+      ]
+    },
+    "src/browser/redux/reducers/RootReducer.js": {
+      "expectCount": 1,
+      "actualCount": 0,
+      "undocumentLines": [
+        14
+      ]
+    },
+    "src/browser/redux/reducers/UserReducer.js": {
+      "expectCount": 7,
+      "actualCount": 0,
+      "undocumentLines": [
+        5,
+        13,
+        20,
+        28,
+        36,
+        48,
+        55
+      ]
+    },
+    "src/browser/redux/store.js": {
+      "expectCount": 3,
+      "actualCount": 1,
+      "undocumentLines": [
+        37,
+        39
+      ]
+    },
+    "src/browser/redux/ui/UiActions.js": {
+      "expectCount": 2,
+      "actualCount": 1,
+      "undocumentLines": [
+        6
+      ]
+    },
+    "src/browser/redux/ui/UiReducer.js": {
+      "expectCount": 2,
+      "actualCount": 0,
+      "undocumentLines": [
+        3,
+        7
+      ]
+    },
+    "src/browser/routes.js": {
+      "expectCount": 1,
+      "actualCount": 1,
+      "undocumentLines": []
+    },
+    "src/browser/theme.js": {
+      "expectCount": 2,
+      "actualCount": 0,
+      "undocumentLines": [
+        36,
+        13
+      ]
+    },
+    "src/mobile/index.android.js": {
+      "expectCount": 3,
+      "actualCount": 0,
+      "undocumentLines": [
+        15,
+        16,
+        34
+      ]
+    },
+    "src/mobile/index.ios.js": {
+      "expectCount": 3,
+      "actualCount": 0,
+      "undocumentLines": [
+        15,
+        16,
+        37
+      ]
+    },
+    "src/server/data/config.js": {
+      "expectCount": 1,
+      "actualCount": 0,
+      "undocumentLines": [
+        1
+      ]
+    },
+    "src/server/data/controllers/DecisionsController.js": {
+      "expectCount": 2,
+      "actualCount": 2,
+      "undocumentLines": []
+    },
+    "src/server/data/controllers/MoodsController.js": {
+      "expectCount": 1,
+      "actualCount": 1,
+      "undocumentLines": []
+    },
+    "src/server/data/controllers/NodesController.js": {
+      "expectCount": 5,
+      "actualCount": 3,
+      "undocumentLines": [
+        88,
+        95
+      ]
+    },
+    "src/server/data/controllers/UserController/UserController.js": {
+      "expectCount": 4,
+      "actualCount": 3,
+      "undocumentLines": [
+        5
+      ]
+    },
+    "src/server/data/fixtures/users.js": {
+      "expectCount": 4,
+      "actualCount": 0,
+      "undocumentLines": [
+        1,
+        2,
+        3,
+        15
+      ]
+    },
+    "src/server/data/migrations/20170622112536-create-twitter.js": {
+      "expectCount": 1,
+      "actualCount": 0,
+      "undocumentLines": [
+        2
+      ]
+    },
+    "src/server/data/migrations/20170622145454-migrate-user-data-to-twitter.js": {
+      "expectCount": 1,
+      "actualCount": 0,
+      "undocumentLines": [
+        2
+      ]
+    },
+    "src/server/data/migrations/20170622164350-migrate-user-data-to-vk.js": {
+      "expectCount": 1,
+      "actualCount": 0,
+      "undocumentLines": [
+        2
+      ]
+    },
+    "src/server/data/migrations/20170720222313-delete-decisions.js": {
+      "expectCount": 1,
+      "actualCount": 0,
+      "undocumentLines": [
+        2
+      ]
+    },
+    "src/server/data/migrations/20170723200422-add-rating-to-mood.js": {
+      "expectCount": 1,
+      "actualCount": 0,
+      "undocumentLines": [
+        3
+      ]
+    },
+    "src/server/data/migrations/20170810195230-make-contentId-required-in-nodes.js": {
+      "expectCount": 1,
+      "actualCount": 0,
+      "undocumentLines": [
+        3
+      ]
+    },
+    "src/server/data/models/comments.js": {
+      "expectCount": 1,
+      "actualCount": 0,
+      "undocumentLines": [
+        2
+      ]
+    },
+    "src/server/data/models/decision.js": {
+      "expectCount": 2,
+      "actualCount": 0,
+      "undocumentLines": [
+        4,
+        61
+      ]
+    },
+    "src/server/data/models/forums.js": {
+      "expectCount": 1,
+      "actualCount": 0,
+      "undocumentLines": [
+        2
+      ]
+    },
+    "src/server/data/models/index.js": {
+      "expectCount": 7,
+      "actualCount": 0,
+      "undocumentLines": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ]
+    },
+    "src/server/data/models/local.js": {
+      "expectCount": 2,
+      "actualCount": 0,
+      "undocumentLines": [
+        2,
+        4
+      ]
+    },
+    "src/server/data/models/mood.js": {
+      "expectCount": 1,
+      "actualCount": 0,
+      "undocumentLines": [
+        2
+      ]
+    },
+    "src/server/data/models/node.js": {
+      "expectCount": 1,
+      "actualCount": 0,
+      "undocumentLines": [
+        2
+      ]
+    },
+    "src/server/data/models/profile.js": {
+      "expectCount": 1,
+      "actualCount": 0,
+      "undocumentLines": [
+        2
+      ]
+    },
+    "src/server/data/models/rating.js": {
+      "expectCount": 1,
+      "actualCount": 0,
+      "undocumentLines": [
+        2
+      ]
+    },
+    "src/server/data/models/subscriptions.js": {
+      "expectCount": 1,
+      "actualCount": 0,
+      "undocumentLines": [
+        2
+      ]
+    },
+    "src/server/data/models/threads.js": {
+      "expectCount": 1,
+      "actualCount": 0,
+      "undocumentLines": [
+        2
+      ]
+    },
+    "src/server/data/models/twitter.js": {
+      "expectCount": 1,
+      "actualCount": 0,
+      "undocumentLines": [
+        2
+      ]
+    },
+    "src/server/data/models/user.js": {
+      "expectCount": 1,
+      "actualCount": 0,
+      "undocumentLines": [
+        2
+      ]
+    },
+    "src/server/data/models/vk.js": {
+      "expectCount": 1,
+      "actualCount": 0,
+      "undocumentLines": [
+        2
+      ]
+    },
+    "src/server/middlewares/authApi/authApi.js": {
+      "expectCount": 1,
+      "actualCount": 0,
+      "undocumentLines": [
+        29
+      ]
+    },
+    "src/server/middlewares/authApi/localAuth.js": {
+      "expectCount": 2,
+      "actualCount": 0,
+      "undocumentLines": [
+        8,
+        9
+      ]
+    },
+    "src/server/middlewares/authApi/twitterAuth.js": {
+      "expectCount": 2,
+      "actualCount": 0,
+      "undocumentLines": [
+        8,
+        57
+      ]
+    },
+    "src/server/middlewares/authApi/vkAuth.js": {
+      "expectCount": 2,
+      "actualCount": 0,
+      "undocumentLines": [
+        8,
+        57
+      ]
+    },
+    "src/server/middlewares/commentsApi/commentsApi.js": {
+      "expectCount": 1,
+      "actualCount": 0,
+      "undocumentLines": [
+        7
+      ]
+    },
+    "src/server/middlewares/forumsApi/forumsApi.js": {
+      "expectCount": 1,
+      "actualCount": 0,
+      "undocumentLines": [
+        7
+      ]
+    },
+    "src/server/middlewares/moodsApi/moodsApi.js": {
+      "expectCount": 2,
+      "actualCount": 0,
+      "undocumentLines": [
+        9,
+        8
+      ]
+    },
+    "src/server/middlewares/subscriptionsApi/subscriptionsApi.js": {
+      "expectCount": 1,
+      "actualCount": 0,
+      "undocumentLines": [
+        7
+      ]
+    },
+    "src/server/middlewares/threadsApi/threadsApi.js": {
+      "expectCount": 2,
+      "actualCount": 1,
+      "undocumentLines": [
+        7
+      ]
+    },
+    "src/server/middlewares/usersApi.js": {
+      "expectCount": 1,
+      "actualCount": 0,
+      "undocumentLines": [
+        8
+      ]
+    },
+    "src/server/server.js": {
+      "expectCount": 1,
+      "actualCount": 0,
+      "undocumentLines": [
+        33
+      ]
+    },
+    "src/server/server.tests.entry.js": {
+      "expectCount": 17,
+      "actualCount": 0,
+      "undocumentLines": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        19,
+        42,
+        52,
+        171,
+        254
+      ]
+    },
+    "src/server/services/permissions.js": {
+      "expectCount": 2,
+      "actualCount": 2,
+      "undocumentLines": []
+    },
+    "src/shared/parsers.js": {
+      "expectCount": 2,
+      "actualCount": 0,
+      "undocumentLines": [
+        3,
+        12
+      ]
+    },
+    "src/shared/validators.js": {
+      "expectCount": 1,
+      "actualCount": 1,
+      "undocumentLines": []
+    }
+  }
+}

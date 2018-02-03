@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">src/server/server.tests.entry.js | anylearn-server</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="server side code for anylearn"><meta property="twitter:card" content="summary"><meta property="twitter:title" content="anylearn-server"><meta property="twitter:description" content="server side code for anylearn"></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#browser">browser</a><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-styles">styles</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#browser-redux">browser/redux</a><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-store">store</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#browser-redux-actions">browser/redux/actions</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-fetchMood">fetchMood</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-fetchMoods">fetchMoods</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-findMoods">findMoods</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-insertMood">insertMood</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-toggleDialog">toggleDialog</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-fetchNode">fetchNode</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-fetchNodes">fetchNodes</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-insertNode">insertNode</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-nextVideo">nextVideo</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-vote">vote</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-youtubeSearch">youtubeSearch</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-createUser">createUser</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-fetchCurrentUser">fetchCurrentUser</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-fetchUser">fetchUser</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-loginUser">loginUser</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-logoutCurrentUser">logoutCurrentUser</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-toggleLoginDialog">toggleLoginDialog</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-updateUser">updateUser</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-checkStatus">checkStatus</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-headersAndBody">headersAndBody</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-parseJSON">parseJSON</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-actions">actions</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-fetchingError">fetchingError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-fetchingInProgress">fetchingInProgress</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-recieveMood">recieveMood</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-recieveMoods">recieveMoods</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-recieveSearchResult">recieveSearchResult</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-unloadMood">unloadMood</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-actions">actions</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-actions">actions</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#browser-redux-forum">browser/redux/forum</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-fetchForum">fetchForum</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-fetchForums">fetchForums</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-fetchThread">fetchThread</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-fetchThreads">fetchThreads</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-insertForum">insertForum</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-insertThread">insertThread</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-ForumReducer">ForumReducer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-actions">actions</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-initialState">initialState</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#browser-redux-reducers">browser/redux/reducers</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-GlobalReducer">GlobalReducer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-MoodReducer">MoodReducer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-NodeReducer">NodeReducer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-UserReducer">UserReducer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-initialState">initialState</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-emptyMoodsObject">emptyMoodsObject</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-initialState">initialState</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-initialState">initialState</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-initialState">initialState</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#browser-redux-ui">browser/redux/ui</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-togglePageLoading">togglePageLoading</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-UiReducer">UiReducer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-actions">actions</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-initialState">initialState</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#mobile">mobile</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/mobile/index.android.js~mobile.html">mobile</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/mobile/index.ios.js~mobile.html">mobile</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#server-data-controllers">server/data/controllers</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-updatePositionAndViews">updatePositionAndViews</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getUsersMoods">getUsersMoods</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-findHighestPositionNode">findHighestPositionNode</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-findHighestRatingNode">findHighestRatingNode</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-findRandomNode">findRandomNode</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-findRandomNodes">findRandomNodes</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-normalizeRating">normalizeRating</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#server-data-controllers-usercontroller">server/data/controllers/UserController</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-createUser">createUser</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-normalizePublicInfo">normalizePublicInfo</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-updateSocialInfo">updateSocialInfo</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#server-middlewares-authapi">server/middlewares/authApi</a><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-router">router</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-router">router</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-router">router</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-router">router</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#server-middlewares-moodsapi">server/middlewares/moodsApi</a><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-router">router</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#server-middlewares-threadsapi">server/middlewares/threadsApi</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getThreads">getThreads</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#server-services">server/services</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isAdmin">isAdmin</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-mustLogin">mustLogin</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#shared">shared</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-parseUrl">parseUrl</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isUrl">isUrl</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">src/server/server.tests.entry.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">require(&apos;babel-polyfill&apos;)
+require(&apos;babel-register&apos;)();
+require(&apos;source-map-support&apos;).install();
+const chai = require(&apos;chai&apos;)
+const slugify = require(&apos;slug&apos;)
+const casual = require(&apos;casual&apos;)
+const uniqid = require(&apos;uniqid&apos;)
+const { expect } = require(&apos;chai&apos;)
+const isEqual = require(&apos;lodash/isEqual&apos;)
+const extend = require(&apos;lodash/assignIn&apos;)
+const { parseUrl } = require(&apos;shared/parsers.js&apos;)
+const userFixtures = require(&apos;server/data/fixtures/users.js&apos;)
+const getRandomDate = require(&apos;random-date-generator&apos;).getRandomDate
+const models = require(&apos;server/data/models/index.js&apos;)
+const { User, Local, Forums, Threads, Mood, Node, Decision, Profile } = require(&apos;server/data/models/index.js&apos;)
+chai.should()
+
+// TODO move this to fixtures
+const urls = [
+            &quot;https://www.youtube.com/watch?v=nBwHtgQH2EQ&quot;,
+            &quot;https://www.youtube.com/watch?v=l5-gja10qkw&quot;,
+            &quot;https://www.youtube.com/watch?v=M3B5U1S-I4Y&quot;,
+            &quot;https://www.youtube.com/watch?v=P027oGJy2n4&quot;,
+            &quot;https://www.youtube.com/watch?v=VoA9tLkrgHY&quot;,
+            &quot;https://www.youtube.com/watch?v=7CPH5L7ip3A&quot;,
+            &quot;https://www.youtube.com/watch?v=Jwglgn1mo3M&quot;,
+            &quot;https://www.youtube.com/watch?v=3Pv7jAKIPa0&quot;,
+            &quot;https://www.youtube.com/watch?v=KrCMWS_fB4o&quot;,
+            &quot;https://www.youtube.com/watch?v=W7mNmiW9qts&quot;,
+        ]
+
+// function createRandomNames(amount) {
+//     let names = []
+//     if (!amount) amount = 9
+//     for (let index = 0; index &lt; amount; index++) {
+//         names.push(uniqid())
+
+//     }
+//     return names
+// }
+
+const randomNames = casual.array_of_words(10)
+
+/*
+    this function creates random digit and
+    adds Date.now after decimal point
+    afterwards last digit after decimal is randomized,
+    since on .bulkCreate every Date.now() is the same
+    (this is needed to make every rating unique to
+    avoid duplicates and infinite cycles in node fetching api)
+*/
+function randomIntFromInterval(min, max) {
+    const randomNumber = Math.floor(Math.random()*(max-min+1)+min)
+    let now = (&apos;0.&apos; + Date.now().toString()).split(&apos;&apos;)
+    const dateLastDigit = now.pop()
+    now.push(Number(dateLastDigit) + Math.abs(Number(randomNumber))) // sometimes adds two digits instead of one
+    now = Number(now.join(&apos;&apos;))
+    const randomWithDate = Number(randomNumber.toFixed(1)) + now
+    return randomWithDate
+}
+
+// insert fixtures into database
+before(function(done) {
+    // close server incase of supertest.agent server is in use
+    require(&apos;server/server.js&apos;).default.close()
+
+    const moods = [],
+          nodes = [],
+          locals = [],
+          profiles = [],
+          decisions = [],
+          createdUsers = [],
+          forums = [],
+          threads = []
+
+    const localsWithHashedPassword = userFixtures.map(user =&gt; {
+        // create new object to avoid object mutablity
+        // (user.password = &quot;some&quot; overrides fixture data)
+        const newLocal = Object.assign({}, user);
+        newLocal.password = Local.generateHash(newLocal.password)
+        return newLocal
+    })
+
+    // create users
+    User.bulkCreate(userFixtures)
+        // refetch users because .bulkCreate return objects with id == null
+        .then(() =&gt; User.findAll())
+        // create moods fixtures array
+        .each((user, index) =&gt; {
+            const   name = uniqid(),
+                    language = &apos;ru&apos;,
+                    slug = slugify(name),
+                    UserId = user.get(&apos;id&apos;),
+                    // mood rating
+                    rating = randomIntFromInterval(1, 100000)
+            const local = localsWithHashedPassword[index]
+            local.UserId = user.id
+            locals.push(local)
+            createdUsers.push(user)
+            profiles.push({UserId, language})
+            moods.push({name, UserId, slug, rating, createdAt: getRandomDate()})
+            forums.push({id: name, name, slug, UserId})
+        })
+        // create locals
+        .then(() =&gt; Local.bulkCreate(locals))
+        // create profiles
+        .then(() =&gt; Profile.bulkCreate(profiles))
+        // .then(() =&gt; Profile.findAll({where: {}, raw: true}))
+        // .then(profiles =&gt; console.log(&apos;profiles&apos;, profiles))
+        // create forums
+        .then(() =&gt; Forums.bulkCreate(forums))
+        .then(() =&gt; Forums.findAll({where: {}}))
+        .each(forum =&gt; {
+            randomNames.forEach(() =&gt; {
+                const name = uniqid()
+                threads.push({
+                        name,
+                        slug: slugify(name),
+                        text: casual.description,
+                        parentId: forum.id,
+                        UserId: forum.UserId,
+                    }
+                )
+            })
+        })
+        // create threads
+        .then(() =&gt; Threads.bulkCreate(threads))
+        // create moods
+        .then(() =&gt; Mood.bulkCreate(moods))
+        .then(() =&gt; Mood.findAll({where: {}}))
+        .each(mood =&gt; {
+            urls.forEach(url =&gt; {
+                const rating = randomIntFromInterval(-3, 20)
+                nodes.push(
+                    extend(
+                        parseUrl(url), {
+                        rating,
+                        MoodId: mood.id,
+                        UserId: mood.UserId,
+                    })
+                )
+            })
+        })
+        // create nodes
+        .then(() =&gt; Node.bulkCreate(nodes))
+        .then(() =&gt; Node.findAll({raw: true}))
+        // .each((node, index) =&gt; {
+        //     return createdUsers.forEach((user, index2) =&gt; {
+        //         decisions.push({
+        //             position: index,
+        //             NodeId: node.id,
+        //             MoodId: node.MoodId,
+        //             UserId: user.id,
+        //             NodeRating: node.rating,
+        //             rating: Number(randomIntFromInterval(-3, 20)),
+        //         })
+        //     })
+        // })
+        // create decisions
+        .then(() =&gt; Decision.bulkCreate(decisions))
+        .then(() =&gt; done())
+        .catch(error =&gt; {
+            console.error(error)
+            throw error
+        })
+})
+
+// clean up db
+after(cleanUpDB)
+
+async function cleanUpDB() {
+    try {
+        const all = { where: {} }
+        await User.destroy(all)
+        await Local.destroy(all)
+        await Profile.destroy(all)
+        await Mood.destroy(all)
+        await Node.destroy(all)
+        await Decision.destroy(all)
+        await Forums.destroy(all)
+        await Threads.destroy(all)
+        await models.Subscriptions.destroy(all) 
+// &#x26A0;&#xFE0F; Hook for cli! Do not remove &#x1F480;
+    }
+    catch(error) {
+        console.log(error)
+        throw new Error(error)
+    }
+}
+
+// TODO make proper names
+describe(&apos;fixture data setup&apos;, function() {
+    it(&apos;added fixtures properly&apos;, async function(){
+        try {
+            const users = await User.findAll({raw: true})
+            const locals = await Local.findAll({raw: true})
+            const moods = await Mood.findAll({raw: true})
+            const nodes = await Node.findAll({raw: true})
+            const profiles = await Profile.findAll({raw: true})
+            const decisions = await Decision.findAll({raw: true})
+            const forums = await Forums.findAll({raw: true})
+            const threads = await Threads.findAll({raw: true})
+
+            expect(users).to.have.length(10, &apos;10 users&apos;)
+            expect(locals).to.have.length(10, &apos;10 local profiles&apos;)
+            expect(moods).to.have.length(10, &apos;10 moods&apos;)
+            expect(nodes).to.have.length(100, &apos;100 nodes&apos;) // 10 moods * 10 nodes
+            expect(profiles).to.have.length(10, &apos;10 profiles&apos;)
+            expect(forums).to.have.length(10, &apos;10 forums&apos;)
+            expect(threads).to.have.length(100, &apos;100 threads&apos;) // 10 forums * 10 threads
+            // expect(decisions).to.have.length(1000) // 10 moods * 10 nodes * 10 decisions
+
+            moods.forEach(mood =&gt; {
+                const moodNodes = nodes.filter(
+                    node =&gt; node.MoodId == mood.id
+                )
+                expect(
+                    moodNodes.length,
+                    &apos;each mood must have 10 nodes&apos;
+                ).to.be.equal(10)
+            })
+
+            // nodes.forEach(async node =&gt; {
+            //     const nodeDecisions = decisions.filter(
+            //         decision =&gt; decision.NodeId == node.id
+            //     )
+            //     expect(
+            //         nodeDecisions.length,
+            //         &apos;each node must have 10 decisions&apos;
+            //     ).to.be.equal(10)
+            // })
+
+            // users.forEach(user =&gt; {
+            //     nodes.forEach(node =&gt; {
+            //         const userDecisions = decisions.filter(
+            //             decision =&gt; (decision.MoodId == node.MoodId
+            //                         &amp;&amp; decision.UserId == user.id)
+            //         )
+            //         expect(
+            //             userDecisions.length,
+            //             &apos;each user in mood must have 10 decisions&apos;
+            //         ).to.be.equal(10)
+            //     })
+            // })
+        } catch (error) {
+            console.log(error)
+            throw new Error(error)
+        }
+    })
+})
+
+/* This will search for files ending in .test.js and
+   require them into webpack bundle */
+var context = require.context(&apos;.&apos;, true, /.+\.test\.js?$/);
+context.keys().forEach(context);
+module.exports = context;</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.0.4)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>
