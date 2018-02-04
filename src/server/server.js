@@ -112,6 +112,7 @@ app.use('/api/externals', externalsApi)
 app.use('/api/forums', require('./middlewares/forumsApi').default)
 app.use('/api/threads', require('./middlewares/threadsApi').default)
 app.use('/api/comments', require('./middlewares/commentsApi').default)
+app.use('/api/votes', require('./middlewares/votesApi').default) 
 // ⚠️ Hook for cli! Do not remove 💀
 
 // SPA
