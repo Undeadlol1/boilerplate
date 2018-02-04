@@ -44,7 +44,7 @@ export default Router()
       const singular = await Plural.findById(params.apiNameId)
 
       // check permissions
-      if (Plural.UserId != UserId) return res.status(401).end()
+      if (singular.UserId != UserId) return res.status(401).end()
       else res.json(await singular.update(body))
 
     } catch (error) {
