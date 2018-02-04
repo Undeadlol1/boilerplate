@@ -28,6 +28,15 @@ export function loginUser(username, password) {
         })
         .then(() => user)
 }
+/**
+ * get user's id by his username
+ * @param {string} username "username" property to look for in Local model
+ */
+export function getUserIdByUsername(username) {
+    return Local
+        .findOne({where: {username}})
+        .then(data => data && data.UserId )
+}
 
 /**
  * @export
