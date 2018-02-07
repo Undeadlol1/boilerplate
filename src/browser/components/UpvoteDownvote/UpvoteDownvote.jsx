@@ -18,7 +18,7 @@ class UpvoteDownvote extends Component {
 	 * make upsert request to votes api
 	 * @param {boolean} value vote.value to upsert
 	 */
-	vote(value) {
+	voteRequest(value) {
 
 	}
 	render() {
@@ -33,14 +33,14 @@ class UpvoteDownvote extends Component {
 						title={t('i_like_it')}
 						hoverIcon='thumbs-o-up'
 						className="UpvoteDownvote__upvote"
-						onClick={this.vote.bind(this, true)}
+						onClick={this.voteRequest.bind(this, true)}
 						// color={decisionVote && 'rgb(0, 151, 167)'}
 					/>
 					<Icon
 						name="thumbs-down"
 						hoverIcon='thumbs-o-down'
 						className="UpvoteDownvote__downvote"
-						onClick={this.vote.bind(this, false)}
+						onClick={this.voteRequest.bind(this, false)}
 						title={t('dont_like_it_dont_show_again')}
 						// color={decisionVote === false || 0 ? 'rgb(255, 64, 129)' : undefined}
 					/>
