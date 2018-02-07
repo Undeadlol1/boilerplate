@@ -12,6 +12,7 @@ chai.use(chaiEnzyme())
 describe('<UpvoteDownvote />', () => {
 
   const props = {
+    UserId: 1234,
     vote: () => {},
     parentId: generateUuid(),
   }
