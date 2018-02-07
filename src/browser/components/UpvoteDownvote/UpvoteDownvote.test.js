@@ -18,19 +18,30 @@ describe('<UpvoteDownvote />', () => {
   const wrapper = shallow(<UpvoteDownvote {...props} />)
 
   it('has <div> container', () => {
-    const el = wrapper.find('.UpvoteDownvote__container')
+    const el = wrapper.find('.UpvoteDownvote')
     expect(el).to.exist
-    expect(el).to.have.className('UpvoteDownvote')
+    expect(el).to.be.type('div')
   })
 
   it('has upvote <Icon>', () => {
     const el = wrapper.find('.UpvoteDownvote__upvote')
     expect(el).to.exist
-    expect(el).to.be.type('Icon')
-    expect(el).to.have.properties({
+    expect(el.type().name).to.eq('Icon')
+    expect(el).to.have.props({
       name: "thumbs-up",
-      title: t(""),
-      // color:  // TODO:
+      title: t("i_like_it"),
+      hoverIcon: 'thumbs-o-up',
+    })
+  })
+
+  it('has downvote <Icon>', () => {
+    const el = wrapper.find('.UpvoteDownvote__downvote')
+    expect(el).to.exist
+    expect(el.type().name).to.eq('Icon')
+    expect(el).to.have.props({
+      name: "thumbs-down",
+      hoverIcon: 'thumbs-o-down',
+      title: t("dont_like_it_dont_show_again"),
     })
   })
 
