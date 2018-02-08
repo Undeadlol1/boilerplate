@@ -1,6 +1,7 @@
 import cls from 'classnames'
 import selectn from 'selectn'
 import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
 import React, { Component } from 'react'
 import Icon from 'browser/components/Icon'
 import { toastr } from 'react-redux-toastr'
@@ -13,10 +14,12 @@ import { checkStatus, headersAndBody } from'browser/redux/actions/actionHelpers'
  * Then color of icon is changed.
  */
 class UpvoteDownvote extends Component {
-	static PropTypes = {
-		vote: PropTypes.objec,
-		UserId: PropTypes.number,
-		parentId: PropTypes.string.isRequired,
+	// make vote an object to avoid doing "vote && vote.value"
+	static defaultProps = { vote: {} }
+	static propTypes = {
+		vote: PropTypes.objec, // fetched document from api
+		UserId: PropTypes.number, // data to determine if icon should be colored
+		parentId: PropTypes.string.isRequired, // this will become vote.parentId
 	}
 	// state is used to set vote value after request to votes API
 	state = { value: undefined }
@@ -31,7 +34,7 @@ class UpvoteDownvote extends Component {
 			headersAndBody({value, parentId})
 		)
 		// if error occurs this function will activate toast with error message
-		// NOTE: function does not 'return', .then will run anyway
+		// NOTE: function does not return, '.then' will run anyway
 		.then(checkStatus)
 		// set value to change icon color
 		.then(({status}) => {
@@ -40,32 +43,40 @@ class UpvoteDownvote extends Component {
 	}
 	render() {
 		const {props, state} = this
+		const { vote } = props
 		const classNames = cls(
 			"UpvoteDownvote", // namespace
 			props.className, // inherited className
 		)
-		// FIXME: UserId
-		const decision = selectn('vote.value', props) || state.value
+		const isMine = vote.UserId == props.UserId
+		const voteValue = vote.value || state.value
 		return 	<div className={classNames}>
 					<Icon
 						name="thumbs-up"
 						title={t('i_like_it')}
 						hoverIcon='thumbs-o-up'
 						className="UpvoteDownvote__upvote"
-						color={decision && 'rgb(0, 151, 167)'}
 						onClick={this.voteRequest.bind(this, true)}
+						color={isMine && voteValue && 'rgb(0, 151, 167)'}
 					/>
+					{vote.upvotes}
 					<Icon
 						name="thumbs-down"
 						hoverIcon='thumbs-o-down'
 						className="UpvoteDownvote__downvote"
 						onClick={this.voteRequest.bind(this, false)}
 						title={t('dont_like_it_dont_show_again')} // FIXME: change i18n
-						color={(decision === false || 0) && 'rgb(255, 64, 129)'}
+						color={isMine && (voteValue === false || 0) && 'rgb(255, 64, 129)'}
 					/>
+					{vote.downvotes}
 				</div>
 	}
 }
 
 export { UpvoteDownvote }
-export default UpvoteDownvote
+export default connect(
+	(state, ownProps) => ({
+		...ownProps,
+		UserId: state.user.get('id')
+	})
+)(UpvoteDownvote)
