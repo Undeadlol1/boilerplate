@@ -15,8 +15,7 @@ export default Router()
         await Votes.findById(params.id)
       )
     } catch (error) {
-      console.log(error)
-      res.status(500).end(error)
+      res.boom.internal(error.message)
     }
   })
 
@@ -32,8 +31,7 @@ export default Router()
       res.json({ values, totalPages, currentPage: page || 1 })
     }
     catch (error) {
-      console.log(error);
-      res.status(500).end(error)
+      res.boom.internal(error.message)
     }
   })
 
@@ -48,8 +46,7 @@ export default Router()
       else res.json(await vote.update(body))
 
     } catch (error) {
-      console.log(error)
-      res.status(500).end(error)
+      res.boom.internal(error.message)
     }
   })
 
@@ -61,7 +58,6 @@ export default Router()
         await Votes.create({...body, UserId})
       )
     } catch (error) {
-      console.log(error)
-      res.status(500).end(error)
+      res.boom.internal(error.message)
     }
   })

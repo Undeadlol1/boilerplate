@@ -12,13 +12,14 @@ export function checkStatus(response) {
     let message = ''
     error.response = response
     if (response.statusText == 'Unauthorized') message = translate('please_login')
+    else if (response.statusText == 'Internal Server Error') message = translate('server_error')
     const toastrType = 'warning';
-			const toastrOptions = {
-			  icon: toastrType,
-			  status: toastrType,
-        showCloseButton: false
-			}
-    toastr.error('Error accured!', message || response.statusText, toastrOptions)
+    const toastrOptions = {
+      icon: toastrType,
+      status: toastrType,
+      showCloseButton: false
+    }
+    toastr.error(translate('error_accured'), message || response.statusText, toastrOptions)
     console.error(error);
     console.info(response);
   }

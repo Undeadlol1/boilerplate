@@ -40,7 +40,7 @@ const routesConfig = {
       const fetchedForums = store.getState().forum.getIn(['forums', 'values'])
       if (fetchedForums.size) return done()
       else {
-        store
+        return store
         .dispatch(fetchForums())
         .then(() => done())
         // Promise

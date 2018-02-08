@@ -26,14 +26,17 @@ class UpvoteDownvote extends Component {
 	 */
 	voteRequest(value) {
 		const { parentId } = this.props
-		fetch(
+		return fetch(
 			'/api/votes',
 			headersAndBody({value, parentId})
 		)
-		// if error occurs this function will activate toats with error message
+		// if error occurs this function will activate toast with error message
+		// NOTE: function does not 'return', .then will run anyway
 		.then(checkStatus)
 		// set value to change icon color
-		.then(() => this.setState({value}))
+		.then(({status}) => {
+			if (status == 200) this.setState({value})
+		})
 	}
 	render() {
 		const {props, state} = this

@@ -14,6 +14,7 @@ export default {
     something_wrong_with_this_url: 'Something wrong with this url',
     add_something: 'Add something',
     error_accured: 'Error accured!',
+    server_error: 'Server error',
     add_your_own_mood: 'Add your own mood!',
     choose_your_language: 'Choose your language',
     currently_zero_content_here: 'Currently zero content here',

@@ -13,6 +13,7 @@ export default {
     this_mood_already_exists: 'Настроение с таким именем уже существует!',
     something_wrong_with_this_url: 'Что-то не так с этим url',
     error_accured: 'Произошла ошибка!',
+    server_error: 'Ошибка сервера',
     add_something: 'Добавить что-нибудь',
     add_your_own_mood: 'Создать настроение!',
     choose_your_language: 'Выберите ваш язык',
