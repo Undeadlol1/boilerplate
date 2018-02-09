@@ -1,2 +1,2 @@
-* [Tests](//Tests)
-* [Internationalization](//internationalization)
+* [Tests](/boilerplate/ests)
+* [Internationalization](/boilerplate/internationalization)
