@@ -1,2 +1,2 @@
-* [Tests](/Tests)
-* [Internationalization](/internationalization)
+* [Tests](//Tests)
+* [Internationalization](//internationalization)
