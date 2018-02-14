@@ -63,3 +63,21 @@ export default Router()
       res.status(500).end(error)
     }
   })
+
+  // delete singular
+  .delete('/:id', mustLogin, async ({user, body}, res) => {
+    try {
+      const plural = await Plural.findById(params.id)
+      // document was not found
+      if (!plural) return res.status(204).end()
+      // user must be documents owner to delete it
+      if (plural && plural.UserId == user.id) {
+        await plural.destroy()
+        await res.status(200).end()
+      }
+      else res.boom.unauthorized('You must be the owner to delete this')
+    } catch (error) {
+      console.log(error)
+      res.status(500).end(error)
+    }
+  })
