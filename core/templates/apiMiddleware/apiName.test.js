@@ -7,6 +7,7 @@ import users from 'server/data/fixtures/users'
 import { Plural, User } from 'server/data/models'
 import { loginUser } from 'server/test/middlewares/authApi.test'
 chai.should();
+chai.use(require('chai-properties'))
 
 const   agent = request.agent(server),
         username = users[0].username,
@@ -16,61 +17,69 @@ const   agent = request.agent(server),
 
 export default describe('/plural API', function() {
 
-    before(async function() {
-        // TODO add logout? to test proper user login?
-        // Kill supertest server in watch mode to avoid errors
-        server.close()
-
-    })
+    // Kill supertest server in watch mode to avoid errors
+    before(() => server.close())
 
     // clean up
-    after(function() {
-        return Plural.destroy({where: { name }})
-    })
+    after(async () => await Plural.destroy({where: {name}}))
 
-    it('POST singular', async function() {
+    // POST test is intentionally first
+    // because other tests rely on created singular
+    it('POST singular', async () => {
         const user = await loginUser(username, password)
         await user.post('/api/plural')
             .send({ name })
-            .expect('Content-Type', /json/)
             .expect(200)
-            .then(function(res) {
-                return res.body.slug.should.be.equal(slug)
-            })
-            .catch(error => {
-                console.error(error)
-                throw new Error(error)
+            .expect('Content-Type', /json/)
+            .then(({body}) => {
+                body.slug.should.be.equal(slug)
             })
     })
 
-    it('GET plural', function(done) {
-        agent
+    it('GET plural', async () => {
+        await agent
             .get('/api/plural')
-            .expect('Content-Type', /json/)
             .expect(200)
-            .end(function(err, res) {
-                if (err) return done(err);
-                res.body.plural.should.be.a('array')
-                done()
-            });
+            .expect('Content-Type', /json/)
+            .then(({body}) => {
+                body.plural.should.be.a('array')
+            })
     })
 
-    it('GET single singular', function(done) {
-        agent
+    it('GET single singular', async () => {
+        await agent
             .get('/api/plural/singular/' + slug )
-            .expect('Content-Type', /json/)
             .expect(200)
-            .end(function(err, res) {
-                if (err) return done(err);
-                res.body.name.should.be.equal(name)
-                done()
-            });
+            .expect('Content-Type', /json/)
+            .then(({body}) => {
+                body.name.should.be.equal(name)
+            })
+    })
+
+    it('PUT singular', async () => {
+        const user = await loginUser(username, password)
+        const plural = await Plural.findOne({order: 'rand()'})
+        const payload = {
+            name: 'some name',
+            something: 'something',
+        }
+        await user.put('/api/plural/' + plural.id)
+            .send(payload)
+            .expect(200)
+            .expect('Content-Type', /json/)
+            .then(({body}) => {
+                expect(body).to.have.properties(payload)
+            })
     })
 
     // TODO PUT test
 
-    it('fail to POST if not authorized', function(done) {
-        agent.post('/api/plural').expect(401, done)
+    it('fail to POST if not authorized', async () => {
+        await agent.post('/api/plural').expect(401)
+    })
+
+    it('fail to PUT if not authorized', async () => {
+        await agent.put('/api/plural').expect(401)
     })
 
 })
