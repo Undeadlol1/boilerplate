@@ -75,7 +75,6 @@
     "react-reveal": "^0.7.3",
     "react-router": "^3.0.2",
     "react-router-redux": "^4.0.8",
-    "react-router-transition": "^0.1.1",
     "react-styled-flexboxgrid": "^1.1.2",
     "react-tap-event-plugin": "^2.0.1",
     "react-tinymce": "^0.7.0",
