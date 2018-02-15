@@ -59,8 +59,8 @@ class ThreadsList extends Component {
 										style={{ margin: '0 auto' }}
 										className='ThreadsList__pagination'
 										onChange={props.changePage}
-										currentPage={props.currentPage}
-										totalPages={props.totalPages}
+										currentPage={props.threads.get('currentPage')}
+										totalPages={props.threads.get('totalPages')}
 										hidePreviousAndNextPageLinks={true}
 										hideFirstAndLastPageLink={true} />
 									: null
@@ -86,8 +86,6 @@ ThreadsList.PropTypes = {
 	onChange: PropTypes.func,
 	parentId: PropTypes.isRequired,
 	threads: PropTypes.object.isRequired,
-	totalPages: PropTypes.number.isRequired,
-	currentPage: PropTypes.number.isRequired,
 }
 
 export { ThreadsList }
@@ -96,8 +94,6 @@ export default connect(
 	(state, ownProps) => ({
 		parentId: state.forum.get('id'),
 		threads: state.forum.get('threads'),
-		totalPages: state.forum.get('totalPages'),
-		currentPage: state.forum.get('currentPage'),
 		// ownProps must be the last one in object to overwrite threads if they are passed through property
 		...ownProps
 	}),
