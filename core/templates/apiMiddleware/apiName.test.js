@@ -47,9 +47,9 @@ export default describe('/plural API', function() {
     })
 
     it('GET single singular', async () => {
-        const plural = await Plural.findOne(where)
+        const singular = await Plural.findOne(where)
         await agent
-            .get('/api/plural/singular/' + plural.id )
+            .get('/api/plural/singular/' + singular.id )
             .expect(200)
             .expect('Content-Type', /json/)
             .then(({body}) => {
@@ -59,12 +59,12 @@ export default describe('/plural API', function() {
 
     it('PUT singular', async () => {
         const user = await loginUser(username, password)
-        const plural = await Plural.findOne(where)
+        const singular = await Plural.findOne(where)
         const payload = {
             name: 'some name',
             something: 'something',
         }
-        await user.put('/api/plural/' + plural.id)
+        await user.put('/api/plural/' + singular.id)
             .send(payload)
             .expect(200)
             .expect('Content-Type', /json/)
@@ -75,12 +75,12 @@ export default describe('/plural API', function() {
 
     it('PUT singular', async () => {
         const user = await loginUser(username, password)
-        const plural = await Plural.findOne(where)
+        const singular = await Plural.findOne(where)
         const payload = {
             name: 'some name',
             something: 'something',
         }
-        await user.put('/api/plural/' + plural.id)
+        await user.put('/api/plural/' + singular.id)
             .send(payload)
             .expect(200)
             .expect('Content-Type', /json/)
@@ -90,18 +90,18 @@ export default describe('/plural API', function() {
     })
 
     it('DELETE singular', async () => {
-        const plural = await Plural.findOne(where)
+        const singular = await Plural.findOne(where)
         assert.isNotNull(
             plural,
             'document does not exist before DELETE'
         )
         const user = await loginUser(username, password)
-        await user.put('/api/plural/' + plural.id)
+        await user.put('/api/plural/' + singular.id)
             .send(payload)
             .expect(200)
             .expect('Content-Type', /json/)
         assert.isNull(
-            await Plural.findById(plural.id),
+            await Plural.findById(singular.id),
             'document was not deleted'
         )
     })
