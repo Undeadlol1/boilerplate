@@ -38,27 +38,21 @@ module.exports = function(sequelize, DataTypes) {
     classMethods: {
       tableName: 'threads',
       freezeTableName: true,
-      // defaultScope: {
-      //   include: [{
-      //     model: require('./revisions'),
-      //     where: {active: true},
-      //   }],
-      // },
       associate: function(models) {
         Threads.belongsTo(models.User, {
-          // onDelete: "CASCADE", // TODO implement this?
-          foreignKey: {
-            allowNull: false
-          }
-        });
-        // TODO
-        // Threads.hasMany(models.Revisions)
+          foreignKey: {allowNull: false}
+        })
       },
-      // TODO do we need this?
-      findIdBySlug: function(slug) {
+      /* MODEL METHODS */
+      /**
+       * find thread.id by thread.slug
+       * @param {string} slug thread.slug
+       * @returns thread.id
+       */
+      findIdBySlug(slug) {
         return Threads
-                .findOne({ where: { slug } })
-                .then(skill => skill && skill.get('id'))
+          .findOne({ where: { slug } })
+          .then(thread => thread && thread.get('id'))
       }
     }
   });
