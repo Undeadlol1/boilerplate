@@ -39,7 +39,10 @@ export default describe('/plural API', function() {
             .expect(200)
             .expect('Content-Type', /json/)
             .then(({body}) => {
-                body.plural.should.be.a('array')
+                body.totalPages.should.eq(1)
+                body.currentPage.should.eq(1)
+                body.values.should.be.a('array')
+                body.values.should.have.length(1)
             })
     })
 
