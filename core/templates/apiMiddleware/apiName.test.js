@@ -73,22 +73,6 @@ export default describe('/plural API', function() {
             })
     })
 
-    it('PUT singular', async () => {
-        const user = await loginUser(username, password)
-        const singular = await Plural.findOne(where)
-        const payload = {
-            name: 'some name',
-            something: 'something',
-        }
-        await user.put('/api/plural/' + singular.id)
-            .send(payload)
-            .expect(200)
-            .expect('Content-Type', /json/)
-            .then(({body}) => {
-                expect(body).to.have.properties(payload)
-            })
-    })
-
     it('DELETE singular', async () => {
         const singular = await Plural.findOne(where)
         assert.isNotNull(
