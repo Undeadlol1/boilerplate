@@ -1,4 +1,3 @@
-import slugify from 'slug'
 import { Router } from 'express'
 import generateUuid from 'uuid/v4'
 import { Plural } from 'server/data/models'

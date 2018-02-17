@@ -1,25 +1,22 @@
 import 'babel-polyfill'
-import slugify from 'slug'
 import request from 'supertest'
 import server from 'server/server'
 import chai, { assert, expect } from 'chai'
 import users from 'server/data/fixtures/users'
 import { Plural, User } from 'server/data/models'
 import { loginUser } from 'server/test/middlewares/authApi.test'
-chai.should();
+chai.should()
 chai.use(require('chai-properties'))
 
 const   agent = request.agent(server),
         username = users[0].username,
         password = users[0].password,
         name = "random name",
-        slug = slugify(name)
+        where = {where: {name}}
 
 export default describe('/plural API', function() {
-
     // Kill supertest server in watch mode to avoid errors
     before(() => server.close())
-
     // clean up
     after(async () => await Plural.destroy({where: {name}}))
 
@@ -32,7 +29,7 @@ export default describe('/plural API', function() {
             .expect(200)
             .expect('Content-Type', /json/)
             .then(({body}) => {
-                body.slug.should.be.equal(slug)
+                body.name.should.be.equal(name)
             })
     })
 
@@ -42,13 +39,17 @@ export default describe('/plural API', function() {
             .expect(200)
             .expect('Content-Type', /json/)
             .then(({body}) => {
-                body.plural.should.be.a('array')
+                body.totalPages.should.eq(1)
+                body.currentPage.should.eq(1)
+                body.values.should.be.a('array')
+                body.values.should.have.length(1)
             })
     })
 
     it('GET single singular', async () => {
+        const singular = await Plural.findOne(where)
         await agent
-            .get('/api/plural/singular/' + slug )
+            .get('/api/plural/singular/' + singular.id )
             .expect(200)
             .expect('Content-Type', /json/)
             .then(({body}) => {
@@ -58,28 +59,12 @@ export default describe('/plural API', function() {
 
     it('PUT singular', async () => {
         const user = await loginUser(username, password)
-        const plural = await Plural.findOne({order: 'rand()'})
+        const singular = await Plural.findOne(where)
         const payload = {
             name: 'some name',
             something: 'something',
         }
-        await user.put('/api/plural/' + plural.id)
-            .send(payload)
-            .expect(200)
-            .expect('Content-Type', /json/)
-            .then(({body}) => {
-                expect(body).to.have.properties(payload)
-            })
-    })
-
-    it('PUT singular', async () => {
-        const user = await loginUser(username, password)
-        const plural = await Plural.findOne({order: 'rand()'})
-        const payload = {
-            name: 'some name',
-            something: 'something',
-        }
-        await user.put('/api/plural/' + plural.id)
+        await user.put('/api/plural/' + singular.id)
             .send(payload)
             .expect(200)
             .expect('Content-Type', /json/)
@@ -89,18 +74,18 @@ export default describe('/plural API', function() {
     })
 
     it('DELETE singular', async () => {
-        const plural = await Plural.findOne({order: 'rand()'})
+        const singular = await Plural.findOne(where)
         assert.isNotNull(
             plural,
             'document does not exist before DELETE'
         )
         const user = await loginUser(username, password)
-        await user.put('/api/plural/' + plural.id)
+        await user.put('/api/plural/' + singular.id)
             .send(payload)
             .expect(200)
             .expect('Content-Type', /json/)
         assert.isNull(
-            await Plural.findById(plural.id),
+            await Plural.findById(singular.id),
             'document was not deleted'
         )
     })
