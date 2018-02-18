@@ -51,107 +51,112 @@ function randomIntFromInterval(min, max) {
 }
 
 // insert fixtures into database
-before(function(done) {
-    // close server incase of supertest.agent server is in use
-    require('server/server.js').default.close()
+before(async function() {
+    try {
+        // Clean up DB just in case, to avoid possible bugs.
+        await cleanUpDB()
+        // Close server incase of supertest.agent server is in use.
+        await require('server/server.js').default.close()
 
-    const moods = [],
-          nodes = [],
-          locals = [],
-          profiles = [],
-          decisions = [],
-          createdUsers = [],
-          forums = [],
-          threads = []
+        const moods = [],
+                nodes = [],
+                locals = [],
+                profiles = [],
+                decisions = [],
+                createdUsers = [],
+                forums = [],
+                threads = []
 
-    const localsWithHashedPassword = userFixtures.map(user => {
-        // create new object to avoid object mutablity
-        // (user.password = "some" overrides fixture data)
-        const newLocal = Object.assign({}, user);
-        newLocal.password = Local.generateHash(newLocal.password)
-        return newLocal
-    })
-
-    // create users
-    User.bulkCreate(userFixtures)
-        // refetch users because .bulkCreate return objects with id == null
-        .then(() => User.findAll())
-        // create moods fixtures array
-        .each((user, index) => {
-            const   name = uniqid(),
-                    language = 'ru',
-                    slug = slugify(name),
-                    UserId = user.get('id'),
-                    // mood rating
-                    rating = randomIntFromInterval(1, 100000)
-            const local = localsWithHashedPassword[index]
-            local.UserId = user.id
-            locals.push(local)
-            createdUsers.push(user)
-            profiles.push({UserId, language})
-            moods.push({name, UserId, slug, rating, createdAt: getRandomDate()})
-            forums.push({id: name, name, slug, UserId})
+        const localsWithHashedPassword = userFixtures.map(user => {
+            // create new object to avoid object mutablity
+            // (user.password = "some" overrides fixture data)
+            const newLocal = Object.assign({}, user);
+            newLocal.password = Local.generateHash(newLocal.password)
+            return newLocal
         })
-        // create locals
-        .then(() => Local.bulkCreate(locals))
-        // create profiles
-        .then(() => Profile.bulkCreate(profiles))
-        // create forums
-        .then(() => Forums.bulkCreate(forums))
-        .then(() => Forums.findAll({where: {}}))
-        .each(forum => {
-            randomNames.forEach(() => {
-                const name = uniqid()
-                threads.push({
-                        name,
-                        slug: slugify(name),
-                        text: casual.description,
-                        parentId: forum.id,
-                        UserId: forum.UserId,
-                    }
-                )
+
+        // create users
+        await User.bulkCreate(userFixtures)
+            // refetch users because .bulkCreate return objects with id == null
+            .then(() => User.findAll())
+            // create moods fixtures array
+            .each((user, index) => {
+                const   name = uniqid(),
+                        language = 'ru',
+                        slug = slugify(name),
+                        UserId = user.get('id'),
+                        // mood rating
+                        rating = randomIntFromInterval(1, 100000)
+                const local = localsWithHashedPassword[index]
+                local.UserId = user.id
+                locals.push(local)
+                createdUsers.push(user)
+                profiles.push({UserId, language})
+                moods.push({name, UserId, slug, rating, createdAt: getRandomDate()})
+                forums.push({id: name, name, slug, UserId})
             })
-        })
-        // create threads
-        .then(() => Threads.bulkCreate(threads))
-        // create moods
-        .then(() => Mood.bulkCreate(moods))
-        .then(() => Mood.findAll({where: {}}))
-        .each(mood => {
-            urls.forEach(url => {
-                const rating = randomIntFromInterval(-3, 20)
-                nodes.push(
-                    extend(
-                        parseUrl(url), {
-                        rating,
-                        MoodId: mood.id,
-                        UserId: mood.UserId,
-                    })
-                )
+            // create locals
+            .then(() => Local.bulkCreate(locals))
+            // create profiles
+            .then(() => Profile.bulkCreate(profiles))
+            // create forums
+            .then(() => Forums.bulkCreate(forums))
+            .then(() => Forums.findAll({where: {}}))
+            .each(forum => {
+                randomNames.forEach(() => {
+                    const name = uniqid()
+                    threads.push({
+                            name,
+                            slug: slugify(name),
+                            text: casual.description,
+                            parentId: forum.id,
+                            UserId: forum.UserId,
+                        }
+                    )
+                })
             })
-        })
-        // create nodes
-        .then(() => Node.bulkCreate(nodes))
-        .then(() => Node.findAll({raw: true}))
-        // .each((node, index) => {
-        //     return createdUsers.forEach((user, index2) => {
-        //         decisions.push({
-        //             position: index,
-        //             NodeId: node.id,
-        //             MoodId: node.MoodId,
-        //             UserId: user.id,
-        //             NodeRating: node.rating,
-        //             rating: Number(randomIntFromInterval(-3, 20)),
-        //         })
-        //     })
-        // })
-        // create decisions
-        .then(() => Decision.bulkCreate(decisions))
-        .then(() => done())
-        .catch(error => {
-            console.error(error)
-            throw error
-        })
+            // create threads
+            .then(() => Threads.bulkCreate(threads))
+            // create moods
+            .then(() => Mood.bulkCreate(moods))
+            .then(() => Mood.findAll({where: {}}))
+            .each(mood => {
+                urls.forEach(url => {
+                    const rating = randomIntFromInterval(-3, 20)
+                    nodes.push(
+                        extend(
+                            parseUrl(url), {
+                            rating,
+                            MoodId: mood.id,
+                            UserId: mood.UserId,
+                        })
+                    )
+                })
+            })
+            // create nodes
+            .then(() => Node.bulkCreate(nodes))
+            .then(() => Node.findAll({raw: true}))
+            // .each((node, index) => {
+            //     return createdUsers.forEach((user, index2) => {
+            //         decisions.push({
+            //             position: index,
+            //             NodeId: node.id,
+            //             MoodId: node.MoodId,
+            //             UserId: user.id,
+            //             NodeRating: node.rating,
+            //             rating: Number(randomIntFromInterval(-3, 20)),
+            //         })
+            //     })
+            // })
+            // create decisions
+            .then(() => Decision.bulkCreate(decisions))
+            .catch(error => {
+                console.error(error)
+                throw error
+            })
+    } catch (error) {
+        throw error
+    }
 })
 
 // clean up db
