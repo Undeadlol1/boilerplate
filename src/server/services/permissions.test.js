@@ -1,13 +1,12 @@
 import 'babel-polyfill'
-import chai from 'chai'
 import sinon from 'sinon'
 import request from 'supertest'
 import server from 'server/server'
+import chai, { assert } from 'chai'
 import users from 'server/data/fixtures/users'
 import { Mood, User } from 'server/data/models'
 import { mustLogin, isAdmin } from 'server/services/permissions'
 import { loginUser } from 'server/test/middlewares/authApi.test'
-import { assert } from 'hoek';
 chai.should();
 
 const   user = request.agent(server),
@@ -16,19 +15,10 @@ const   user = request.agent(server),
         moodName = "random name"
 
 export default describe('permissions middleware', function() {
-
-    before(async function() {
-        // TODO add logout? to test proper user login?
-        // Kill supertest server in watch mode to avoid errors
-        server.close()
-        // login user
-        await loginUser(username, password)
-    })
-
+    // Kill supertest server in watch mode to avoid errors
+    before(async () => await server.close())
     // clean up
-    after(function() {
-        Mood.destroy({where: { name: moodName }})
-    })
+    after(async () => await Mood.destroy({where: {name: moodName}}))
 
     describe('"mustLogin" is', function() {
         it('success if user is logged in', async function() {
