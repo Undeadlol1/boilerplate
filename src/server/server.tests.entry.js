@@ -6,6 +6,7 @@ const slugify = require('slug')
 const casual = require('casual')
 const uniqid = require('uniqid')
 const { expect } = require('chai')
+const filter = require('lodash/filter')
 const isEqual = require('lodash/isEqual')
 const extend = require('lodash/assignIn')
 const { parseUrl } = require('shared/parsers.js')
@@ -28,16 +29,6 @@ const urls = [
             "https://www.youtube.com/watch?v=KrCMWS_fB4o",
             "https://www.youtube.com/watch?v=W7mNmiW9qts",
         ]
-
-// function createRandomNames(amount) {
-//     let names = []
-//     if (!amount) amount = 9
-//     for (let index = 0; index < amount; index++) {
-//         names.push(uniqid())
-
-//     }
-//     return names
-// }
 
 const randomNames = casual.array_of_words(10)
 
@@ -105,8 +96,6 @@ before(function(done) {
         .then(() => Local.bulkCreate(locals))
         // create profiles
         .then(() => Profile.bulkCreate(profiles))
-        // .then(() => Profile.findAll({where: {}, raw: true}))
-        // .then(profiles => console.log('profiles', profiles))
         // create forums
         .then(() => Forums.bulkCreate(forums))
         .then(() => Forums.findAll({where: {}}))
@@ -170,16 +159,17 @@ after(cleanUpDB)
 
 async function cleanUpDB() {
     try {
-        const all = { where: {} }
-        await User.destroy(all)
-        await Local.destroy(all)
-        await Profile.destroy(all)
-        await Mood.destroy(all)
-        await Node.destroy(all)
-        await Decision.destroy(all)
-        await Forums.destroy(all)
-        await Threads.destroy(all)
-        // ⚠️ Hook for cli! Do not remove 💀
+        // get all model names except reserved ones for Sequelize
+        const modelNames = filter(
+            Object.getOwnPropertyNames(models),
+            (modelName) => {
+                if (modelName === 'Sequelize') return false
+                if (modelName === 'sequelize') return false
+                else return true
+            }
+        )
+        // destroy everything in every model
+        await Promise.all(modelNames.map(name => models[name].destroy({where: {}})))
     }
     catch(error) {
         console.log(error)

@@ -177,7 +177,6 @@ function createApi(name) {
      * 4) create API middleware
      * 5) create test for middleware
      * 6) add line to server.js
-     * 7) add line to server.tests.js
      */
     shell.exec(`sequelize model:create --name ${name} --attributes name:string`)
     copyFolderAndReplace(
@@ -193,12 +192,6 @@ function createApi(name) {
         path.resolve(__dirname, '../../src/server/server.js'),
         hook,
         `app.use('/api/${lowerCase}', require('./middlewares/${lowerCase}Api').default)`
-    )
-    // delete model data from db after tests are finished running
-    addLineToFile(
-        path.resolve(__dirname, '../../src/server/server.tests.entry.js'),
-        hook,
-        `await models.${upperCase}.destroy(all)`
     )
     /*
         controller files should be created when
