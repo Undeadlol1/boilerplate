@@ -83,7 +83,6 @@ export default describe('/plural API', function() {
         await user
             .put('/api/plural/' + singular.id)
             .expect(200)
-            .expect('Content-Type', /json/)
         assert.isNull(
             await Plural.findById(singular.id),
             'document was not deleted'
