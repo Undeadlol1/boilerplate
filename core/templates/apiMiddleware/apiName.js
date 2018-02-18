@@ -18,7 +18,6 @@ export default Router()
       res.json({ values, totalPages, currentPage: page || 1 })
     }
     catch (error) {
-      console.log(error);
       res.status(500).end(error)
     }
   })
@@ -30,22 +29,20 @@ export default Router()
         await Plural.findById(params.id)
       )
     } catch (error) {
-      console.log(error)
       res.status(500).end(error)
     }
   })
 
   // update singular
-  .put('/:apiNameId', mustLogin, async ({user, body, params}, res) => {
+  .put('/:singularId', mustLogin, async ({user, body, params}, res) => {
     try {
-      const singular = await Plural.findById(params.apiNameId)
-
+      const singular = await Plural.findById(params.singularId)
+      if (!singular) return res.status(204).end()
       // check permissions
       if (singular.UserId != user.id) res.status(401).end()
       else res.json(await singular.update(body))
 
     } catch (error) {
-      console.log(error)
       res.status(500).end(error)
     }
   })
@@ -58,25 +55,23 @@ export default Router()
         await Plural.create({...body, UserId})
       )
     } catch (error) {
-      console.log(error)
       res.status(500).end(error)
     }
   })
 
   // delete singular
-  .delete('/:id', mustLogin, async ({user, body}, res) => {
+  .delete('/:id', mustLogin, async ({user, body, params}, res) => {
     try {
-      const plural = await Plural.findById(params.id)
+      const singular = await Plural.findById(params.id)
       // document was not found
-      if (!plural) return res.status(204).end()
+      if (!singular) return res.status(204).end()
       // user must be documents owner to delete it
-      if (plural && plural.UserId == user.id) {
-        await plural.destroy()
+      if (singular && singular.UserId == user.id) {
+        await singular.destroy()
         await res.status(200).end()
       }
       else res.boom.unauthorized('You must be the owner to delete this')
     } catch (error) {
-      console.log(error)
       res.status(500).end(error)
     }
   })

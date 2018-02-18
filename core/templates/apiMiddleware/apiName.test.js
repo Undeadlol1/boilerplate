@@ -12,7 +12,7 @@ const   agent = request.agent(server),
         username = users[0].username,
         password = users[0].password,
         name = "random name",
-        where = {where: {name}}
+        where = {where: {name}, raw: true}
 
 export default describe('/plural API', function() {
     // Kill supertest server in watch mode to avoid errors
@@ -76,12 +76,12 @@ export default describe('/plural API', function() {
     it('DELETE singular', async () => {
         const singular = await Plural.findOne(where)
         assert.isNotNull(
-            plural,
+            singular,
             'document does not exist before DELETE'
         )
         const user = await loginUser(username, password)
-        await user.put('/api/plural/' + singular.id)
-            .send(payload)
+        await user
+            .put('/api/plural/' + singular.id)
             .expect(200)
             .expect('Content-Type', /json/)
         assert.isNull(
@@ -95,11 +95,11 @@ export default describe('/plural API', function() {
     })
 
     it('fail to PUT if not authorized', async () => {
-        await agent.put('/api/plural').expect(401)
+        await agent.put('/api/plural/someId').expect(401)
     })
 
     it('fail to DELETE if not authorized', async () => {
-        await agent.delete('/api/plural').expect(401)
+        await agent.delete('/api/plural/someId').expect(401)
     })
 
 })
