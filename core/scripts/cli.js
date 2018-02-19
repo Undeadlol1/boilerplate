@@ -83,7 +83,7 @@ fse
                     .then(({name}) => createReduxModule(name))
         case updateText:
             shell.exec('git remote add upstream https://github.com/developer-expirience/boilerplate')
-            shell.exec('git pull upstream master --allow-unrelated-histories')
+            shell.exec('git pull upstream master --allow-unrelated-histories --squash')
             shell.exec('yarn')
             shell.echo('😎  all done 😎')
             break;
