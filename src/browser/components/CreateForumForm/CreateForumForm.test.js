@@ -12,7 +12,7 @@ describe('<CreateForumForm />', () => {
 
   const props = {
     handleSubmit: () => {},
-    UserId: process.env.ADMIN_ID,    
+    UserId: Number(process.env.ADMIN_ID),
   }
   const wrapper = shallow(<CreateForumForm {...props} />)
 
