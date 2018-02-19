@@ -1,12 +1,12 @@
 import 'babel-polyfill'
-import chai, { assert } from 'chai'
 import slugify from 'slug'
 import request from 'supertest'
 import server from 'server/server'
+import chai, { assert } from 'chai'
 import users from 'server/data/fixtures/users'
 import { Forums, User, Local } from 'server/data/models'
 import { loginUser } from 'server/test/middlewares/authApi.test'
-chai.should();
+chai.should()
 
 const   user = request.agent(server),
         username = users[0].username,
@@ -15,18 +15,10 @@ const   user = request.agent(server),
         slug = slugify(name)
 
 export default describe('/forums API', function() {
-
-    before(async function() {
-        // TODO add logout? to test proper user login?
-        // Kill supertest server in watch mode to avoid errors
-        server.close()
-
-    })
-
-    // clean up
-    after(function() {
-        Forums.destroy({where: { name }})
-    })
+    // Kill supertest server in watch mode to avoid errors.
+    before(async () => await server.close())
+    // Clean up.
+    after(async () => Forums.destroy({where: {name}}))
 
     it('GET forums', function(done) {
         request(server)
@@ -91,7 +83,7 @@ export default describe('/forums API', function() {
             .catch(error => {
                 console.log(error)
                 throw error
-            })                        
+            })
     })
 
     it('fail to POST if user is not an admin', async function() {
@@ -105,14 +97,14 @@ export default describe('/forums API', function() {
     })
 
     it('fail to PUT if user is not an admin', async function() {
-        // const user = await Local.findOne({where: {username}})        
+        // const user = await Local.findOne({where: {username}})
         // assert(user.UserId != process.env.ADMIN_ID)
         const agent = await loginUser(username, password)
         await agent
             .put('/api/forums/' + 'random name')
             .send({ name })
             .expect(401)
-            .catch(error => {throw error})            
+            .catch(error => {throw error})
     })
 
 
