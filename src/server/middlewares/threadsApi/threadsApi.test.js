@@ -67,23 +67,37 @@ export default describe('/threads API', function() {
 
     // TODO: PUT test
 
+    // FIXME: comments
     describe('fails to POST if', () => {
         it('not authorized', async () => await agent.post('/api/threads').expect(401))
 
-        it('name not validated', async () => {
-            const user = await loginUser(username, password)
-            await user
-            .post('/api/threads')
-            .send({name: ''})
-            .expect(422)
-            .expect('Content-Type', /json/)
-            .then(({body}) => {
-                expect(body.errors.name.msg)
-                .to.eq('Name must be between 5 and 100 characters long')
+        const values = [
+            {property: 'name', value: null, error: 'Name is required'}, // FIXME: what about this?
+            {property: 'name', value: undefined, error: 'Name is required'},
+            {property: 'name', value: '', error: 'Name must be between 5 and 100 characters long'},
+            {property: 'name', value: ' ', error: 'Name must be between 5 and 100 characters long'},
+            {property: 'text', value: undefined, error: 'Text is required'},
+            {property: 'text', value: '', error: 'Text should be atleast 5 characters long'},
+            {property: 'text', value: ' ', error: 'Text should be atleast 5 characters long'},
+            {property: 'parentId', value: undefined, error: 'Parent id is required'},
+            {property: 'parentId', value: '', error: 'Parent id is not valid UUID'},
+            {property: 'parentId', value: ' ', error: 'Parent id is not valid UUID'},
+        ]
+
+        values.map(({property, value, error}) => {
+            it(`${property} not validated`, async () => {
+                const user = await loginUser(username, password)
+                await user
+                .post('/api/threads')
+                .send({[property]: value})
+                .expect(422)
+                .expect('Content-Type', /json/)
+                .then(({body}) => {
+                    expect(body.errors[property].msg).to.eq(error)
+                })
+                .catch(error => {throw error})
             })
-            .catch(error => {throw error})
         })
     })
-
 
 })

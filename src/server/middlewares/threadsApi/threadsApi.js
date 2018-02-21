@@ -79,11 +79,15 @@ export default Router()
     //   check('text', 'text is required').trim().exists().isLength({min: 5}),
     //   check('name').trim().exists().isLength({min: 5, max: 100}).withMessage('name is required'),
     // ],
+    sanitize(['parentId', 'name', 'text']).trim(),
     checkSchema({
       parentId: {
         trim: true,
-        isUUID: true,
+        exists: true,
         errorMessage: 'Parent id is required',
+        isUUID: {
+          errorMessage: 'Parent id is not valid UUID',
+        },
       },
       name: {
         exists: true,
@@ -99,7 +103,7 @@ export default Router()
         errorMessage: 'Text is required',
         isLength: {
           options: { min: 5 },
-          errorMessage: 'Text should be at least 5 chars long',
+          errorMessage: 'Text should be atleast 5 characters long',
         }
       },
     }),
@@ -114,6 +118,7 @@ export default Router()
     },
     async (req, res) => {
       try {
+        console.log('matchedData(req): ', matchedData(req).name);
         res.json(
           await Threads.create({
             ...matchedData(req),
