@@ -4,6 +4,9 @@ import generateUuid from 'uuid/v4'
 import { Forums } from 'server/data/models'
 import { getThreads } from 'server/middlewares/threadsApi'
 import { mustLogin, isAdmin } from 'server/services/permissions'
+import { matchedData, sanitize } from 'express-validator/filter'
+import { check, validationResult } from 'express-validator/check'
+
 const limit = 12
 
 export default Router()
@@ -55,14 +58,17 @@ export default Router()
   })
 
   // create forum
-  .post('/', isAdmin, async ({user, body}, res) => {
-    try {
-      const UserId = user.id
-      const slug = slugify(body.name)
-      const forum = await Forums.create({...body, slug, UserId})
-      res.json(forum)
-    } catch (error) {
-      console.log(error)
-      res.status(500).end(error)
-    }
+  .post('/',
+    isAdmin,
+    // check('name', ),
+    async ({user, body}, res) => {
+      try {
+        const UserId = user.id
+        const slug = slugify(body.name)
+        const forum = await Forums.create({...body, slug, UserId})
+        res.json(forum)
+      } catch (error) {
+        console.log(error)
+        res.status(500).end(error)
+      }
   })

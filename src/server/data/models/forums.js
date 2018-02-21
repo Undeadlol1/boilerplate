@@ -26,28 +26,11 @@ module.exports = function(sequelize, DataTypes) {
     classMethods: {
       tableName: 'forums',
       freezeTableName: true,
-      // defaultScope: {
-      //   include: [{
-      //     model: require('./revisions'),
-      //     where: {active: true},
-      //   }],
-      // },
       associate: function(models) {
-        Forums.belongsTo(models.User, {
-          // onDelete: "CASCADE", // TODO implement this?
-          foreignKey: {
-            allowNull: false
-          }
-        });
-        // TODO
-        // Forums.hasMany(models.Revisions)
+        Forums.belongsTo(models.User)
       },
-      // TODO do we need this?
-      findIdBySlug: function(slug) {
-        return Forums
-                .findOne({ where: { slug } })
-                .then(skill => skill && skill.get('id'))
-      }
+      /* SCOPES */
+      defaultScope: {},
     }
   });
   return Forums;

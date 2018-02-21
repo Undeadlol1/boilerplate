@@ -41,6 +41,7 @@
     "express-rate-limit": "^2.8.0",
     "express-redis-cache": "^0.5.1",
     "express-session": "^1.15.1",
+    "express-validator": "^5.0.1",
     "font-awesome": "^4.7.0",
     "helmet": "^3.6.0",
     "immutable": "^3.8.1",

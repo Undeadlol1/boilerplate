@@ -80,10 +80,6 @@ export default describe('/forums API', function() {
             .post('/api/forums')
             .send({ name })
             .expect(401)
-            .catch(error => {
-                console.log(error)
-                throw error
-            })
     })
 
     it('fail to POST if user is not an admin', async function() {
@@ -106,6 +102,5 @@ export default describe('/forums API', function() {
             .expect(401)
             .catch(error => {throw error})
     })
-
 
 })

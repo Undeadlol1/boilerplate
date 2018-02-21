@@ -3,6 +3,8 @@ import { Router } from 'express'
 import generateUuid from 'uuid/v4'
 import { Threads, User } from 'server/data/models'
 import { mustLogin } from 'server/services/permissions'
+import { matchedData, sanitize } from 'express-validator/filter'
+import { check, validationResult, checkSchema } from 'express-validator/check'
 
 const limit = 12
 
@@ -41,13 +43,9 @@ export default Router()
   // get all threads
   .get('/:parentId/:page?', async ({params}, res) => {
     try {
-      // const page = req.params.page,
-      //       totalThreads = await Threads.count(),
-      //       offset = page ? limit * (page -1) : 0,
-      //       totalPages = Math.ceil(totalThreads / limit),
-      //       threads = await Threads.findAll({limit, offset})
-      const response = await getThreads(params.parentId, params.page)
-      res.json(response)
+      res.json(
+        await getThreads(params.parentId, params.page)
+      )
     }
     catch (error) {
       console.log(error);
@@ -71,15 +69,61 @@ export default Router()
     }
   })
 
-  // create thread
-  .post('/', mustLogin, async ({user, body}, res) => {
-    try {
-      const UserId = user.id
-      const slug = slugify(body.name)
-      const thread = await Threads.create({...body, slug, UserId})
-      res.json(thread)
-    } catch (error) {
-      console.log(error)
-      res.status(500).end(error)
-    }
+  // Create thread.
+  .post('/',
+    /* PERMISSIONS */
+    mustLogin,
+    /* VALIDATIONS */
+    // [
+    //   check('parentId', 'parentId is required').trim().exists().isUUID(),
+    //   check('text', 'text is required').trim().exists().isLength({min: 5}),
+    //   check('name').trim().exists().isLength({min: 5, max: 100}).withMessage('name is required'),
+    // ],
+    checkSchema({
+      parentId: {
+        trim: true,
+        isUUID: true,
+        errorMessage: 'Parent id is required',
+      },
+      name: {
+        exists: true,
+        errorMessage: 'Name is required',
+        trim: true,
+        isLength: {
+          options: { min: 5, max: 100 },
+          errorMessage: 'Name must be between 5 and 100 characters long',
+        },
+      },
+      text: {
+        exists: true,
+        errorMessage: 'Text is required',
+        isLength: {
+          options: { min: 5 },
+          errorMessage: 'Text should be at least 5 chars long',
+        }
+      },
+    }),
+    /* HANDLE VALIDATION ERRORS */
+    (req, res, next) => {
+      // Get the validation result whenever you want; see the Validation Result API for all options!
+      const errors = validationResult(req)
+      if (!errors.isEmpty()) {
+        return res.status(422).json({ errors: errors.mapped() })
+      }
+      else next()
+    },
+    async (req, res) => {
+      try {
+        res.json(
+          await Threads.create({
+            ...matchedData(req),
+            UserId: req.user.id,
+            slug: slugify(req.body.name),
+          })
+        )
+      }
+      catch (error) {
+        console.log(error)
+        res.status(500).end(error)
+      }
   })
