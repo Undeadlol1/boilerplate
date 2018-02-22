@@ -65,6 +65,18 @@ export default describe('/threads API', function() {
             })
     })
 
+    it('failt to GET single thread if slug not provided', async () => {
+        await agent
+            .get('/api/threads/thread/')
+            .expect(404)
+            .expect('Content-Type', /json/)
+            .then(res => {
+                res.body.name.should.be.equal(thread)
+                // includes user object
+                res.body.User.id.should.be.defined
+            })
+    })
+
     // TODO: PUT test
 
     // FIXME: comments
@@ -72,7 +84,7 @@ export default describe('/threads API', function() {
         it('not authorized', async () => await agent.post('/api/threads').expect(401))
 
         const values = [
-            {property: 'name', value: null, error: 'Name is required'}, // FIXME: what about this?
+            // {property: 'name', value: null, error: 'Name is required'}, // FIXME: what about this?
             {property: 'name', value: undefined, error: 'Name is required'},
             {property: 'name', value: '', error: 'Name must be between 5 and 100 characters long'},
             {property: 'name', value: ' ', error: 'Name must be between 5 and 100 characters long'},

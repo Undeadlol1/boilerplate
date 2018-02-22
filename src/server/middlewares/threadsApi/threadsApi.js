@@ -26,17 +26,24 @@ export async function getThreads(parentId, currentPage=1) {
 export default Router()
 
   // get single thread
-  .get('/thread/:slug', async ({params}, res) => {
-    try {
-      const thread = await Threads.findOne({
-                        include: [User],
-                        where: { slug: params.slug },
-                      })
-      res.json(thread)
-    } catch (error) {
-      console.log(error)
-      res.status(500).end(error)
-    }
+  .get('/thread/:slug',
+    checkSchema({
+      slug: {
+        trim: true,
+        exists: true,
+      }
+    }),
+    async ({params}, res) => {
+      try {
+        const thread = await Threads.findOne({
+                          include: [User],
+                          where: { slug: params.slug },
+                        })
+        res.json(thread)
+      } catch (error) {
+        console.log(error)
+        res.status(500).end(error)
+      }
   })
 
 
@@ -74,8 +81,7 @@ export default Router()
     /* PERMISSIONS */
     mustLogin,
     /* VALIDATIONS */
-    // [
-    //   check('parentId', 'parentId is required').trim().exists().isUUID(),
+      // check('parentId', 'parentId is required').trim().exists().isUUID(),
     //   check('text', 'text is required').trim().exists().isLength({min: 5}),
     //   check('name').trim().exists().isLength({min: 5, max: 100}).withMessage('name is required'),
     // ],
@@ -118,7 +124,6 @@ export default Router()
     },
     async (req, res) => {
       try {
-        console.log('matchedData(req): ', matchedData(req).name);
         res.json(
           await Threads.create({
             ...matchedData(req),
