@@ -72,7 +72,7 @@ export default describe('/threads API', function() {
         it('not authorized', async () => await agent.post('/api/threads').expect(401))
 
         const values = [
-            {property: 'name', value: null, error: 'Name is required'}, // FIXME: what about this?
+            // {property: 'name', value: null, error: 'Name is required'}, // FIXME: what about this?
             {property: 'name', value: undefined, error: 'Name is required'},
             {property: 'name', value: '', error: 'Name must be between 5 and 100 characters long'},
             {property: 'name', value: ' ', error: 'Name must be between 5 and 100 characters long'},
