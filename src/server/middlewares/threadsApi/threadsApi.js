@@ -96,7 +96,6 @@ export default Router()
     // validations
     checkSchema({
       parentId: {
-        trim: true,
         exists: true,
         errorMessage: 'Parent id is required',
         isUUID: {
@@ -106,7 +105,6 @@ export default Router()
       name: {
         exists: true,
         errorMessage: 'Name is required',
-        trim: true,
         isLength: {
           options: { min: 5, max: 100 },
           errorMessage: 'Name must be between 5 and 100 characters long',
@@ -121,7 +119,7 @@ export default Router()
         }
       },
     }),
-    /* HANDLE VALIDATION ERRORS */
+    // handle errors
     handleValidationErrors,
     async (req, res) => {
       try {
