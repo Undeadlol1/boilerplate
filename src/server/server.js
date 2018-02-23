@@ -69,8 +69,10 @@ app.set('views', path.resolve(__dirname, './public'));
 
 // development only middlewares
 if (process.env.NODE_ENV === 'development') {
+  // better request errors
   app.use(errorhandler())
-  app.use(morgan('dev')) // logger
+  // request logger
+  app.use(morgan('dev'))
   // enable 'access control' to avoid CORS errors in browsersync
   app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
