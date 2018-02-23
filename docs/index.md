@@ -1,4 +1,5 @@
 * [Tests](/boilerplate/tests)
-* [Internationalization](/boilerplate/internationalization)
 * [Application logic](/boilerplate/logic)
+* [Working with APIs](/boilerplate/api)
+* [Internationalization](/boilerplate/internationalization)
 * [FAQ](/boilerplate/faq)

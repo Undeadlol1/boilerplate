@@ -23,30 +23,41 @@ export async function getThreads(parentId, currentPage=1) {
     }
 }
 
-export default Router()
+const handleValidationErrors = (req, res, next) => {
+  // Get the validation result whenever you want; see the Validation Result API for all options!
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.mapped() })
+  }
+  else next()
+}
 
+export default Router()
   // get single thread
   .get('/thread/:slug',
+    // sanitising
+    sanitize(['slug']).trim(),
+    // validations
     checkSchema({
       slug: {
-        trim: true,
         exists: true,
+        errorMessage: 'Is required', // FIXME: tests
       }
     }),
+    handleValidationErrors,
     async ({params}, res) => {
       try {
-        const thread = await Threads.findOne({
-                          include: [User],
-                          where: { slug: params.slug },
-                        })
-        res.json(thread)
+        res.json(
+          await Threads.findOne({
+            include: [User],
+            where: { slug: params.slug },
+          })
+        )
       } catch (error) {
         console.log(error)
         res.status(500).end(error)
       }
   })
-
-
   // get all threads
   .get('/:parentId/:page?', async ({params}, res) => {
     try {
@@ -59,8 +70,7 @@ export default Router()
       res.status(500).end(error)
     }
   })
-
-  // update thread
+  // Update thread.
   .put('/:threadsId', mustLogin, async ({user, body, params}, res) => {
     try {
       const UserId = user.id
@@ -75,17 +85,15 @@ export default Router()
       res.status(500).end(error)
     }
   })
-
-  // Create thread.
+  /*
+    Creeate thread.
+  */
   .post('/',
-    /* PERMISSIONS */
+    // permission
     mustLogin,
-    /* VALIDATIONS */
-      // check('parentId', 'parentId is required').trim().exists().isUUID(),
-    //   check('text', 'text is required').trim().exists().isLength({min: 5}),
-    //   check('name').trim().exists().isLength({min: 5, max: 100}).withMessage('name is required'),
-    // ],
+    // sanitising
     sanitize(['parentId', 'name', 'text']).trim(),
+    // validations
     checkSchema({
       parentId: {
         trim: true,
@@ -114,14 +122,7 @@ export default Router()
       },
     }),
     /* HANDLE VALIDATION ERRORS */
-    (req, res, next) => {
-      // Get the validation result whenever you want; see the Validation Result API for all options!
-      const errors = validationResult(req)
-      if (!errors.isEmpty()) {
-        return res.status(422).json({ errors: errors.mapped() })
-      }
-      else next()
-    },
+    handleValidationErrors,
     async (req, res) => {
       try {
         res.json(

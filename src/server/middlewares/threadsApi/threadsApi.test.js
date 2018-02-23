@@ -7,7 +7,7 @@ import chai, {expect, assert} from 'chai'
 import users from 'server/data/fixtures/users'
 import { Threads, Forums, User } from 'server/data/models'
 import { loginUser } from 'server/test/middlewares/authApi.test'
-chai.should();
+chai.should()
 
 const   agent = request(server),
         username = users[0].username,
@@ -31,8 +31,8 @@ export default describe('/threads API', function() {
             .expect('Content-Type', /json/)
             .then(function(res) {
                 res.body.text.should.be.equal(text)
+                res.body.slug.should.be.equal(slug)
                 res.body.parentId.should.be.equal(parentId)
-                return res.body.slug.should.be.equal(slug)
             })
             .catch(error => {
                 console.error(error)
@@ -46,29 +46,17 @@ export default describe('/threads API', function() {
             .get('/api/threads/' + 'random id')
             .expect(200)
             .expect('Content-Type', /json/)
-            .then(function(res) {
-                res.body.totalPages.should.eq(1)
-                res.body.currentPage.should.eq(1)
-                res.body.values.should.be.a('array')
-            });
+            .then(({body}) => {
+                body.totalPages.should.eq(1)
+                body.currentPage.should.eq(1)
+                body.values.should.be.a('array')
+            })
     })
 
     it('GET single thread', async () => {
         await agent
             .get('/api/threads/thread/' + slug )
             .expect(200)
-            .expect('Content-Type', /json/)
-            .then(res => {
-                res.body.name.should.be.equal(thread)
-                // includes user object
-                res.body.User.id.should.be.defined
-            })
-    })
-
-    it('failt to GET single thread if slug not provided', async () => {
-        await agent
-            .get('/api/threads/thread/')
-            .expect(404)
             .expect('Content-Type', /json/)
             .then(res => {
                 res.body.name.should.be.equal(thread)
