@@ -33,24 +33,25 @@ const handleValidationErrors = (req, res, next) => {
 }
 
 export default Router()
-  // get single thread
+  /**
+   * get single thread
+   */
   .get('/thread/:slug',
-    // sanitising
-    sanitize(['slug']).trim(),
     // validations
     checkSchema({
       slug: {
+        trim: true,
         exists: true,
         errorMessage: 'Is required', // FIXME: tests
       }
     }),
     handleValidationErrors,
-    async ({params}, res) => {
+    async (req, res) => {
       try {
         res.json(
           await Threads.findOne({
             include: [User],
-            where: { slug: params.slug },
+            where: { slug: matchedData(req).slug },
           })
         )
       } catch (error) {
@@ -93,22 +94,46 @@ export default Router()
   .put('/:threadsId',
     mustLogin,
     // FIXME: tests
+    // FIXME: updatable fields
+    // FIXME: make sure no other field is updated
+    sanitize(['threadsId', 'text']).trim(),
     checkSchema({
+      // Params validation.
       threadsId: {
+        trim: true,
         exists: true,
         isUUID: true,
+        errorMessage: 'Is required',
+        // TODO: tests
+        // errorMessage: ''
+      },
+      // Body validation.
+      // Every other field in body will be ignored.
+      text: {
+        trim: true,
+        exists: true,
+        errorMessage: 'Is required',
+        isLength: {
+          options: { min: 5 },
+          errorMessage: 'Text should be atleast 5 characters long',
+        }
       },
     }),
     handleValidationErrors,
-    async ({user, body, params}, res) => {
+    async (req, res) => {
       try {
         // TODO: validated data
-        const UserId = user.id
-        const thread = await Threads.findById(params.threadsId)
-
+        const UserId = req.user.id,
+              bodyData = matchedData(req, { locations: ['body'] }),
+              {threadsId} = matchedData(req, { locations: ['params'] }),
+              thread = await Threads.findById(threadsId)
+        // FIXME: add same checker to "apiName" template
+        // FIXME: add tests about this one
+        // NOTE: maybe should use customg validator?
+        if (!thread) return res.status(204).end()
         // check permissions
-        if (Threads.UserId != UserId) return res.status(401).end()
-        else res.json(await thread.update(body))
+        if (thread.UserId != UserId) res.status(401).end()
+        else res.json(await thread.update(bodyData))
 
       } catch (error) {
         console.log(error)
@@ -118,8 +143,9 @@ export default Router()
   /*
     Creeate thread.
   */
+  //  FIXME: add tests which dissalow creating of
   .post('/',
-    // permission
+    // permissions
     mustLogin,
     // sanitising
     sanitize(['parentId', 'name', 'text']).trim(),
