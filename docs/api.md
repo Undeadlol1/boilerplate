@@ -33,3 +33,11 @@ Or you can checks as schema and special error for each validation:
 
 
 TODO: write about validation errors.
+
+## Tests
+
+It is a good idea to make tests isolated and to always clean up after yourself after tests done running. For example: if you create a Thread or Forum document you must delete it in "after" function. If you don't you might run into errors because other tests manipulate Forum or Thread documents.
+
+The only exception is when you know for sure that data you changed will not be used by any other test.
+
+All documents from all models are automatically deleted before and after tests are done running (see: server.tests.entry.js).
