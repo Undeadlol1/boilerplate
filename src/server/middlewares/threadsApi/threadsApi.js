@@ -59,8 +59,27 @@ export default Router()
       }
   })
   // get all threads
-  .get('/:parentId/:page?', async ({params}, res) => {
+  .get('/:parentId/:page?',
+    // sanitising
+    sanitize(['parentId', 'page']).trim(),
+    // validations
+    checkSchema({
+      parentId: {
+        exists: true,
+        errorMessage: 'Is required', // FIXME: tests
+      },
+      // FIXME: tests
+      page: {
+        isInt: true,
+        toInt: true, // is this working?ß
+        optional: true,
+        errorMessage: 'Is required',
+      }
+    }),
+    async (req, res) => {
     try {
+      const params = matchedData(req)
+      // TODO: user proper params
       res.json(
         await getThreads(params.parentId, params.page)
       )
@@ -71,19 +90,30 @@ export default Router()
     }
   })
   // Update thread.
-  .put('/:threadsId', mustLogin, async ({user, body, params}, res) => {
-    try {
-      const UserId = user.id
-      const thread = await Threads.findById(params.threadsId)
+  .put('/:threadsId',
+    mustLogin,
+    // FIXME: tests
+    checkSchema({
+      threadsId: {
+        exists: true,
+        isUUID: true,
+      },
+    }),
+    handleValidationErrors,
+    async ({user, body, params}, res) => {
+      try {
+        // TODO: validated data
+        const UserId = user.id
+        const thread = await Threads.findById(params.threadsId)
 
-      // check permissions
-      if (Threads.UserId != UserId) return res.status(401).end()
-      else res.json(await thread.update(body))
+        // check permissions
+        if (Threads.UserId != UserId) return res.status(401).end()
+        else res.json(await thread.update(body))
 
-    } catch (error) {
-      console.log(error)
-      res.status(500).end(error)
-    }
+      } catch (error) {
+        console.log(error)
+        res.status(500).end(error)
+      }
   })
   /*
     Creeate thread.
