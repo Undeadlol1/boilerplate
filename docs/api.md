@@ -33,6 +33,8 @@ Or you can checks as schema and special error for each validation:
 
 
 TODO: write about validation errors.
+http://sequelize.readthedocs.io/en/v3/docs/models-definition/#validations
+http://docs.sequelizejs.com/manual/tutorial/models-definition.html#validations
 
 ## Tests
 

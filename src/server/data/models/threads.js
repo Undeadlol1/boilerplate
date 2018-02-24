@@ -12,11 +12,23 @@ module.exports = function(sequelize, DataTypes) {
         unique: true,
         allowNull: false,
         type: DataTypes.STRING,
+        // validate: {
+        //   isLength: {min: 5,}
+        // }
     },
     slug: {
         unique: true,
         allowNull: false,
         type: DataTypes.STRING,
+        validate: {
+          trim: true,
+          // i don't know which one works
+          min: 5,
+          max: 100,
+          isLength: {
+            options: { min: 5, max: 100 },
+          }
+      }
     },
     text: {
       allowNull: false,

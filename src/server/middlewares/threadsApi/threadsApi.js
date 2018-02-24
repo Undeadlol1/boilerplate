@@ -179,11 +179,12 @@ export default Router()
     handleValidationErrors,
     async (req, res) => {
       try {
+        const payload = matchedData(req)
         res.json(
           await Threads.create({
-            ...matchedData(req),
+            ...payload,
             UserId: req.user.id,
-            slug: slugify(req.body.name),
+            slug: slugify(payload.name),
           })
         )
       }

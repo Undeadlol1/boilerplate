@@ -9,6 +9,7 @@ import users from 'server/data/fixtures/users'
 import { Threads, Forums, User } from 'server/data/models'
 import { loginUser } from 'server/test/middlewares/authApi.test'
 chai.should()
+chai.use(require('chai-properties'))
 
 const   agent = request(server),
         username = users[0].username,
@@ -34,10 +35,13 @@ export default describe('/threads API', function() {
             .send({ name, text, parentId: forumId })
             .expect(200)
             .expect('Content-Type', /json/)
-            .then(({body}) => {
-                body.text.should.be.equal(text)
-                body.slug.should.be.equal(slug)
-                body.parentId.should.be.equal(forumId)
+            .then(async ({body}) => {
+                // check response fields
+                body.should.have.properties({
+                    name,
+                    slug,
+                    parentId: forumId
+                })
             })
             .catch(error => { throw error})
     })
@@ -71,20 +75,25 @@ export default describe('/threads API', function() {
         const oldThread = await Threads.findOne({where: {parentId: forumId}})
         const user = await loginUser(username, password)
         const newText = 'some new name'
+        const newId = generateUuid()
         // FIXME: test if id was not provided
         await user
             .put('/api/threads/' + oldThread.id)
             // TODO: must not be able to update id (add tests)
-            .send({text: newText})
+            .send({id: newId, text: newText})
             .expect(200)
             .expect('Content-Type', /json/)
             .then(async ({body}) => {
                 const updatedThread = await Threads.findById(oldThread.id)
                 // make sure response has updated document
                 body.id.should.eq(updatedThread.id)
+                // FIXME: should i move this checks to different test?
+                // FIXME: comment
+                body.id.should.not.eq(newId)
                 body.text.should.eq(updatedThread.text)
                 // make sure document is updated in database
                 expect(updatedThread).to.have.property("text", newText)
+                expect(updatedThread).to.not.have.property("id", newId)
             })
             .catch(error => {throw error})
     })
@@ -144,6 +153,7 @@ export default describe('/threads API', function() {
         forEach(
             [
                 // FIXME: what about nulls?
+                // NOTE: this might help http://sequelize.readthedocs.io/en/v3/docs/models-definition/#validations
                 // {property: 'name', value: null, error: 'Name is required'},
                 {property: 'name', value: undefined, error: 'Name is required'},
                 {property: 'name', value: '', error: 'Name must be between 5 and 100 characters long'},
@@ -163,7 +173,9 @@ export default describe('/threads API', function() {
                     .send({[property]: value})
                     .expect(422)
                     .expect('Content-Type', /json/)
-                    .then(({body}) => expect(body.errors[property].msg).to.eq(error))
+                    .then(({body}) => {
+                        expect(body.errors[property].msg).to.eq(error)
+                    })
                     .catch(error => {throw error})
                 })
             }
