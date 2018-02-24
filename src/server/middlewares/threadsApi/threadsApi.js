@@ -132,7 +132,7 @@ export default Router()
         // NOTE: maybe should use customg validator?
         if (!thread) return res.status(204).end()
         // check permissions
-        if (thread.UserId != UserId) res.status(401).end()
+        if (thread.UserId != UserId) res.status(403).end()
         else res.json(await thread.update(bodyData))
 
       } catch (error) {

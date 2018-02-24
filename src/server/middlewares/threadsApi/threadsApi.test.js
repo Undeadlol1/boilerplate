@@ -76,7 +76,6 @@ export default describe('/threads API', function() {
         const user = await loginUser(username, password)
         const newText = 'some new name'
         const newId = generateUuid()
-        // FIXME: test if id was not provided
         await user
             .put('/api/threads/' + oldThread.id)
             // TODO: must not be able to update id (add tests)
@@ -97,22 +96,6 @@ export default describe('/threads API', function() {
             })
             .catch(error => {throw error})
     })
-    /**
-     * this is a mess, i just copypasted stuff without thinking
-     */
-    // it('GET single thread if no slug', async () => {
-    //     await agent
-    //         .get('/api/threads/thread/')
-    //         .expect(200)
-    //         .expect('Content-Type', /json/)
-    //         .then(res => {
-    //             res.body
-    //             //
-    //             // res.body.name.should.be.equal(thread)
-    //             // // includes user object
-    //             // res.body.User.id.should.be.defined
-    //         })
-    // })
 
     /*
         FAILURE TESTS
@@ -120,8 +103,18 @@ export default describe('/threads API', function() {
     describe('fails to PUT if', () => {
         it('id was not provided', async () => await agent.put('/api/threads').expect(404))
         it('user is not logged in', async () => await agent.put('/api/threads/id').expect(401))
-        // FIXME: add tests about not being able to update other users threads
-        // FIXME: what if there is no thread to update?
+        it('user is diffrent', async () => {
+            const thread = await Threads.findOne({where: {parentId: forumId}})
+            const user = await loginUser(users[1].username, users[1].password)
+            await user.put('/api/threads/' + thread.id).send({name, text}).expect(403)
+        })
+        it('thread does not exist', async () => {
+            const user = await loginUser(username, password)
+            await user
+                .put('/api/threads/' + generateUuid()) // <- proper but non existing document ID
+                .send({name, text}) // proper payload
+                .expect(204) // 'No Content' status code
+        })
         // Run PUT requests with different values and make sure there is a proper error message for it.
         forEach(
             [
