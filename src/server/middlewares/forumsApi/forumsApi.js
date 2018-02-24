@@ -47,6 +47,8 @@ export default Router()
       const UserId = user.id
       const forum = await Forums.findById(params.forumsId)
 
+      // TODO: what if there is no forum?
+
       // check permissions
       if (Forums.UserId != UserId) return res.status(401).end()
       else res.json(await forum.update(body))
