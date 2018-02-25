@@ -8,8 +8,7 @@ import { Forums, User, Local } from 'server/data/models'
 import { loginUser } from 'server/test/middlewares/authApi.test'
 chai.should()
 
-const   user = request.agent(server),
-        username = users[0].username,
+const   username = users[0].username,
         password = users[0].password,
         name = "random name",
         slug = slugify(name)
@@ -20,23 +19,21 @@ export default describe('/forums API', function() {
     // Clean up.
     after(async () => Forums.destroy({where: {name}}))
 
-    it('GET forums', function(done) {
-        request(server)
+    it('GET forums', async () => {
+        await request(server)
             .get('/api/forums')
-            .expect('Content-Type', /json/)
             .expect(200)
-            .end(function(err, res) {
-                if (err) return done(err);
-                res.body.totalPages.should.eq(1)
-                res.body.currentPage.should.eq(1)
-                res.body.values.should.be.a('array')
-                done()
-            });
+            .expect('Content-Type', /json/)
+            .then(({body}) => {
+                body.totalPages.should.eq(1)
+                body.currentPage.should.eq(1)
+                body.values.should.be.a('array')
+            })
     })
 
     it('GET single forum', async function() {
         const forum = await Forums.findOne({sort: 'rand()'})
-        await user
+        await request(server)
             .get('/api/forums/forum/' + forum.slug )
             .expect('Content-Type', /json/)
             .expect(200)
@@ -76,7 +73,7 @@ export default describe('/forums API', function() {
     // TODO PUT test
 
     it('fail to POST if not authorized', async function() {
-        await user
+        await request(server)
             .post('/api/forums')
             .send({ name })
             .expect(401)
@@ -85,8 +82,8 @@ export default describe('/forums API', function() {
     it('fail to POST if user is not an admin', async function() {
         // const user = await Local.findOne({where: {username}})
         // assert(user.UserId != process.env.ADMIN_ID)
-        const agent = await loginUser(username, password)
-        await agent
+        const user = await loginUser(username, password)
+        await user
             .post('/api/forums')
             .send({ name })
             .expect(401)
@@ -95,8 +92,8 @@ export default describe('/forums API', function() {
     it('fail to PUT if user is not an admin', async function() {
         // const user = await Local.findOne({where: {username}})
         // assert(user.UserId != process.env.ADMIN_ID)
-        const agent = await loginUser(username, password)
-        await agent
+        const user = await loginUser(username, password)
+        await user
             .put('/api/forums/' + 'random name')
             .send({ name })
             .expect(401)
