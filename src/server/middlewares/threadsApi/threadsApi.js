@@ -2,6 +2,7 @@ import slugify from 'slug'
 import { Router } from 'express'
 import generateUuid from 'uuid/v4'
 import { Threads, User } from 'server/data/models'
+import { createPagination } from '../../services/utils'
 import { mustLogin } from 'server/services/permissions'
 import { matchedData, sanitize } from 'express-validator/filter'
 import { check, validationResult, checkSchema } from 'express-validator/check'
@@ -14,13 +15,12 @@ const limit = 12
  * @param {Number} [currentPage=1] page number
  */
 export async function getThreads(parentId, currentPage=1) {
-    const totalThreads = await Threads.count({where: {parentId}}),
-          offset = currentPage ? limit * (currentPage -1) : 0
-    return {
-      currentPage,
-      totalPages: Math.ceil(totalThreads / limit) || 1,
-      values: await Threads.findAll({limit, offset, where: {parentId}}),
-    }
+  return await createPagination({
+    limit: 12,
+    model: Threads,
+    page: currentPage,
+    where: {parentId},
+  })
 }
 
 const handleValidationErrors = (req, res, next) => {
@@ -78,17 +78,17 @@ export default Router()
       }
     }),
     async (req, res) => {
-    try {
-      const params = matchedData(req)
-      // TODO: user proper params
-      res.json(
-        await getThreads(params.parentId, params.page)
-      )
-    }
-    catch (error) {
-      console.log(error);
-      res.status(500).end(error)
-    }
+      try {
+        const params = matchedData(req)
+        // TODO: user proper params
+        res.json(
+          await getThreads(params.parentId, params.page)
+        )
+      }
+      catch (error) {
+        console.log(error);
+        res.status(500).end(error)
+      }
   })
   // Update thread.
   .put('/:threadsId',
