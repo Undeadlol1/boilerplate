@@ -30,9 +30,15 @@ export default describe('/threads API', function() {
      */
     it('POST thread', async function() {
         const user = await loginUser(username, password)
+        const differentId = generateUuid()
         await user
             .post('/api/threads')
-            .send({ name, text, parentId: forumId })
+            .send({
+                name,
+                text,
+                id: differentId,
+                parentId: forumId,
+            })
             .expect(200)
             .expect('Content-Type', /json/)
             .then(async ({body}) => {
@@ -42,6 +48,8 @@ export default describe('/threads API', function() {
                     slug,
                     parentId: forumId
                 })
+                // POST body must not override default properties.
+                body.id.should.not.eq(differentId)
             })
             .catch(error => { throw error})
     })

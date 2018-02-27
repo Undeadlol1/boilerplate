@@ -5,14 +5,16 @@ import { Threads, User } from 'server/data/models'
 import validations from './threadsApi.validations'
 import { createPagination } from '../../services/utils'
 import { mustLogin } from 'server/services/permissions'
+import { handleValidationErrors } from '../../services/errors'
 import { matchedData, sanitize } from 'express-validator/filter'
 import { check, validationResult, checkSchema } from 'express-validator/check'
 const limit = 12
 
 /**
- *
+ * Get paginated threads by parentId
  * @param {String} parentId parent UUID
  * @param {Number} [currentPage=1] page number
+ * @export
  */
 export async function getThreads(parentId, currentPage=1) {
   return await createPagination({
@@ -23,19 +25,10 @@ export async function getThreads(parentId, currentPage=1) {
   })
 }
 
-const handleValidationErrors = (req, res, next) => {
-  // Get the validation result whenever you want; see the Validation Result API for all options!
-  const errors = validationResult(req)
-  if (!errors.isEmpty()) {
-    return res.status(422).json({ errors: errors.mapped() })
-  }
-  else next()
-}
-
 export default Router()
-  /**
-   * get single thread
-   */
+  /*
+    Get single thread by slug.
+  */
   .get('/thread/:slug',
     // validations
     validations.getOne,
@@ -54,7 +47,10 @@ export default Router()
         res.status(500).end(error)
       }
   })
-  // get all threads
+  /*
+    Get threads by parentId.
+    Response with paginated results.
+  */
   .get('/:parentId/:page?',
     // sanitising
     sanitize(['parentId', 'page']).trim(),
@@ -75,15 +71,19 @@ export default Router()
         res.status(500).end(error)
       }
   })
-  // Update thread.
+  /*
+    Update thread.
+  */
   .put('/:threadsId',
+    // permissions
     mustLogin,
-    // FIXME: tests
-    // FIXME: updatable fields
-    // FIXME: make sure no other field is updated
+    // sanitising
     sanitize(['threadsId', 'text']).trim(),
+    // validations
     validations.put,
+    // handle validation errors
     handleValidationErrors,
+    // handle route
     async (req, res) => {
       try {
         // TODO: validated data
@@ -107,7 +107,6 @@ export default Router()
   /*
     Create thread.
   */
-  //  FIXME: add tests which dissalow creating of
   .post('/',
     // permissions
     mustLogin,
@@ -117,6 +116,7 @@ export default Router()
     validations.post,
     // handle errors
     handleValidationErrors,
+    // handle route
     async (req, res) => {
       try {
         const payload = matchedData(req)
