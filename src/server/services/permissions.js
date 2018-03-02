@@ -2,17 +2,16 @@ import Boom from 'boom'
 import selectn from 'selectn'
 
 /**
- * TODO
- *
- * @param {string} redirectRoute // TODO
- * @returns
+ * Check if user is logged in.
+ * @export
  */
 export function mustLogin(req, res, next) {
     req.isAuthenticated() ? next() : res.boom.unauthorized('Please, log in to do this')
 }
 
 /**
- * check administrator permissions
+ * Check if user is an admin permissions.
+ * @export
  */
 export function isAdmin(req, res, next) {
     selectn('user.id', req) === process.env.ADMIN_ID
