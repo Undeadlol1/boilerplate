@@ -6,7 +6,7 @@ var commonConfig = require('./common.config.js')
 var merge = require('webpack-merge');
 var config = require('../config.js')
 var extend = require('lodash/assignIn')
-var params = require('yargs').argv
+var hasFlag = require('has-flag')
 
 const serverVariables =  extend({
                             BROWSER: false,
@@ -44,7 +44,7 @@ var clientConfig =  merge(commonConfig, {
         new WebpackShellPlugin({
             // if "watch" argumetn is passed use mocha with config file
             // else just run tests and exit
-            onBuildEnd: params.w || params.watch
+            onBuildEnd: hasFlag('w') || hasFlag('watch')
                         ? "mocha dist/*.test.js --opts ./mocha.opts"
                         : "mocha dist/*.test.js"
         }),

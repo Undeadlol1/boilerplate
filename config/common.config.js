@@ -9,7 +9,7 @@ var HappyPack = require('happypack');
 var isTest = process.env.NODE_ENV === "test"
 var isDevelopment = process.env.NODE_ENV === "development"
 var isProduction = process.env.NODE_ENV === "production"
-var params = require('yargs').argv
+var hasFlag = require('has-flag');
 
 var extractSass = new ExtractTextPlugin({
     filename: "styles.css",
@@ -39,7 +39,7 @@ var baseConfig = {
     // https://webpack.js.org/configuration/devtool/
     devtool: isProduction ? 'hidden-source-map' : 'eval',
     // command line arguments (ie: yarn test -watch)
-    watch: params.w || params.watch,
+    watch: hasFlag('w') || hasFlag('watch'),
     watchOptions: {
         ignored: /node_modules/,
         aggregateTimeout: 300,
