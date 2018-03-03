@@ -53,6 +53,7 @@ function randomIntFromInterval(min, max) {
 // insert fixtures into database
 before(async function() {
     try {
+        console.warn('https://stackoverflow.com/a/23959610', ' solution to everything')
         // Clean up DB just in case, to avoid possible bugs.
         await cleanUpDB()
         // Close server incase of supertest.agent server is in use.
