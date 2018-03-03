@@ -1,3 +1,7 @@
+/**
+ * THIS IS OBSOLETE AND NOT USED ANYWHERE
+*/
+
 var shell = require('shelljs');
 var nodeCLI = require("shelljs-nodecli");
 var checkEnv = require('../checkEnvironment.js')
@@ -9,7 +13,7 @@ shell.exec('git pull')
 nodeCLI.exec('yarn')
 
 shell.echo('installing dependencies...')
-nodeCLI.exec('yarn')
+nodeCLI.exec('npm install')
 shell.env.NODE_ENV = "production"
 shell.exec('sequelize db:migrate')
 // TODO set env variables here // TODO check if we need to do it second time

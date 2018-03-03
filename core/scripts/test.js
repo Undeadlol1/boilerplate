@@ -1,3 +1,6 @@
+/**
+ * THIS IS OBSOLETE AND NOT USED ANYWHERE
+*/
 var shell = require('shelljs');
 var nodeCLI = require("shelljs-nodecli");
 var checkEnv = require('../checkEnvironment.js')
