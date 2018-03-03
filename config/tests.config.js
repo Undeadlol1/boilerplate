@@ -6,6 +6,7 @@ var commonConfig = require('./common.config.js')
 var merge = require('webpack-merge');
 var config = require('../config.js')
 var extend = require('lodash/assignIn')
+var params = require('yargs').argv
 
 const serverVariables =  extend({
                             BROWSER: false,
@@ -41,7 +42,11 @@ var clientConfig =  merge(commonConfig, {
     plugins: [
         new webpack.EnvironmentPlugin(clientVariables),
         new WebpackShellPlugin({
-            onBuildEnd: "mocha dist/*.test.js --opts ./mocha.opts" //onBuildEnd //onBuildExit
+            // if "watch" argumetn is passed use mocha with config file
+            // else just run tests and exit
+            onBuildEnd: params.w || params.watch
+                        ? "mocha dist/*.test.js --opts ./mocha.opts"
+                        : "mocha dist/*.test.js"
         }),
     ],
     // nodeExternals required for client because some modules throw errors otherwise
