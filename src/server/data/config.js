@@ -1,6 +1,5 @@
-// http://docs.sequelizejs.com/manual/installation/getting-started.html
-
 var config = process.env
+
 /*
   Sometimes application uses this config outside of webpack
     (migrations as an example).
@@ -16,20 +15,16 @@ module.exports = {
     "password": null,
     "database": "boilerplat_dev",
     "host": "127.0.0.1",
-    "dialect": "sqlite",
-    "logging": false,
-    // SQLite only
-    storage: './development.sqlite'
+    "dialect": "mysql",
+    "logging": false
   },
   "test": {
     "username": "root",
     "password": null,
     "database": "boilerplat_test",
     "host": "127.0.0.1",
-    "dialect": "sqlite",
-    "logging": false,
-    // SQLite only
-    storage: './test.sqlite'
+    "dialect": "mysql",
+    "logging": false
   },
   "production": {
     "username": config.DB_USER,
