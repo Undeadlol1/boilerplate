@@ -1,7 +1,7 @@
   --reporter min
   --ui bdd
-  --watch
   --no-exit
+  --watch
   --timeout 5000
   --require mocha-clean
   --bail
