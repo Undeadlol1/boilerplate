@@ -9,6 +9,7 @@ var HappyPack = require('happypack');
 var isTest = process.env.NODE_ENV === "test"
 var isDevelopment = process.env.NODE_ENV === "development"
 var isProduction = process.env.NODE_ENV === "production"
+var hasFlag = require('has-flag');
 
 var extractSass = new ExtractTextPlugin({
     filename: "styles.css",
@@ -25,11 +26,11 @@ var stats = {
     chunks: false,
     assets: false,
     modules: false,
+    timings: false,
     version: false,
     children: false,
     chunkModules: false,
     errorDetails: true,
-    timings: false,
 };
 
 var baseConfig = {
@@ -37,15 +38,14 @@ var baseConfig = {
     context: path.resolve(__dirname, '../'),
     // https://webpack.js.org/configuration/devtool/
     devtool: isProduction ? 'hidden-source-map' : 'eval',
-    watch: isDevelopment || isTest,
+    // command line arguments (ie: yarn test -watch)
+    watch: hasFlag('w') || hasFlag('watch'),
     watchOptions: {
         ignored: /node_modules/,
         aggregateTimeout: 300,
         poll: 1000,
     },
-    // performance: {
-    //     hints: "error"
-    // },
+    // performance: { hints: "error" },
     module : {
         loaders: [
             // ⚠️ BEWARE .json files caused infinite recompiling in the past!⚠️

@@ -126,7 +126,7 @@ var serverConfig = merge(commonConfig, {
     // this is important. Without nodeModules in "externals" bundle will throw and error
     // bundling for node requires modules not to be packed on top of bundle, but to be found via "require"
     externals: [nodeExternals({
-        whitelist: ['webpack/hot/dev-server', /^lodash/, 'react-router-transition/src/presets']
+        whitelist: ['webpack/hot/dev-server', /^lodash/]
     })],
 });
 

@@ -1,0 +1,1 @@
+export { default, Wysiwyg } from './Wysiwyg.jsx'

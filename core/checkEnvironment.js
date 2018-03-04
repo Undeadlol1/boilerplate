@@ -7,7 +7,7 @@ module.exports = function () {
 
     dependencies.forEach(function(name) {
         if (!shell.which(name)) {
-            shell.echo('You need to install ' + name + '!');            
+            shell.echo('You need to install ' + name + '!');
             shell.exit(1);
         }
     })

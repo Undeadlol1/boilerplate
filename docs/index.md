@@ -1,1 +1,5 @@
-# this is a test
+* [Tests](/boilerplate/tests)
+* [Application logic](/boilerplate/logic)
+* [Working with APIs](/boilerplate/api)
+* [Internationalization](/boilerplate/internationalization)
+* [FAQ](/boilerplate/faq)

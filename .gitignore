@@ -68,3 +68,6 @@ dist/
 .tmp/
 production.json
 .happypack/
+
+# Sqlite files
+*.sqlite

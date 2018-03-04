@@ -37,5 +37,4 @@ describe('<CommentsList />', () => {
     expect(el).to.have.prop('zDepth', 3)
   })
 
-
 })

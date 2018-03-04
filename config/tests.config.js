@@ -1,27 +1,29 @@
-var webpack = require('webpack');
-var WebpackShellPlugin = require('webpack-shell-plugin');
-var nodeExternals = require('webpack-node-externals');
 var path = require('path')
-var commonConfig = require('./common.config.js')
-var merge = require('webpack-merge');
-var config = require('../config.js')
+var webpack = require('webpack')
+var hasFlag = require('has-flag')
+var merge = require('webpack-merge')
 var extend = require('lodash/assignIn')
+var nodeExternals = require('webpack-node-externals')
+var WebpackShellPlugin = require('webpack-shell-plugin')
 
-const serverVariables =  extend({
-                            BROWSER: false,
-                            isBrowser: false,
-                            SERVER: true,
-                            isServer: true,
-                        }, config)
+var appVariables = require('../config.js')
+var commonConfig = require('./common.config.js')
 
-const clientVariables =  extend({
-                            BROWSER: true,
-                            isBrowser: true,
-                            SERVER: false,
-                            isServer: false,
-                        }, config)
+const serverVariables = extend({
+    BROWSER: false,
+    isBrowser: false,
+    SERVER: true,
+    isServer: true,
+}, appVariables)
 
-var clientConfig =  merge(commonConfig, {
+const clientVariables = extend({
+    BROWSER: true,
+    isBrowser: true,
+    SERVER: false,
+    isServer: false,
+}, appVariables)
+
+var clientConfig = merge(commonConfig, {
     // copy+paste from
     // https://semaphoreci.com/community/tutorials/testing-react-components-with-enzyme-and-mocha
     externals: {
@@ -32,7 +34,6 @@ var clientConfig =  merge(commonConfig, {
         "react/lib/ExecutionEnvironment": 'react',
     },
     target: 'web',
-    // TODO do wee need mocha!?
     entry: ['babel-polyfill', path.resolve('mocha!', __dirname, '../', 'src/browser/browser.tests.entry.js')],
     output : {
         publicPath: '/',
@@ -42,18 +43,21 @@ var clientConfig =  merge(commonConfig, {
     plugins: [
         new webpack.EnvironmentPlugin(clientVariables),
         new WebpackShellPlugin({
-            onBuildEnd: "mocha dist/*.test.js --opts ./mocha.opts" //onBuildEnd //onBuildExit
+            // if "watch" argumetn is passed use mocha with config file
+            // else just run tests and exit
+            onBuildEnd: hasFlag('w') || hasFlag('watch')
+                        ? "mocha dist/*.test.js --opts ./mocha.opts"
+                        : "mocha dist/*.test.js"
         }),
     ],
     // nodeExternals required for client because some modules throw errors otherwise
     externals: [nodeExternals({
-        whitelist: ['webpack/hot/dev-server', /^lodash/, 'react-router-transition/src/presets']
+        whitelist: ['webpack/hot/dev-server', /^lodash/]
     })],
 });
 
-var serverConfig =   merge(commonConfig, {
+var serverConfig = merge(commonConfig, {
     target: 'node',
-    // TODO do wee need mocha!?
     entry: ['babel-polyfill', path.resolve('mocha!', __dirname, '../', 'src/server/server.tests.entry.js')],
     node: {
         __filename: true,
@@ -70,7 +74,7 @@ var serverConfig =   merge(commonConfig, {
     // this is important. Without nodeModules in "externals" bundle will throw and error
     // bundling for node requires modules not to be packed on top of bundle, but to be found via "require"
     externals: [nodeExternals({
-        whitelist: ['webpack/hot/dev-server', /^lodash/, 'react-router-transition/src/presets']
+        whitelist: ['webpack/hot/dev-server', /^lodash/]
     })],
 });
 
@@ -78,9 +82,8 @@ var serverConfig =   merge(commonConfig, {
     heads up! This is a brainless copypaste
     refactoring may be done
  */
-var coreConfig =   merge(commonConfig, {
+var coreConfig = merge(commonConfig, {
     target: 'node',
-    // TODO do wee need mocha!?
     entry: ['babel-polyfill', path.resolve('mocha!', __dirname, '../', 'core/core.tests.entry.js')],
     node: {
         __filename: true,
@@ -97,7 +100,7 @@ var coreConfig =   merge(commonConfig, {
     // this is important. Without nodeModules in "externals" bundle will throw and error
     // bundling for node requires modules not to be packed on top of bundle, but to be found via "require"
     externals: [nodeExternals({
-        whitelist: ['webpack/hot/dev-server', /^lodash/, 'react-router-transition/src/presets']
+        whitelist: ['webpack/hot/dev-server', /^lodash/]
     })],
 });
 

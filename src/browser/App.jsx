@@ -6,6 +6,7 @@ import injectTapEventPlugin from 'react-tap-event-plugin'
 injectTapEventPlugin();
 
 /* DEPENDENCIES */
+import ReactGA from 'react-ga' // google analytics
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
@@ -39,11 +40,16 @@ function scrollToTop () {
 }
 
 class App extends Component {
-  // if SSR provided logged in user, put object in state
   componentWillMount() {
+    // if SSR provided logged in user, put object in state
     store.dispatch(
       actions.recieveCurrentUser(this.props.user)
     )
+    // initialize Google Analytics in browser and only in production
+    if (process.env.BROWSER && process.env.NODE_ENV == 'production') {
+      ReactGA.initialize(process.env.GOOGLE_ANALYTICS)
+      ReactGA.pageview(window.location.pathname + window.location.search)
+    }
   }
 
   render() {

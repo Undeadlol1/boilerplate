@@ -24,6 +24,11 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
+      role: {
+        allowNull: false,
+        defaultValue: 'user',
+        type: Sequelize.STRING,
+      },
       facebook_id: Sequelize.STRING,
       twitter_id: Sequelize.STRING,
       vk_id: Sequelize.STRING,

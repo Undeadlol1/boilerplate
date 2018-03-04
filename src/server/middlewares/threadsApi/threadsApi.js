@@ -2,84 +2,134 @@ import slugify from 'slug'
 import { Router } from 'express'
 import generateUuid from 'uuid/v4'
 import { Threads, User } from 'server/data/models'
+import validations from './threadsApi.validations'
+import { createPagination } from '../../services/utils'
 import { mustLogin } from 'server/services/permissions'
-
+import { handleValidationErrors } from '../../services/errors'
+import { matchedData, sanitize } from 'express-validator/filter'
+import { check, validationResult, checkSchema } from 'express-validator/check'
 const limit = 12
 
 /**
- *
+ * Get paginated threads by parentId
  * @param {String} parentId parent UUID
  * @param {Number} [currentPage=1] page number
+ * @export
  */
 export async function getThreads(parentId, currentPage=1) {
-    const totalThreads = await Threads.count({where: {parentId}}),
-          offset = currentPage ? limit * (currentPage -1) : 0
-    return {
-      currentPage,
-      totalPages: Math.ceil(totalThreads / limit) || 1,
-      values: await Threads.findAll({limit, offset, where: {parentId}}),
-    }
+  return await createPagination({
+    limit: 12,
+    model: Threads,
+    page: currentPage,
+    where: {parentId},
+  })
 }
 
 export default Router()
-
-  // get single thread
-  .get('/thread/:slug', async ({params}, res) => {
-    try {
-      const thread = await Threads.findOne({
-                        include: [User],
-                        where: { slug: params.slug },
-                      })
-      res.json(thread)
-    } catch (error) {
-      console.log(error)
-      res.status(500).end(error)
-    }
+  /*
+    Get single thread by slug.
+  */
+  .get('/thread/:slug',
+    // validations
+    validations.getOne,
+    // handle validation errors
+    handleValidationErrors,
+    async (req, res) => {
+      try {
+        res.json(
+          await Threads.findOne({
+            include: [User],
+            where: { slug: matchedData(req).slug },
+          })
+        )
+      } catch (error) {
+        console.log(error)
+        res.status(500).end(error)
+      }
   })
-
-
-  // get all threads
-  .get('/:parentId/:page?', async ({params}, res) => {
-    try {
-      // const page = req.params.page,
-      //       totalThreads = await Threads.count(),
-      //       offset = page ? limit * (page -1) : 0,
-      //       totalPages = Math.ceil(totalThreads / limit),
-      //       threads = await Threads.findAll({limit, offset})
-      const response = await getThreads(params.parentId, params.page)
-      res.json(response)
-    }
-    catch (error) {
-      console.log(error);
-      res.status(500).end(error)
-    }
+  /*
+    Get threads by parentId.
+    Response with paginated results.
+  */
+  .get('/:parentId/:page?',
+    // sanitising
+    sanitize(['parentId', 'page']).trim(),
+    // validations
+    validations.get,
+    // handle validation errors
+    handleValidationErrors,
+    async (req, res) => {
+      try {
+        const params = matchedData(req)
+        // TODO: user proper params
+        res.json(
+          await getThreads(params.parentId, params.page)
+        )
+      }
+      catch (error) {
+        console.log(error);
+        res.status(500).end(error)
+      }
   })
+  /*
+    Update thread.
+  */
+  .put('/:threadsId',
+    // permissions
+    mustLogin,
+    // sanitising
+    sanitize(['threadsId', 'text']).trim(),
+    // validations
+    validations.put,
+    // handle validation errors
+    handleValidationErrors,
+    // handle route
+    async (req, res) => {
+      try {
+        // TODO: validated data
+        const UserId = req.user.id,
+              bodyData = matchedData(req, { locations: ['body'] }),
+              {threadsId} = matchedData(req, { locations: ['params'] }),
+              thread = await Threads.findById(threadsId)
+        // FIXME: add same checker to "apiName" template
+        // FIXME: add tests about this one
+        // NOTE: maybe should use customg validator?
+        if (!thread) return res.status(204).end()
+        // check permissions
+        if (thread.UserId != UserId) res.status(403).end()
+        else res.json(await thread.update(bodyData))
 
-  // update thread
-  .put('/:threadsId', mustLogin, async ({user, body, params}, res) => {
-    try {
-      const UserId = user.id
-      const thread = await Threads.findById(params.threadsId)
-
-      // check permissions
-      if (Threads.UserId != UserId) return res.status(401).end()
-      else res.json(await thread.update(body))
-
-    } catch (error) {
-      console.log(error)
-      res.status(500).end(error)
-    }
+      } catch (error) {
+        console.log(error)
+        res.status(500).end(error)
+      }
   })
-
-  // create thread
-  .post('/', mustLogin, async ({user, body}, res) => {
-    try {
-      const UserId = user.id
-      const slug = slugify(body.name)
-      const thread = await Threads.create({...body, slug, UserId})
-      res.json(thread)
-    } catch (error) {
-      console.log(error)
-      res.status(500).end(error)
-    }
+  /*
+    Create thread.
+  */
+  .post('/',
+    // permissions
+    mustLogin,
+    // sanitising
+    sanitize(['parentId', 'name', 'text']).trim(),
+    // validations
+    validations.post,
+    // handle errors
+    handleValidationErrors,
+    // handle route
+    async (req, res) => {
+      try {
+        const payload = matchedData(req)
+        res.json(
+          await Threads.create({
+            ...payload,
+            UserId: req.user.id,
+            slug: slugify(payload.name),
+          })
+        )
+      }
+      catch (error) {
+        console.log(error)
+        res.status(500).end(error)
+      }
   })

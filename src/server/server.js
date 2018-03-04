@@ -1,5 +1,5 @@
 // missing colors in terminal was spotted on windows machines
-// this line allows to packages like "colors" and "chalk" work as intendent
+// this line allows packages like "colors" and "chalk" work as intendent
 process.stdout.isTTY = true
 // this prevents babel to parse css as javascript
 import csshook from 'css-modules-require-hook/preset'
@@ -37,9 +37,8 @@ const port = process.env.PORT,
       { engine } = exphbs.create({})
 
 /*
-  some routes return 304 if
-  multiple calls to same route are made
-  (while validating user info in signup form, for example)
+  Some routes return 304 if multiple calls to same route are made.
+  For example: while validating user info in signup form
 */
 app.disable('etag');
 
@@ -69,8 +68,10 @@ app.set('views', path.resolve(__dirname, './public'));
 
 // development only middlewares
 if (process.env.NODE_ENV === 'development') {
+  // better request errors
   app.use(errorhandler())
-  app.use(morgan('dev')) // logger
+  // request logger
+  app.use(morgan('dev'))
   // enable 'access control' to avoid CORS errors in browsersync
   app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -92,6 +93,11 @@ if (process.env.NODE_ENV === 'production') {
   //   })
   // )
 }
+
+/* error handling */
+// http://expressjs.com/en/guide/error-handling.html
+// https://medium.com/@Abazhenov/using-async-await-in-express-with-node-8-b8af872c0016
+
 
 // CORS PERMISSIONS
 // (almost everything is allowed)

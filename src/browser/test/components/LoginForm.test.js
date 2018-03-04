@@ -1,18 +1,9 @@
-// TODO
 import React from 'react'
 import chai, { expect } from 'chai'
 import chaiEnzyme from 'chai-enzyme'
-// import Dialog from 'material-ui/Dialog'
 import store from 'browser/redux/store'
 import { shallow, mount } from 'enzyme'
-// TODO remove material-ui things
-import { Tabs, Tab } from 'material-ui/Tabs'
-import FlatButton from 'material-ui/FlatButton'
-import { Provider as ReduxProvider } from 'react-redux'
 import { LoginForm } from 'browser/components/LoginForm'
-
-// import FloatingActionButton from 'material-ui/FloatingActionButton'
-// import LoginFormContainer from 'browser/containers/LoginFormContainer'
 
 chai.should()
 chai.use(chaiEnzyme())
@@ -30,9 +21,8 @@ describe('<LoginForm />', () => {
   const wrapper = shallow(<LoginForm {...props} />);
 
   it('has `.LoginForm` class and <Tabs>', () => {
-    // console.log('wrapper: ', wrapper.debug())
+    expect(wrapper.type().name).to.eq('Tabs')
     expect(wrapper).to.have.className('LoginForm')
-    expect(wrapper.type()).to.eq(Tabs)
   });
 
   // it('has <FloatingActionButton />', () => {

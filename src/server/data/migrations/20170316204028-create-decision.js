@@ -23,7 +23,7 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       UserId: {
-        allowNull: false,      
+        allowNull: false,
         type: Sequelize.INTEGER,
         // references: {
         //   model: 'users',
@@ -31,10 +31,14 @@ module.exports = {
         // }
       },
       MoodId: {
-        allowNull: false,      
+        allowNull: false,
         type: Sequelize.INTEGER,
       },
       nextViewAt: Sequelize.DATE,
+      lastViewAt: {
+        allowNull: false,
+        type: Sequelize.DATE,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

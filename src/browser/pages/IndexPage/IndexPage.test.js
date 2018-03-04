@@ -18,15 +18,17 @@ describe('<IndexPage />', () => {
   it('has className and tagName', () => {
     expect(wrapper).to.have.className('IndexPage')
     expect(wrapper.type().name).to.eq('PageWrapper')
-  });
+  })
 
   it('has <WelcomeCard>', () => {
-    expect(wrapper.find('withCookies(WelcomeCard)')).to.have.length(1);
-  });
+    expect(wrapper.find('withCookies(WelcomeCard)')).to.exist
+  })
 
-  // it('has <MoodsInsert>', () => {
-  //   // TODO 'ReduxForm' does not seems right
-  //   expect(wrapper.find('ReduxForm')).to.have.length(1);
-  // });
+  it('has <ForumsList />', () => {
+    expect(wrapper.find('Connect(ForumsList)')).to.exist
+  })
 
-});
+  it('has <CreateForumForm />', () => {
+    expect(wrapper.find('ReduxForm')).to.exist
+  })
+})

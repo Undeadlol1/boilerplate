@@ -12,7 +12,7 @@ describe('<CreateForumForm />', () => {
 
   const props = {
     handleSubmit: () => {},
-    UserId: process.env.ADMIN_ID,    
+    UserId: Number(process.env.ADMIN_ID),
   }
   const wrapper = shallow(<CreateForumForm {...props} />)
 
@@ -31,11 +31,15 @@ describe('<CreateForumForm />', () => {
 
   it('must return nothing if UserId is not admin', () => {
     const props = {
+      UserId: 23554536,
       handleSubmit: () => {},
-      UserId: "something random",
     }
-    const wrapper = shallow(<CreateForumForm {...props} />)
-    expect(wrapper).to.be.empty
+    const el = shallow(<CreateForumForm {...props} />)
+    expect(el).to.be.empty
+    // had alot of problems with 'UserId' PropType errors
+    expect(props)
+      .to.have.property('UserId', props.UserId)
+      .a('number')
   })
 
 })

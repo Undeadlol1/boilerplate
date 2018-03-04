@@ -6,15 +6,7 @@
 	}
 }
 // this styles are absolute since they are moved to components
-// TODO remove them
 .PageWrapper {
-	// RouterTransition creates it's own 'div'
-	// which makes it harder to apply styles on root class
-	// > div  {
-	// 	min-width: 100%;
-	// 	min-height: 100%;
-	// 	position: relative;
-	// }
 	/*
 		while server side rendered content is on page show loading screen and
 		hide children beneath it so they can still be crawled for SEO
