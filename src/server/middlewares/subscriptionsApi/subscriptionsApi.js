@@ -3,6 +3,7 @@ import selectn from 'selectn'
 import { Router } from 'express'
 import generateUuid from 'uuid/v4'
 import { Subscriptions } from 'server/data/models'
+import { createPagination } from '../../services/utils'
 import { mustLogin } from 'server/services/permissions'
 
 const limit = 12
@@ -26,13 +27,14 @@ export default Router()
   // get subscriptions by UserId
   .get('/:UserId/:page?', async (req, res) => {
     try {
-      const {page, UserId} = req.params,
-            where = {UserId},
-            totalSubscriptions = await Subscriptions.count({where}),
-            offset = page ? limit * (page -1) : 0,
-            totalPages = Math.ceil(totalSubscriptions / limit),
-            values = await Subscriptions.findAll({where, limit, offset})
-      res.json({ values, totalPages, currentPage: page || 1 })
+      res.json(
+        await createPagination({
+          limit,
+          model: Subscriptions,
+          page: req.params.page,
+          where: {UserId: selectn('user.id', req)},
+        })
+      )
     }
     catch (error) {
       console.log(error);
