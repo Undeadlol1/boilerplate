@@ -1,6 +1,7 @@
 import 'babel-polyfill'
 import request from 'supertest'
 import server from 'server/server'
+import generateUuid from 'uuid/v4'
 import chai, { assert, expect } from 'chai'
 import users from 'server/data/fixtures/users'
 import { Plural, User } from 'server/data/models'

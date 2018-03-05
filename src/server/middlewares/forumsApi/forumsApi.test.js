@@ -39,7 +39,7 @@ export default describe('/forums API', function() {
             .expect(200)
             .then(function(res) {
                 const { name, threads } = res.body
-                // has skill
+                // has forum
                 name.should.be.equal(forum.name)
                 // includes threads
                 threads.totalPages.should.eq(1)
