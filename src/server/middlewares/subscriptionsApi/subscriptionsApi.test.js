@@ -42,10 +42,6 @@ export default describe('/subscriptions API', function() {
             })
     })
 
-    it('fail to POST if not authorized', async () => {
-        await agent.post('/api/subscriptions').expect(401)
-    })
-
     it('GET subscriptions', async () => {
         // just incase make sure that UserId is defined
         expect(UserId).to.not.be.undefined
@@ -97,6 +93,12 @@ export default describe('/subscriptions API', function() {
                     id: subscripption.id,
                 })
             })
+    })
+    ////////////////////
+    // FAILURE TESTS  //
+    ////////////////////
+    it('fail to POST if not authorized', async () => {
+        await agent.post('/api/subscriptions').expect(401)
     })
 
     it('fail to PUT as different user', async () => {
