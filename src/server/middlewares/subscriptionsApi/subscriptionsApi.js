@@ -10,6 +10,15 @@ import { handleValidationErrors } from '../../services/errors'
 import { check, validationResult, checkSchema, param } from 'express-validator/check'
 
 const limit = 12
+// type validtion is done multiple times
+const type = {
+  trim: true,
+  optional: true,
+  isLength: {
+    options: { min: 3, max: 100 },
+    errorMessage: 'Must be between 3 and 100 characters long',
+  },
+}
 
 export default Router()
   // get single subscription
@@ -78,6 +87,8 @@ export default Router()
   .put('/:subscriptionId',
     mustLogin,
     checkSchema({
+      // can only update "type" field
+      type,
       subscriptionId: {
         trim: true,
         exists: true,
@@ -85,11 +96,6 @@ export default Router()
           errorMessage: 'Must be UUID'
         },
         errorMessage: 'Is required',
-      },
-      // can only update "type" field
-      type: {
-        trim: true,
-        optional: true,
       },
     }),
     handleValidationErrors,
@@ -117,15 +123,16 @@ export default Router()
     checkSchema({
       // Optional "type" field.
       // For example: "user" or "teacher".
-      type: {
-        trim: true,
-        optional: true,
-      },
+      type,
       // single required field
       parentId: {
         trim: true,
         exists: true,
         errorMessage: 'Is required',
+        isLength: {
+          options: { min: 1, max: 100 },
+          errorMessage: 'Must be between 1 and 100 characters long',
+        },
       }
     }),
     handleValidationErrors,
