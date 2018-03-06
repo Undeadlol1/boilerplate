@@ -1,8 +1,0 @@
-{
-    // "extends": "airbnb",
-    "parser": "babel-eslint",
-    "rules": {
-        "strict": 0
-    }
-    // "experimentalDecorators": true
-}
