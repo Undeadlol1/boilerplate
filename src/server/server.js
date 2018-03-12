@@ -1,6 +1,9 @@
 // missing colors in terminal was spotted on windows machines
 // this line allows packages like "colors" and "chalk" work as intendent
 process.stdout.isTTY = true
+// Make unhandled promise rejections fail loudly instead of the default silent fail.
+// https://www.npmjs.com/package/loud-rejection
+if (process.env.NODE_ENV != 'production') require('loud-rejection')()
 // this prevents babel to parse css as javascript
 import csshook from 'css-modules-require-hook/preset'
 import path from 'path'
@@ -118,7 +121,7 @@ app.use('/api/externals', externalsApi)
 app.use('/api/forums', require('./middlewares/forumsApi').default)
 app.use('/api/threads', require('./middlewares/threadsApi').default)
 app.use('/api/comments', require('./middlewares/commentsApi').default)
-app.use('/api/subscriptions', require('./middlewares/subscriptionsApi').default) 
+app.use('/api/subscriptions', require('./middlewares/subscriptionsApi').default)
 // ⚠️ Hook for cli! Do not remove 💀
 
 // SPA
