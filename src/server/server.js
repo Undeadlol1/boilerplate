@@ -11,7 +11,6 @@ import express from 'express'
 import boom from 'express-boom' // "boom" library for express responses
 import compression from 'compression'
 import bodyParser from 'body-parser'
-import session from 'express-session'
 import errorhandler from 'errorhandler'
 import cookieParser from 'cookie-parser'
 import cookieSession from 'cookie-session'
@@ -21,7 +20,6 @@ import nodesApi from './middlewares/nodesApi'
 import usersApi from './middlewares/usersApi'
 import decisionsApi from './middlewares/decisionsApi'
 import externalsApi from './middlewares/externalsApi'
-import { mustLogin } from './services/permissions'
 import authApi, { passport } from './middlewares/authApi'
 import 'source-map-support/register' // do we actually need this?
 import morgan from 'morgan'
@@ -35,9 +33,9 @@ import exphbs from 'express-handlebars'
 
 const port = process.env.PORT,
       app = express(),
+      { engine } = exphbs.create({}),
       publicUrl = path.resolve('./dist', 'public'), // TODO: or use server/public?
-      cookieExpires = 100 * 60 * 24 * 100, // 100 days
-      { engine } = exphbs.create({})
+      cookieExpires = 100 * 60 * 24 * 100 // 100 days
 
 /*
   Some routes return 304 if multiple calls to same route are made.
@@ -57,8 +55,8 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(cookieSession({
   name: 'session',
   // store: new RedisStore(),
+  maxAge: cookieExpires,
   keys: [process.env.SESSION_KEY || 'keyboard cat'],
-  maxAge: 24 * 60 * 60 * 1000 * 30 * 3 // 3 months
 }))
 app.use(passport.initialize())
 app.use(passport.session())
