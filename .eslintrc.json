@@ -10,7 +10,15 @@
     "rules": {
         "strict": 0,
         "no-undef": 2,
+        "experimentalDecorators": 0,
         "comma-dangle": ["warn", "always-multiline"],
-        "experimentalDecorators": 0
+        "no-unused-vars": [
+            "warn",
+            {
+                "vars": "all",
+                "args": "after-used",
+                "ignoreRestSiblings": false
+            }
+        ]
     }
 }
