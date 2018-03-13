@@ -12,4 +12,4 @@ Example using ubuntu bash on windows and any unix terminal:
 
 Example using windows powershell and [cross-env](https://www.npmjs.com/package/cross-env) module:
 
-cross-env DEBUG=test,test:* yarn run watch-test
+`cross-env DEBUG=test,test:* yarn run watch-test`
