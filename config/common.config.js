@@ -13,7 +13,7 @@ var hasFlag = require('has-flag');
 
 var extractSass = new ExtractTextPlugin({
     filename: "styles.css",
-    disable: isDevelopment // TODO
+    disable: isDevelopment, // TODO
 });
 
 const developmentPlugins = isDevelopment || isTest ? [
@@ -61,11 +61,11 @@ var baseConfig = {
             },
             {
                 test: /\.xml$/,
-                loader: 'xml-loader'
+                loader: 'xml-loader',
             },
             {
                 test: /\.(svg|png|ico)$/,
-                loader: "file-loader"
+                loader: "file-loader",
             },
             { test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "url-loader?limit=10000&mimetype=application/font-woff" },
             { test: /\.(ttf|eot|svg|png|ico)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "file-loader" },
@@ -78,9 +78,9 @@ var baseConfig = {
                 use: extractSass.extract({
                     use: [
                         { loader: "css-loader", },
-                        { loader: "sass-loader" }
+                        { loader: "sass-loader" },
                     ],
-                    fallback: "style-loader"
+                    fallback: "style-loader",
                 })
             },
         ],
@@ -93,9 +93,9 @@ var baseConfig = {
         }),
         new ExtractTextPlugin({
             filename: "styles.css",
-            disable: isDevelopment // TODO check if this works properly
+            disable: isDevelopment, // TODO check if this works properly
         }),
-        ...developmentPlugins
+        ...developmentPlugins,
     ],
     resolve: {
         alias: {
