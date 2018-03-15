@@ -1,13 +1,13 @@
 import slugify from 'slug'
 import { Router } from 'express'
-import generateUuid from 'uuid/v4'
 import { Threads, User } from 'server/data/models'
 import validations from './threadsApi.validations'
 import { createPagination } from '../../services/utils'
 import { mustLogin } from 'server/services/permissions'
 import { handleValidationErrors } from '../../services/errors'
 import { matchedData, sanitize } from 'express-validator/filter'
-import { check, validationResult, checkSchema } from 'express-validator/check'
+const debug = require('debug-logger')('threadsApi')
+
 const limit = 12
 
 /**
@@ -18,7 +18,7 @@ const limit = 12
  */
 export async function getThreads(parentId, currentPage=1) {
   return await createPagination({
-    limit: 12,
+    limit,
     model: Threads,
     page: currentPage,
     where: {parentId},
@@ -36,15 +36,17 @@ export default Router()
     handleValidationErrors,
     async (req, res) => {
       try {
-        res.json(
-          await Threads.findOne({
-            include: [User],
-            where: { slug: matchedData(req).slug },
-          })
-        )
+        const params = matchedData(req)
+        const thread = await Threads.findOne({
+          raw: true,
+          nest: true,
+          include: [User],
+          where: { slug: params.slug },
+        })
+        res.json(thread)
       } catch (error) {
         console.log(error)
-        res.status(500).end(error)
+        res.status(500).end(error.message)
       }
   })
   /*
