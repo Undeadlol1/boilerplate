@@ -1,0 +1,26 @@
+version: "2.1"
+services:
+  app:
+    container_name: web
+    # Currently commpose is used for continious integration.
+    # So restarts are not needed to detect tests failure.
+    # restart: always
+    build: .
+    ports:
+      - "3001:3001"
+    links:
+      - db
+    depends_on:
+      db:
+        condition: service_healthy
+    command: bash -c "NODE_ENV=test ./node_modules/.bin/sequelize db:migrate && npm test"
+  db:
+    image: mysql
+    container_name: db
+    environment:
+      - MYSQL_DATABASE=boilerplate_test
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+    volumes:
+      - ./data:/data/db
+    healthcheck:
+        test: "exit 0"
