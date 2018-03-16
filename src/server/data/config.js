@@ -1,8 +1,6 @@
 var config = process.env
 var isDocker = require('is-docker')()
 
-console.log('isDocker: ', isDocker);
-
 /*
   Sometimes application uses this config outside of webpack (migrations as an example).
   Other times webpack compiles this file in code but we try to avoid requiring json files
@@ -15,7 +13,7 @@ if (process.env.NODE_ENV == 'production' && config.dialect == undefined) config 
   by creating databases and user if they do not exist.
   Usefull for docker containers and CI/CD pipelines.
 */
-if (process.env.NODE_ENV == 'development' || 'test') {
+if (isDocker && (process.env.NODE_ENV == 'development' || 'test')) {
   var mysql      = require('mysql');
   var connection = mysql.createConnection({
     host     : "db",
