@@ -13,6 +13,7 @@ if (process.env.NODE_ENV == 'production' && config.dialect == undefined) config 
   by creating databases and user if they do not exist.
   Usefull for docker containers and CI/CD pipelines.
 */
+// TODO: project uses "mysql" and "mysql2" pacakges. Refactor to use only single one.
 if (isDocker && (process.env.NODE_ENV == 'development' || 'test')) {
   var mysql      = require('mysql');
   var connection = mysql.createConnection({
