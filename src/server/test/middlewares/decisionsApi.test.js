@@ -7,7 +7,7 @@ import { stringify } from 'query-string'
 import { loginUser } from './authApi.test'
 import chai, { should, expect } from 'chai'
 import users from 'server/data/fixtures/users'
-import { Mood, User, Local, Node, Decision } from 'server/data/models'
+import { Mood, User, Local, Node, Decision, sequelize } from 'server/data/models'
 chai.use(require('chai-datetime'));
 chai.should();
 
@@ -33,7 +33,7 @@ export default describe('/decisions API', function() {
     // describe('POST', async function() {
 
     //     it('creates decision', async function() {
-    //         const node = await Node.findOne({order: 'rand()'})
+    //         const node = await Node.findOne({order: sequelize.random()})
     //         const loggedIn = await loginUser(user.username, user.password)
     //         await loggedIn
     //                 .post(apiUrl)

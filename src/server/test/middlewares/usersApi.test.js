@@ -1,7 +1,7 @@
 import chai, { assert, expect } from 'chai'
 import request from 'supertest'
 import server from '../../server.js'
-import { User, Local, Profile } from '../../data/models'
+import { User, Local, Profile, sequelize } from '../../data/models'
 import select from 'selectn'
 import { loginUser } from './authApi.test'
 import users from '../../data/fixtures/users'
@@ -21,7 +21,7 @@ export default describe('/users API', function() {
 
     it('get one user', async function() {
         try {
-            const user = await User.findOne({order: 'rand()'})
+            const user = await User.findOne({order: sequelize.random()})
             await request(server)
                 .get(`/api/users/user/${user.id}`)
                 .expect(200)
@@ -64,7 +64,7 @@ export default describe('/users API', function() {
 
     // it('must fail to update other user', async function() {
     //     try {
-    //         const user = await User.findOne({order: 'rand()', include: [Profile]})
+    //         const user = await User.findOne({order: sequelize.random(), include: [Profile]})
     //         await request(server)
     //             .put(`/api/users/user/${user.username + 'not_me'}`)
     //             .send({language: 'fr'})

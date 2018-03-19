@@ -1,6 +1,6 @@
 import { getUsersMoods } from 'server/data/controllers/MoodsController'
 import { mustLogin } from 'server/services/permissions'
-import { Mood, Node } from 'server/data/models'
+import { Mood, Node, sequelize } from 'server/data/models'
 import express from 'express'
 import slugify from 'slug'
 
@@ -77,12 +77,12 @@ router
       const moods = await Mood.findAll({
         limit,
         offset,
-        order: 'rand()',
+        order: sequelize.random(),
         // add preview image
         include: [{
           limit: 1,
           model: Node,
-          order: 'rand()',
+          order: sequelize.random(),
         }]
       })
       res.json({ moods, totalPages })
@@ -108,7 +108,7 @@ router
         include: [{
           limit: 1,
           model: Node,
-          order: 'rand()',
+          order: sequelize.random(),
         }]
       })
       res.json({ moods, totalPages })
@@ -135,7 +135,7 @@ router
         include: [{
           limit: 1,
           model: Node,
-          order: 'rand()',
+          order: sequelize.random(),
         }]
       })
       res.json({ moods, totalPages })
