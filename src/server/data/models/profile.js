@@ -6,14 +6,14 @@ module.exports = function(sequelize, DataTypes) {
         allowNull: false,
         type: DataTypes.INTEGER
       }
-  }, {
+  },
+  {
     tableName: 'profiles',
-    freezeTableName: true,    
-    classMethods: {
-      associate: function(models) {
-        Profile.belongsTo(models.User, {foreignKey: 'UserId', targetKey: 'id'});
-      }
-    }
+    freezeTableName: true,
   });
+  // Class methods
+  Profile.associate = function(models) {
+    Profile.belongsTo(models.User, { foreignKey: 'UserId', targetKey: 'id' });
+  }
   return Profile;
 };
