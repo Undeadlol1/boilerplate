@@ -17,6 +17,9 @@ services:
   db:
     image: mysql
     container_name: db
+    # disable logging output
+    logging:
+      driver: none
     environment:
       - MYSQL_DATABASE=boilerplate_test
       - MYSQL_ALLOW_EMPTY_PASSWORD=yes
