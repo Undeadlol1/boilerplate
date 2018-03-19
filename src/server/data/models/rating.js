@@ -18,15 +18,13 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     tableName: 'ratings',
     freezeTableName: true,
-    classMethods: {
-      // associations can be defined here
-      associate: function(models) {
-        Rating.belongsTo(models.Mood, {foreignKey: 'parentId', targetKey: 'id'});
-        Rating.belongsTo(models.Node, {foreignKey: 'parentId', targetKey: 'id'});
-        // TODO think about this. Do i even need rating inside Decision?
-        Rating.belongsTo(models.Decision, {foreignKey: 'parentId', targetKey: 'NodeId'});
-      }
-    }
   });
+  // Class methods
+  Rating.associate = function(models) {
+    Rating.belongsTo(models.Mood, { foreignKey: 'parentId', targetKey: 'id' });
+    Rating.belongsTo(models.Node, { foreignKey: 'parentId', targetKey: 'id' });
+    // TODO think about this. Do i even need rating inside Decision?
+    Rating.belongsTo(models.Decision, { foreignKey: 'parentId', targetKey: 'NodeId' });
+  }
   return Rating;
 };

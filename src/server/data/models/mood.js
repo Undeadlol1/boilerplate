@@ -21,24 +21,23 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING,
     },
   }, {
-    classMethods: {
-      tableName: 'moods',
-      freezeTableName: true,
-      associate: function(models) {
-        Mood.belongsTo(models.User, {
-          // onDelete: "CASCADE", // TODO implement this?
-          foreignKey: {
-            allowNull: false
-          }
-        });
-        Mood.hasMany(models.Node)
-      },
-      findIdBySlug: function(slug) {
-        return Mood
-                .findOne({ where: { slug } })
-                .then(mood => mood && mood.get('id'))
+    tableName: 'moods',
+    freezeTableName: true,
+  })
+  // Class methods
+  Mood.associate = function(models) {
+    Mood.belongsTo(models.User, {
+      // onDelete: "CASCADE", // TODO implement this?
+      foreignKey: {
+        allowNull: false
       }
-    }
-  });
+    });
+    Mood.hasMany(models.Node)
+  }
+  Mood.findIdBySlug = function(slug) {
+    return Mood
+      .findOne({ where: { slug } })
+      .then(mood => mood && mood.get('id'))
+  }
   return Mood;
 };

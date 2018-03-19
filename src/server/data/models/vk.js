@@ -35,12 +35,11 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     tableName: 'vks',
     freezeTableName: true,
-    classMethods: {
-      associate: function(models) {
-        // associations can be defined here
-        Vk.belongsTo(models.User, {foreignKey: 'UserId', targetKey: 'id'})
-      }
-    }
   });
+  // Class methods
+  Vk.associate = function(models) {
+    // associations can be defined here
+    Vk.belongsTo(models.User, { foreignKey: 'UserId', targetKey: 'id' })
+  }
   return Vk;
 };

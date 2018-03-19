@@ -59,17 +59,20 @@ function colums(DataTypes) {
 }
 
 module.exports = function(sequelize, DataTypes) {
-  var Decision = sequelize.define('Decision', colums(DataTypes), {
-    tableName: 'decisions',
-    freezeTableName: true,
-    classMethods: {
-      associate: function(models) {
-        // associations can be defined here
-        Decision.belongsTo(models.Node, {foreignKey: 'NodeId', targetKey: 'id'});
-        Decision.belongsTo(models.User, {foreignKey: 'UserId', targetKey: 'id'});
-        // Decision.hasOne(models.Node)
-      }
+  var Decision = sequelize.define(
+    'Decision', // model name
+    colums(DataTypes), // column types
+    { // options
+      tableName: 'decisions',
+      freezeTableName: true,
     }
-  });
+  );
+  // Class methods
+  Decision.associate = function(models) {
+    // associations can be defined here
+    Decision.belongsTo(models.Node, { foreignKey: 'NodeId', targetKey: 'id' });
+    Decision.belongsTo(models.User, { foreignKey: 'UserId', targetKey: 'id' });
+    // Decision.hasOne(models.Node)
+  }
   return Decision;
 };

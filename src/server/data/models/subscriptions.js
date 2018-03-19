@@ -23,16 +23,15 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.INTEGER
     },
   }, {
-    classMethods: {
-      tableName: 'subscriptions',
-      freezeTableName: true,
-      associate: function(models) {
-        // subs belong to usr
-        Subscriptions.belongsTo(models.User, {
-          foreignKey: {allowNull: false}
-        })
-      },
-    }
+    tableName: 'subscriptions',
+    freezeTableName: true,
   });
+  // Class methods
+  Subscriptions.associate = function(models) {
+    // subs belong to usr
+    Subscriptions.belongsTo(models.User, {
+      foreignKey: { allowNull: false }
+    })
+  }
   return Subscriptions;
 };
