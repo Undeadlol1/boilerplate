@@ -4,8 +4,8 @@ import request from 'supertest'
 import server from 'server/server'
 import chai, { assert } from 'chai'
 import users from 'server/data/fixtures/users'
-import { Forums, User, Local } from 'server/data/models'
 import { loginUser } from 'server/test/middlewares/authApi.test'
+import { Forums, User, Local, sequelize } from 'server/data/models'
 chai.should()
 
 const   username = users[0].username,
@@ -32,7 +32,7 @@ export default describe('/forums API', function() {
     })
 
     it('GET single forum', async function() {
-        const forum = await Forums.findOne({sort: 'rand()'})
+        const forum = await Forums.findOne({order: sequelize.random()})
         await request(server)
             .get('/api/forums/forum/' + forum.slug )
             .expect('Content-Type', /json/)
