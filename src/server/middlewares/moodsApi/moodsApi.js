@@ -1,8 +1,9 @@
-import { getUsersMoods } from 'server/data/controllers/MoodsController'
+import slugify from 'slug'
+import express from 'express'
+import { Op } from 'sequelize'
 import { mustLogin } from 'server/services/permissions'
 import { Mood, Node, sequelize } from 'server/data/models'
-import express from 'express'
-import slugify from 'slug'
+import { getUsersMoods } from 'server/data/controllers/MoodsController'
 
 // routes
 const router = express.Router(); // TODO refactor without "const"?
@@ -16,7 +17,7 @@ router
       if (!name) return res.boom.badRequest('invalid query')
       const offset = page ? limit * (page -1) : 0
       const where = {
-                      name: { $like: '%' + name + '%' }
+                      name: { [Op.like]: '%' + name + '%' },
                     }
       const totalMoods = await Mood.count({ where })
       const totalPages = Math.round(totalMoods / limit)
@@ -53,7 +54,7 @@ router
       const name = query.name
       const mood = await Mood.findOne({
         where: {
-          $or: [{slug}, {name}]
+          [Op.or]: [{slug}, {name}]
         }
       })
       res.json(mood)

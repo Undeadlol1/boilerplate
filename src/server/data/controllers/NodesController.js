@@ -1,3 +1,4 @@
+import { Op } from 'sequelize'
 import extend from 'lodash/assignIn'
 import { Node, Decision, sequelize } from "../models/index"
 // TODO add tests! ⚠️ ✏️️
@@ -39,7 +40,7 @@ export async function findHighestRatingNode(MoodId, UserId, afterRating) {
         // UserId && {UserId},
         afterRating && {
             rating: {
-                $lt: afterRating
+                [Op.lt]: afterRating,
             }
         },
     )
@@ -76,7 +77,7 @@ export async function findHighestPositionNode(UserId, MoodId, beforePosition) {
             beforePosition
             ?   {
                     position: {
-                        $gt: beforePosition
+                        [Op.gt]: beforePosition,
                     }
                 }
             : undefined
