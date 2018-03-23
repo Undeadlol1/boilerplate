@@ -3,9 +3,11 @@ var touch = require("touch")
 var shell = require('shelljs')
 var nodeCLI = require("shelljs-nodecli")
 var checkEnv = require('../checkEnvironment.js')
+var isDocker = require('is-docker')
 
-// check that required libraries are installed
-checkEnv()
+// Check that required libraries are installed.
+// NOTE: in docker all libraries are certainly installed.
+if (!isDocker()) checkEnv()
 
 // set up sqlite development and test databases
 shell.echo('creating local databases...')

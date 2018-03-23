@@ -13,49 +13,53 @@ if (process.env.NODE_ENV == 'production' && config.dialect == undefined) config 
   by creating databases and user if they do not exist.
   Usefull for docker containers and CI/CD pipelines.
 */
-if (isDocker && (process.env.NODE_ENV == 'development' || 'test')) {
-  var mysql      = require('mysql');
-  var connection = mysql.createConnection({
-    host     : "db",
-    user     : "root",
-    password : null,
-    database : "boilerplate_test",
-    multipleStatements: true, // multistatements query
-  });
-  connection.query(
-    'CREATE DATABASE IF NOT EXISTS boilerplate_dev;'
-    + 'CREATE DATABASE IF NOT EXISTS boilerplate_test;'
-    + "CREATE USER IF NOT EXISTS 'root'@'db';"
-    + "GRANT ALL PRIVILEGES ON * . * TO 'root'@'db';"
-    + 'FLUSH PRIVILEGES;',
-    function (error, results, fields) {
-      if (error)  throw error
-    }
-  );
-}
+// if (isDocker && (process.env.NODE_ENV == 'development' || 'test')) {
+//   var mysql      = require('mysql');
+//   var connection = mysql.createConnection({
+//     host     : "db",
+//     user     : "root",
+//     password : null,
+//     database : "boilerplate_test",
+//     multipleStatements: true, // multistatements query
+//   });
+//   connection.query(
+//     'CREATE DATABASE IF NOT EXISTS boilerplate_dev;'
+//     + 'CREATE DATABASE IF NOT EXISTS boilerplate_test;'
+//     + "CREATE USER IF NOT EXISTS 'root'@'db';"
+//     + "GRANT ALL PRIVILEGES ON * . * TO 'root'@'db';"
+//     + 'FLUSH PRIVILEGES;',
+//     function (error, results, fields) {
+//       if (error)  throw error
+//     }
+//   );
+// }
 
 module.exports = {
   "development": {
     "port": "3306",
     "password": null,
-    "logging": false,
-    "dialect": "mysql",
+    "logging": true,
+    "dialect": "sqlite",
     "username": "root",
     "database": "boilerplate_dev",
+    // "storage": "../../../development.sqlite",
     // In docker containers database will have special host.
     // In non-container it will be connected through localhost.
-    "host": isDocker ? "db" : "127.0.0.1",
+    "host": "127.0.0.1",
+    // "host": isDocker ? "db" : "127.0.0.1",
   },
   "test": {
     "port": "3306",
-    "logging": false,
+    "logging": true,
     "password": null,
-    "dialect": "mysql",
+    "dialect": "sqlite",
     "username": "root",
     "database": "boilerplate_test",
+    // "storage": "../../../test.sqlite",
     // In docker containers database will have special host.
     // In non-container it will be connected through localhost.
-    "host": isDocker ? "db" : "127.0.0.1",
+    "host": "127.0.0.1",
+    // "host": isDocker ? "db" : "127.0.0.1",
   },
   "production": {
     "username": config.DB_USER,

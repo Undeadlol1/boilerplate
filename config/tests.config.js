@@ -47,7 +47,7 @@ var clientConfig = merge(commonConfig, {
             // else just run tests and exit
             onBuildEnd: hasFlag('w') || hasFlag('watch')
                         ? "mocha dist/*.test.js --opts ./mocha.opts"
-                        : "mocha dist/*.test.js"
+                        : "mocha dist/*.test.js --timeout 5000"
         }),
     ],
     // nodeExternals required for client because some modules throw errors otherwise

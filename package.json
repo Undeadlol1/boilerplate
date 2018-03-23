@@ -177,6 +177,7 @@
     "shelljs-nodecli": "^0.1.1",
     "sinon": "^2.3.4",
     "source-map-support": "^0.4.15",
+    "sqlite3": "^4.0.0",
     "style-loader": "^0.13.2",
     "supertest": "^3.0.0",
     "test": "^0.6.0",

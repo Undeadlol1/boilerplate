@@ -11,6 +11,8 @@ RUN yarn --pure-lockfile
 # Bundle app source
 COPY . .
 
+RUN node ./core/scripts/set_up.js
+
 EXPOSE 3001
 
-# CMD [ "bash" ]
+CMD [ "bash" ]
