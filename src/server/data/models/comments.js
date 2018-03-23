@@ -18,26 +18,25 @@ module.exports = function(sequelize, DataTypes) {
     },
     UserId: {
       allowNull: false,
-      type: DataTypes.INTEGER
+      type: DataTypes.INTEGER,
     },
   }, {
-    classMethods: {
       tableName: 'comments',
       freezeTableName: true,
-      associate: function(models) {
-        Comments.belongsTo(models.User, {
-          foreignKey: { allowNull: false }
-        });
-        // TODO
-        // Comments.hasMany(models.Revisions)
-      },
-      // TODO do we need this?
-      findIdBySlug: function(slug) {
-        return Comments
-                .findOne({ where: { slug } })
-                .then(skill => skill && skill.get('id'))
-      }
-    }
   });
+  // Class methods
+  Comments.associate = function(models) {
+    Comments.belongsTo(models.User, {
+      foreignKey: { allowNull: false }
+    });
+    // TODO
+    // Comments.hasMany(models.Revisions)
+  }
+  // TODO do we need this?
+  Comments.findIdBySlug = function(slug) {
+    return Comments
+      .findOne({ where: { slug } })
+      .then(skill => skill && skill.get('id'))
+  }
   return Comments;
 };

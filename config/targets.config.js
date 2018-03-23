@@ -14,8 +14,10 @@ var commonConfig = require('./common.config.js')
 var config = require('../config.js')
 var CompressionPlugin = require('compression-webpack-plugin');
 var BrowserSyncPlugin = require('browser-sync-webpack-plugin');
+const NodemonPlugin = require('nodemon-webpack-plugin')
 
 // TODO
+// https://www.npmjs.com/package/nodemon-browsersync-webpack-plugin
 // https://survivejs.com/webpack/optimizing/minifying/#enabling-a-performance-budget
 
 const NODE_ENV = process.env.NODE_ENV
@@ -82,6 +84,14 @@ const serverProductionPlugins = isProduction ? [
     new webpack.optimize.UglifyJsPlugin({minimize: true}), //minify everything
 ] : []
 
+const serverDevelopmentPlugins = isDevelopment ? [
+    // If webpack is in watch mode, this module will start server via nodemon.
+    // Nodemon restarts server automatically after each bundle change.
+    //https://www.npmjs.com/package/nodemon-webpack-plugin
+    new NodemonPlugin()
+]
+: []
+
 const clientDevelopmentPlugins = isDevelopment ? [
                                     new BrowserSyncPlugin({
                                         open: false,
@@ -121,6 +131,7 @@ var serverConfig = merge(commonConfig, {
             from: 'src/server/public',
             to: 'public'
         }]),
+        ...serverDevelopmentPlugins,
         ...serverProductionPlugins
     ],
     // this is important. Without nodeModules in "externals" bundle will throw and error

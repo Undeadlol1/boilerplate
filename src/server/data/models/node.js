@@ -36,26 +36,12 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     tableName: 'nodes',
     freezeTableName: true,
-    classMethods: {
-      associate: function(models) {
-        // associations can be defined here
-        // Node.belongsTo(models.User, { // remember the bad copypaste? 'Mood.'
-        //   // onDelete: "CASCADE",
-        //   foreignKey: {
-        //     allowNull: false
-        //   }
-        // });
-        // Node.belongsTo(models.Mood, { // remember the bad copypaste? 'Mood.'
-        //   // onDelete: "CASCADE",
-        //   foreignKey: {
-        //     allowNull: false
-        //   }
-        // });
-        Node.belongsTo(models.Mood, {foreignKey: 'MoodId', targetKey: 'id'});
-        Node.hasOne(models.Decision)
-        Node.hasOne(models.Rating)
-      }
-    }
-  });
+  })
+  // Class methods
+  Node.associate = function(models) {
+    Node.belongsTo(models.Mood, { foreignKey: 'MoodId', targetKey: 'id' });
+    Node.hasOne(models.Decision)
+    Node.hasOne(models.Rating)
+  }
   return Node;
 };

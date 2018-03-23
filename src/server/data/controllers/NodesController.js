@@ -1,5 +1,6 @@
+import { Op } from 'sequelize'
 import extend from 'lodash/assignIn'
-import { Node, Decision } from "../models/index"
+import { Node, Decision, sequelize } from "../models/index"
 // TODO add tests! ⚠️ ✏️️
 /**
  * after migrating ratings to decimal point (in order to make them unique),
@@ -39,7 +40,7 @@ export async function findHighestRatingNode(MoodId, UserId, afterRating) {
         // UserId && {UserId},
         afterRating && {
             rating: {
-                $lt: afterRating
+                [Op.lt]: afterRating,
             }
         },
     )
@@ -76,7 +77,7 @@ export async function findHighestPositionNode(UserId, MoodId, beforePosition) {
             beforePosition
             ?   {
                     position: {
-                        $gt: beforePosition
+                        [Op.gt]: beforePosition,
                     }
                 }
             : undefined
@@ -88,7 +89,7 @@ export async function findHighestPositionNode(UserId, MoodId, beforePosition) {
 export async function findRandomNode(MoodId) {
   return await Node.findOne({
     where: {MoodId},
-    order: 'rand()',
+    order: sequelize.random(),
   })
 }
 
@@ -96,10 +97,10 @@ export async function findRandomNodes(MoodId) {
   const nodes = await Node.findAll({
     raw: true,
     nest: true,
-    where: {MoodId},
-    order: 'rand()',
     limit: 100,
+    where: {MoodId},
     include: [Decision],
+    order: sequelize.random(),
   })
   /*
     remove downvoted by user nodes

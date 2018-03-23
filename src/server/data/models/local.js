@@ -1,5 +1,5 @@
 'use strict';
-var bcrypt   = require('bcrypt-nodejs');
+const bcrypt   = require('bcrypt-nodejs');
 
 module.exports = function(sequelize, DataTypes) {
   var Local = sequelize.define('Local', {
@@ -35,29 +35,18 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     tableName: 'locals',
     freezeTableName: true,
-    classMethods: {
-      generateHash: function(password) {
-        return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
-      },
-      // associations can be defined here
-      associate: function(models) {
-        Local.belongsTo(models.User, {foreignKey: 'UserId', targetKey: 'id'})
-      }
-    },
-    instanceMethods: {
-      validPassword: function(password) {
-        return bcrypt.compareSync(password, this.password)
-      }
-    },
-    // defaultScope: {
-    //   // where: {},
-    //   // attributes: { exclude: ['password'] },
-    // },
-    // scopes: {
-    //   protected: {
-    //     where: {},
-    //   }
-    // }
-  });
+  })
+  // Class Methods
+  Local.associate = function (models) {
+    // associations can be defined here
+    Local.belongsTo(models.User, { foreignKey: 'UserId', targetKey: 'id' })
+  }
+  Local.generateHash = function (password) {
+    return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
+  }
+  // Instance Methods
+  Local.prototype.validPassword = function (password) {
+    return bcrypt.compareSync(password, this.password)
+  }
   return Local;
 };

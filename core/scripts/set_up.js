@@ -1,9 +1,7 @@
-var fs = require('fs')
 var touch = require("touch")
 var shell = require('shelljs')
-var nodeCLI = require("shelljs-nodecli")
-var checkEnv = require('../checkEnvironment.js')
 var isDocker = require('is-docker')
+var checkEnv = require('../checkEnvironment.js')
 
 // Check that required libraries are installed.
 // NOTE: in docker all libraries are certainly installed.

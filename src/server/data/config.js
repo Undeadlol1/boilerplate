@@ -38,11 +38,11 @@ module.exports = {
   "development": {
     "port": "3306",
     "password": null,
-    "logging": true,
+    "logging": false,
     "dialect": "sqlite",
     "username": "root",
     "database": "boilerplate_dev",
-    // "storage": "../../../development.sqlite",
+    "storage": "../../../development.sqlite",
     // In docker containers database will have special host.
     // In non-container it will be connected through localhost.
     "host": "127.0.0.1",
@@ -50,12 +50,12 @@ module.exports = {
   },
   "test": {
     "port": "3306",
-    "logging": true,
+    "logging": false,
     "password": null,
     "dialect": "sqlite",
     "username": "root",
     "database": "boilerplate_test",
-    // "storage": "../../../test.sqlite",
+    "storage": "../../../test.sqlite",
     // In docker containers database will have special host.
     // In non-container it will be connected through localhost.
     "host": "127.0.0.1",

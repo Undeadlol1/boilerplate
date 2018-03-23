@@ -1,11 +1,12 @@
 'use strict';
 var { User, Twitter } = require('../models')
+var { Op } = require('sequelize')
 module.exports = {
   up: function(queryInterface, Sequelize) {
     // create table
     return User.findAll({
       where: {
-        twitter_id: {$not: null}
+        twitter_id: {[Op.not]: null}
       }
     })
     .each(user => {

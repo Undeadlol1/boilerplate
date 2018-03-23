@@ -1,0 +1,28 @@
+{
+    "env": {
+        "node": true,
+        "mocha": true
+    },
+    "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended"
+    ],
+    "plugins": [
+        "mocha"
+    ],
+    "parser": "babel-eslint",
+    "rules": {
+        "strict": 0,
+        "no-undef": 2,
+        "experimentalDecorators": 0,
+        "comma-dangle": ["warn", "always-multiline"],
+        "no-unused-vars": [
+            "warn",
+            {
+                "vars": "all",
+                "args": "after-used",
+                "ignoreRestSiblings": false
+            }
+        ]
+    }
+}

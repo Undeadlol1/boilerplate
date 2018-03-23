@@ -1,4 +1,4 @@
-import { Mood, Node } from "../models/index"
+import { Mood, Node, sequelize } from "../models/index"
 
 // TODO write tests!
 /**
@@ -23,8 +23,8 @@ export async function getUsersMoods(UserId, page) {
         include: [{
           limit: 1,
           model: Node,
-          order: 'rand()',
           required: false,
+          order: sequelize.random(),
         }]
     })
     return { moods, totalPages }

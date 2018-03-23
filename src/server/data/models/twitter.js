@@ -28,15 +28,15 @@ module.exports = function(sequelize, DataTypes) {
         notContains: [' '],
       }
     },
-  }, {
+  },
+  {
     tableName: 'twitters',
     freezeTableName: true,
-    classMethods: {
-      associate: function(models) {
-        // associations can be defined here
-        Twitter.belongsTo(models.User, {foreignKey: 'UserId', targetKey: 'id'})
-      }
-    }
   });
+  // Class methods
+  // associations can be defined here
+  Twitter.associate = function(models) {
+    Twitter.belongsTo(models.User, { foreignKey: 'UserId', targetKey: 'id' })
+  }
   return Twitter;
 };

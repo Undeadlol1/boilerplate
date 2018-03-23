@@ -22,16 +22,15 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       type: DataTypes.INTEGER
     },
-  }, {
-    classMethods: {
-      tableName: 'forums',
-      freezeTableName: true,
-      associate: function(models) {
-        Forums.belongsTo(models.User)
-      },
-      /* SCOPES */
-      defaultScope: {},
-    }
-  });
+  },
+  {
+    tableName: 'forums',
+    freezeTableName: true,
+  })
+  // Class methods
+  // associations can be defined here
+  Forums.associate = function(models) {
+    Forums.belongsTo(models.User)
+  }
   return Forums;
 };

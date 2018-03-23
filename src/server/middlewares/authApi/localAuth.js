@@ -1,11 +1,9 @@
+import { Op } from 'sequelize'
 import passport from "passport"
 import { Router } from "express"
-import { User, Local, Profile } from 'server/data/models'
-import { Strategy as LocalStrategy } from "passport-local"
 import { createUser } from 'server/data/controllers/UserController'
-import { normalizeUserInfo } from 'server/data/controllers/UserController'
+import { User, Local, Profile, sequelize } from 'server/data/models'
 
-const { URL } = process.env
 const router = Router()
 
 router
@@ -18,10 +16,11 @@ router
 
     // TODO add validation tests
     try {
-        const existingUser =  await Local.findOne({
-                                where: {
-                                  $or: [{email}, {username}]
-                              }})
+        const existingUser = await Local.findOne({
+          where: {
+            [Op.or]: [{email}, {username}]
+          }
+        })
 
         if (existingUser) res.status(401).end('user already exists')
         else {
@@ -47,7 +46,7 @@ router
                         where: {},
                         include: [Profile, {
                           model: Local,
-                          where: { $or: [{email}, {username}] },
+                          where: { [Op.or]: [{email}, {username}] },
                         }],
                       })
         if (!user) {
@@ -72,7 +71,7 @@ router
     Local
     .findOne({
       where: {
-        $or: [{username}, {email: username}]
+        [Op.or]: [{username}, {email: username}]
       }
     })
     .then(user => res.json(user || {}))

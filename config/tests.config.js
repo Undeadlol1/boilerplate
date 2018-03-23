@@ -43,8 +43,10 @@ var clientConfig = merge(commonConfig, {
     plugins: [
         new webpack.EnvironmentPlugin(clientVariables),
         new WebpackShellPlugin({
-            // if "watch" argumetn is passed use mocha with config file
+            // if "watch" argument is passed use mocha with config file
             // else just run tests and exit
+            // TODO: use this for cli arguments
+            // https://www.npmjs.com/package/command-line-args
             onBuildEnd: hasFlag('w') || hasFlag('watch')
                         ? "mocha dist/*.test.js --opts ./mocha.opts"
                         : "mocha dist/*.test.js --timeout 5000"

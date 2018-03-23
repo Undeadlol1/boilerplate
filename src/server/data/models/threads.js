@@ -47,26 +47,24 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.INTEGER
     },
   }, {
-    classMethods: {
-      tableName: 'threads',
-      freezeTableName: true,
-      associate: function(models) {
-        Threads.belongsTo(models.User, {
-          foreignKey: {allowNull: false}
-        })
-      },
-      /* MODEL METHODS */
-      /**
-       * find thread.id by thread.slug
-       * @param {string} slug thread.slug
-       * @returns thread.id
-       */
-      findIdBySlug(slug) {
-        return Threads
-          .findOne({ where: { slug } })
-          .then(thread => thread && thread.get('id'))
-      }
-    }
+    tableName: 'threads',
+    freezeTableName: true,
   });
+  // Class methods
+  Threads.associate = function(models) {
+    Threads.belongsTo(models.User, {
+      foreignKey: { allowNull: false }
+    })
+  }
+  /**
+   * find thread.id by thread.slug
+   * @param {string} slug thread.slug
+   * @returns thread.id
+   */
+  Threads.findIdBySlug = function(slug) {
+    return Threads
+      .findOne({ where: { slug } })
+      .then(thread => thread && thread.get('id'))
+  }
   return Threads;
 };

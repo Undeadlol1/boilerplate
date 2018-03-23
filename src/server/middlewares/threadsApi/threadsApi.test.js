@@ -1,9 +1,9 @@
 import 'babel-polyfill'
 import slugify from 'slug'
 import request from 'supertest'
+import Promise from 'bluebird'
 import server from 'server/server'
 import generateUuid from 'uuid/v4'
-import forEach from 'lodash/forEach'
 import chai, {expect, assert} from 'chai'
 import users from 'server/data/fixtures/users'
 import { Threads, Forums, User } from 'server/data/models'
@@ -124,7 +124,7 @@ export default describe('/threads API', function() {
                 .expect(204) // 'No Content' status code
         })
         // Run PUT requests with different values and make sure there is a proper error message for it.
-        forEach(
+        Promise.each(
             [
                 // FIXME: what about nulls?
                 // {property: 'name', value: null, error: 'Name is required'},
@@ -151,7 +151,7 @@ export default describe('/threads API', function() {
         // Only logged in users can create threads.
         it('if user is logged in', async () => await agent.post('/api/threads').expect(401))
         // Run POST requests with different values and make sure there is a proper error message for it.
-        forEach(
+        Promise.each(
             [
                 // FIXME: what about nulls?
                 // NOTE: this might help http://sequelize.readthedocs.io/en/v3/docs/models-definition/#validations
