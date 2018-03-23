@@ -19,7 +19,7 @@ services:
     command: bash -c "NODE_ENV=test ./node_modules/.bin/sequelize db:migrate && npm test"
     # command: bash -c "yarn run migrate; bash"
   db:
-    image: mysql
+    image: mysql:alpine
     container_name: db
     # disable logging output
     logging:
