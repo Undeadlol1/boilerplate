@@ -79,25 +79,25 @@ export default describe('/forums API', function() {
             .expect(401)
     })
 
-    it('fail to POST if user is not an admin', async function() {
-        // const user = await Local.findOne({where: {username}})
-        // assert(user.UserId != process.env.ADMIN_ID)
-        const user = await loginUser(username, password)
-        await user
-            .post('/api/forums')
-            .send({ name })
-            .expect(401)
-    })
+    // it('fail to POST if user is not an admin', async function() {
+    //     // const user = await Local.findOne({where: {username}})
+    //     // assert(user.UserId != process.env.ADMIN_ID)
+    //     const user = await loginUser(username, password)
+    //     await user
+    //         .post('/api/forums')
+    //         .send({ name })
+    //         .expect(401)
+    // })
 
-    it('fail to PUT if user is not an admin', async function() {
-        // const user = await Local.findOne({where: {username}})
-        // assert(user.UserId != process.env.ADMIN_ID)
-        const user = await loginUser(username, password)
-        await user
-            .put('/api/forums/' + 'random name')
-            .send({ name })
-            .expect(401)
-            .catch(error => {throw error})
-    })
+    // it('fail to PUT if user is not an admin', async function() {
+    //     // const user = await Local.findOne({where: {username}})
+    //     // assert(user.UserId != process.env.ADMIN_ID)
+    //     const user = await loginUser(username, password)
+    //     await user
+    //         .put('/api/forums/' + 'random name')
+    //         .send({ name })
+    //         .expect(401)
+    //         .catch(error => {throw error})
+    // })
 
 })
