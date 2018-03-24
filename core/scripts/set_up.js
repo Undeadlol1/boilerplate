@@ -13,7 +13,8 @@ touch('test.sqlite')
 touch('development.sqlite')
 shell.exec('npm run migrate')
 // test application
-shell.echo('testing application...')
-shell.exec('npm run test')
+// NOTE: exclude testing while building docker image because it may break the process.
+if (!isDocker()) shell.echo('testing application...')
+if (!isDocker()) shell.exec('npm run test')
 shell.echo('Setting up is complete!')
 shell.echo('Run "npm start" or "yarn start" and start hacking.')
