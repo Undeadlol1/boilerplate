@@ -18,7 +18,7 @@ module.exports = function(sequelize, DataTypes) {
     {
       tableName: 'users',
       freezeTableName: true,
-    },
+    }
   );
   // Class methods
   User.associate = function (models) {

@@ -1,5 +1,4 @@
 'use strict';
-var { User, Local, Profile } = require('../models')
 module.exports = {
   up: function(queryInterface, Sequelize) {
     // create table
