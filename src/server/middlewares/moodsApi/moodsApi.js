@@ -1,6 +1,7 @@
 import slugify from 'slug'
 import express from 'express'
 import { Op } from 'sequelize'
+import Promise from 'bluebird'
 import { mustLogin } from 'server/services/permissions'
 import { Mood, Node, sequelize } from 'server/data/models'
 import { getUsersMoods } from 'server/data/controllers/MoodsController'
@@ -25,7 +26,8 @@ router
         limit,
         offset,
         where,
-        include: [{ model: Node, limit: 1 }] // for preview image
+        order: sequelize.random(),
+        include: [{ model: Node, limit: 1, order: sequelize.random() }] // for preview image
       }) || []
       res.json({ moods, totalPages })
     }
@@ -79,13 +81,16 @@ router
         limit,
         offset,
         order: sequelize.random(),
-        // add preview image
-        include: [{
-          limit: 1,
-          model: Node,
-          order: sequelize.random(),
-        }]
       })
+      // add preview image
+      await Promise.each(moods, (async (mood, index) => {
+        const nodes = await mood.getNodes({
+          limit: 1,
+          required: true,
+          order: sequelize.random(),
+        })
+        moods[index].dataValues.Nodes = nodes
+      }))
       res.json({ moods, totalPages })
     }
     catch (error) {
@@ -105,13 +110,16 @@ router
         limit,
         offset,
         order: [['rating', 'DESC']],
-        // add preview image
-        include: [{
-          limit: 1,
-          model: Node,
-          order: sequelize.random(),
-        }]
       })
+      // add preview image
+      await Promise.each(moods, (async (mood, index) => {
+        const nodes = await mood.getNodes({
+          limit: 1,
+          required: true,
+          order: sequelize.random(),
+        })
+        moods[index].dataValues.Nodes = nodes
+      }))
       res.json({ moods, totalPages })
     }
     catch (error) {
@@ -132,13 +140,16 @@ router
         limit,
         offset,
         order: [['createdAt', 'DESC']],
-        // add preview image
-        include: [{
-          limit: 1,
-          model: Node,
-          order: sequelize.random(),
-        }]
       })
+      // add preview image
+      await Promise.each(moods, (async (mood, index) => {
+        const nodes = await mood.getNodes({
+          limit: 1,
+          required: true,
+          order: sequelize.random(),
+        })
+        moods[index].dataValues.Nodes = nodes
+      }))
       res.json({ moods, totalPages })
     }
     catch (error) {

@@ -45,16 +45,22 @@ export default describe('/moods API', function() {
 
     describe('GET moods', function() {
 
-        it('GET random moods', function(done) {
-            request(server)
+        it('GET random moods', async function() {
+            await request(server)
                 .get('/api/moods/random')
                 .expect('Content-Type', /json/)
                 .expect(200)
-                .end(function(err, res) {
-                    if (err) return done(err);
-                    res.body.moods.should.be.a('array')
-                    done()
-                });
+                .then(res => {
+                    const { moods } = res.body
+                    moods.should.be.a('array')
+                    moods.should.have.length(11) // TODO: why not 12?
+                    moods.forEach(mood => {
+                        expect(mood).to.have.property('Nodes').a('array')
+                        // For preview image there must be 0 or 1 node in array
+                        expect(mood.Nodes.length).to.not.greaterThan(1)
+                        if (mood.Nodes[0]) expect(mood.Nodes[0].MoodId).to.eq(String(mood.id))
+                    })
+                })
         })
 
         it('GET popular moods', function(done) {
@@ -127,16 +133,14 @@ export default describe('/moods API', function() {
             });
     })
 
-    it('GET /search moods', function(done) {
-        user
+    it('GET /search moods', async function() {
+        await user
             .get('/api/moods/search/' + 'something' )
             .expect('Content-Type', /json/)
             .expect(200)
-            .end(function(err, res) {
-                if (err) return done(err);
+            .then(function(res) {
                 res.body.moods.should.be.a('array')
-                done()
-            });
+            })
     })
     // TODO create test for "mustLogin" function and this kind of tests will be obsolete
     it('fail to POST if not authorized', function(done) { // TODO move this to previous function?
