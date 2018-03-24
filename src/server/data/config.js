@@ -1,4 +1,5 @@
 var config = process.env
+var path = require('path')
 var isDocker = require('is-docker')()
 
 /*
@@ -42,7 +43,7 @@ module.exports = {
     "dialect": "sqlite",
     "username": "root",
     "database": "boilerplate_dev",
-    "storage": "../../../development.sqlite",
+    "storage": path.join(__dirname, "../../../development.sqlite"),
     // In docker containers database will have special host.
     // In non-container it will be connected through localhost.
     "host": "127.0.0.1",
@@ -55,7 +56,7 @@ module.exports = {
     "dialect": "sqlite",
     "username": "root",
     "database": "boilerplate_test",
-    "storage": "../../../test.sqlite",
+    "storage": path.join(__dirname, "../../../test.sqlite"),
     // In docker containers database will have special host.
     // In non-container it will be connected through localhost.
     "host": "127.0.0.1",
