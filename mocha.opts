@@ -1,3 +1,4 @@
+  --reporter min
   --ui bdd
   --no-exit
   --watch
