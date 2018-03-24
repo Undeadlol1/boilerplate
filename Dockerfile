@@ -21,10 +21,6 @@ COPY . .
 # FIXME: add comments
 RUN node ./core/scripts/set_up.js
 
-# In order to use docker image for local development,
-# read/write acces to application code must be granted to container through volume.
-VOLUME [ "." ]
-
 EXPOSE 3001
 
 CMD [ "sh" ]
