@@ -94,7 +94,6 @@
     "redux-promise": "^0.5.3",
     "redux-reset": "^0.3.0",
     "redux-thunk": "^2.2.0",
-    "relpers": "^1.3.3",
     "selectn": "^1.1.2",
     "sequelize": "^4.37.1",
     "serialize-javascript": "^1.3.0",

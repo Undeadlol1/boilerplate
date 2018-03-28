@@ -4,15 +4,14 @@ import Loading from '../components/Loading'
 import MoodsList from '../components/MoodsList'
 import MoodsFind from '../components/MoodsFind'
 import { Grid } from 'react-styled-flexboxgrid';
-import { injectProps } from 'relpers'
 import { connect } from 'react-redux';
 import { fetchMoods } from '../redux/actions/MoodActions'
 import PageWrapper from 'browser/components/PageWrapper'
 
 export class SearchPage extends Component {
 	componentWillMount() { this.props.fetchMoods() }
-    @injectProps
-    render({loading, moods, currentPage, totalPages, location}) {
+    render() {
+		const {loading, moods, currentPage, totalPages} = this.props
 		return 	<PageWrapper className="SearchPage">
 					<Grid fluid>
 						<Loading condition={loading}>

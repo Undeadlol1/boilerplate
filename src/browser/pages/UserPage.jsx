@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types'
-import { injectProps } from 'relpers'
 import { connect } from 'react-redux'
 import { injectIntl } from 'react-intl'
 import Avatar from 'material-ui/Avatar'
