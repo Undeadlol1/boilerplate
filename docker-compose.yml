@@ -13,13 +13,16 @@ services:
       - "3001:3001"
     links:
       - db
+    # This allows local file changes to be detected by docker container.
+    # It is usefull for local development.
+    volumes:
+      - .:/app/
     depends_on:
       db:
         condition: service_healthy
-    command: bash -c "NODE_ENV=test ./node_modules/.bin/sequelize db:migrate && npm test"
-    # command: bash -c "yarn run migrate; bash"
+    command: "yarn start"
   db:
-    image: mysql:alpine
+    image: mysql
     container_name: db
     # disable logging output
     logging:
