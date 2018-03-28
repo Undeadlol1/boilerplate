@@ -124,63 +124,62 @@ export default describe('/threads API', function() {
                 .expect(204) // 'No Content' status code
         })
         // Run PUT requests with different values and make sure there is a proper error message for it.
-        Promise.each(
-            [
-                // FIXME: what about nulls?
-                // {property: 'name', value: null, error: 'Name is required'},
-                {property: 'text', value: undefined, error: 'Is required'},
-                {property: 'text', value: '', error: 'Text should be atleast 5 characters long'},
-                {property: 'text', value: ' ', error: 'Text should be atleast 5 characters long'},
-            ],
-            ({property, value, error}) => {
-                it(`${property} not validated`, async () => {
-                    const user = await loginUser(username, password)
-                    await user
-                    .put('/api/threads/' + generateUuid())
-                    .send({[property]: value})
-                    .expect(422)
-                    .expect('Content-Type', /json/)
-                    .then(({body}) => expect(body.errors[property].msg).to.eq(error))
-                    .catch(error => {throw error})
-                })
-            }
-        )
+        it('property validation failed', async () => {
+            const user = await loginUser(username, password)
+            await Promise.each(
+                [
+                    // FIXME: what about nulls?
+                    // {property: 'name', value: null, error: 'Name is required'},
+                    { property: 'text', value: undefined, error: 'Is required' },
+                    { property: 'text', value: '', error: 'Text should be atleast 5 characters long' },
+                    { property: 'text', value: ' ', error: 'Text should be atleast 5 characters long' },
+                ],
+                async ({ property, value, error }) => {
+                    return await user
+                        .put('/api/threads/' + generateUuid())
+                        .send({ [property]: value })
+                        .expect(422)
+                        .expect('Content-Type', /json/)
+                        .then(({ body }) => expect(body.errors[property].msg).to.eq(error))
+                        .catch(error => { throw error })
+                }
+            )
+        })
     })
 
     describe('fails to POST if', () => {
         // Only logged in users can create threads.
         it('if user is logged in', async () => await agent.post('/api/threads').expect(401))
         // Run POST requests with different values and make sure there is a proper error message for it.
-        Promise.each(
-            [
-                // FIXME: what about nulls?
-                // NOTE: this might help http://sequelize.readthedocs.io/en/v3/docs/models-definition/#validations
-                // {property: 'name', value: null, error: 'Name is required'},
-                {property: 'name', value: undefined, error: 'Name is required'},
-                {property: 'name', value: '', error: 'Name must be between 5 and 100 characters long'},
-                {property: 'name', value: ' ', error: 'Name must be between 5 and 100 characters long'},
-                {property: 'text', value: undefined, error: 'Text is required'},
-                {property: 'text', value: '', error: 'Text should be atleast 5 characters long'},
-                {property: 'text', value: ' ', error: 'Text should be atleast 5 characters long'},
-                {property: 'parentId', value: undefined, error: 'Parent id is required'},
-                {property: 'parentId', value: '', error: 'Parent id is not valid UUID'},
-                {property: 'parentId', value: ' ', error: 'Parent id is not valid UUID'}
-            ],
-            ({property, value, error}) => {
-                it(`${property} not validated`, async () => {
-                    const user = await loginUser(username, password)
-                    await user
-                    .post('/api/threads')
-                    .send({[property]: value})
-                    .expect(422)
-                    .expect('Content-Type', /json/)
-                    .then(({body}) => {
-                        expect(body.errors[property].msg).to.eq(error)
-                    })
-                    .catch(error => {throw error})
-                })
-            }
-        )
+        it('property validation failed', async () => {
+            const user = await loginUser(username, password)
+            await Promise.each(
+                [
+                    // FIXME: what about nulls?
+                    // NOTE: this might help http://sequelize.readthedocs.io/en/v3/docs/models-definition/#validations
+                    // {property: 'name', value: null, error: 'Name is required'},
+                    { property: 'name', value: undefined, error: 'Name is required' },
+                    { property: 'name', value: '', error: 'Name must be between 5 and 100 characters long' },
+                    { property: 'name', value: ' ', error: 'Name must be between 5 and 100 characters long' },
+                    { property: 'text', value: undefined, error: 'Text is required' },
+                    { property: 'text', value: '', error: 'Text should be atleast 5 characters long' },
+                    { property: 'text', value: ' ', error: 'Text should be atleast 5 characters long' },
+                    { property: 'parentId', value: undefined, error: 'Parent id is required' },
+                    { property: 'parentId', value: '', error: 'Parent id is not valid UUID' },
+                    { property: 'parentId', value: ' ', error: 'Parent id is not valid UUID' }
+                ],
+                async ({ property, value, error }) => {
+                    return await user
+                        .post('/api/threads')
+                        .send({ [property]: value })
+                        .expect(422)
+                        .expect('Content-Type', /json/)
+                        .then(({ body }) => {
+                            expect(body.errors[property].msg).to.eq(error)
+                        })
+                        .catch(error => { throw error })
+                }
+            )
+        })
     })
-
 })
