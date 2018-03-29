@@ -11,26 +11,29 @@ services:
     build: .
     ports:
       - "3001:3001"
-    links:
-      - db
-    # This allows local file changes to be detected by docker container.
-    # It is usefull for local development.
     volumes:
-      - .:/app/
-    depends_on:
-      db:
-        condition: service_healthy
+      # This allows local file changes to be detected by docker container.
+      # It is usefull for local development.
+      - .:/app
+      # Node-sass package throws error without this volume.
+      # https://github.com/sass/node-sass/issues/2165#issuecomment-347043659
+      - /app/node_modules
     command: "yarn start"
-  db:
-    image: mysql
-    container_name: db
-    # disable logging output
-    logging:
-      driver: none
-    environment:
-      - MYSQL_DATABASE=boilerplate_test
-      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
-    volumes:
-      - ./data:/data/db
-    healthcheck:
-        test: "exit 0"
+    # links:
+    #   - db
+    # depends_on:
+    #   db:
+    #     condition: service_healthy
+  # db:
+  #   image: mysql
+  #   container_name: db
+  #   # disable logging output
+  #   logging:
+  #     driver: none
+  #   environment:
+  #     - MYSQL_DATABASE=boilerplate_test
+  #     - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+  #   volumes:
+  #     - ./data:/data/db
+  #   healthcheck:
+  #       test: "exit 0"

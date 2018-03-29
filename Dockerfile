@@ -1,7 +1,7 @@
 # "Alpine" tag uses almost 3 times less disk space compared to regular node images.
 FROM node:alpine
 
-WORKDIR /app/
+WORKDIR /app
 
 # Install yarn because it is not preinstalled in "alpine" tag.
 # It is better package manager which helps make image size smaller.
@@ -9,18 +9,20 @@ WORKDIR /app/
 # Also install git because some packages are installed directly from github.
 # NOTE: do not install git when this packges are no longer used. (see: package.json)
 RUN apk update && apk add --no-cache yarn git
-
 # Install app dependencies
 COPY package*.json yarn.lock ./
 # Install without yarn cache. Takes advantage of docker caching.
 # https://github.com/yarnpkg/yarn/issues/749#issuecomment-253253608
 RUN yarn --pure-lockfile && yarn cache clean
-
 # Bundle app source
 COPY . .
-# FIXME: add comments
+# Setup sqlite databases and make migrations.
 RUN node ./core/scripts/set_up.js
+# Node-sass used to throw errors after node_modules instalation.
+# NOTE: check if this is still needed. Remove this line if not.
+RUN npm rebuild node-sass --force
 
 EXPOSE 3001
-
+# In alpine linux we need to specify command line shell.
+# Docker uses "bash" by default, but in alpine we have only "sh".
 CMD [ "sh" ]
