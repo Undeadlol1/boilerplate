@@ -12,7 +12,7 @@
     "test": "cross-env NODE_ENV=test webpack --config ./config/tests.config.js",
     "watch-test": "npm test -- --watch",
     "start": "rimraf dist && cross-env NODE_ENV=development webpack --config ./config/targets.config.js --watch --hide-modules",
-    "production": "git pull && yarn && cross-env NODE_ENV=production sequelize db:migrate && rimraf dist && cross-env NODE_ENV=production parallel-webpack --config ./config/targets.config.js && npm rebuild node-sass && pm2 stop all && pm2 start dist/server.js --node-args='--expose-gc'",
+    "production": "git pull && yarn && cross-env NODE_ENV=production NODE_NDEBUG=1 sequelize db:migrate && rimraf dist && cross-env NODE_ENV=production parallel-webpack --config ./config/targets.config.js && npm rebuild node-sass && pm2 stop all && pm2 start dist/server.js --node-args='--expose-gc'",
     "analyze": "cross-env NODE_ENV=production parallel-webpack --config ./config/targets.config.js --watch",
     "check_production": "cross-env NODE_ENV=production parallel-webpack --config ./config/targets.config.js; node dist/server.js"
   },
