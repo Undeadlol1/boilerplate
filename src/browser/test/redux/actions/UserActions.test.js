@@ -31,7 +31,7 @@ const user = {username: 'misha', id: 1}
 function mockRequest(url, action, param, result, method = 'get') {
     // TODO rework this url (last character '/' was causing unmathing of url)
     // create request interceptor
-    nock('http://127.0.0.1:3000')[method](url).reply(200, user)
+    nock(URL)[method](url).reply(200, user)
     const store = mockStore()
     return store
       // call redux action
