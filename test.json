@@ -1,9 +1,9 @@
 {
     "NODE_ENV": "test",
     "APP_NAME": "Boilerplate",
-    "URL": "http://127.0.0.1:3000/",
-    "API_URL": "http://127.0.0.1:3000/api/",
-    "PORT": "3000",
+    "URL": "http://127.0.0.1:3005/",
+    "API_URL": "http://127.0.0.1:3005/api/",
+    "PORT": "3005",
     "SESSION_KEY": "keyboard cat",
     "DB_HOST": "127.0.0.1",
     "DB_PORT": "3306",
