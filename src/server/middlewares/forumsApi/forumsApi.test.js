@@ -35,8 +35,8 @@ export default describe('/forums API', function() {
         const forum = await Forums.findOne({order: sequelize.random()})
         await request(server)
             .get('/api/forums/forum/' + forum.slug )
-            .expect('Content-Type', /json/)
             .expect(200)
+            .expect('Content-Type', /json/)
             .then(function(res) {
                 const { name, threads } = res.body
                 // has forum
