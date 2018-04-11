@@ -10,6 +10,7 @@ This is a fullstack javascript boilerplate based on React, Express and Sequelize
 * Docker image.
 * Comment system is provided with 3d party solutions like Facebook comments or Disqus.
 * Lots of things work out of the box. Projects includes development/production scripts, webpack configurations, fully working front-end and back-end stacks.
+* Sequelize is used as DB ORM. This means Mysql/PostgreSQL is supported. Simply change "dialect" option in configuration file.
 * Common libraries are used for ease of adoptation: react, react-router, redux, redux-thunk, Sequelize, expressjs and so on.
 
 ## Installation
