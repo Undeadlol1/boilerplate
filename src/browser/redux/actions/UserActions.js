@@ -22,6 +22,15 @@ export const actions = createActions({
 })
 const { fetchingUser, recieveFetchedUser, removeCurrentUser, recieveCurrentUser } = actions
 
+/**
+ * Login user via password and username.
+ * @param {Object} payload request body
+ * @param {string} payload.username
+ * @param {string} payload.password
+ * @param {function} callback function to call on success
+ * @returns {Promise}
+ * @export
+ */
 export const loginUser = (payload, callback) => dispatch => {
 	return fetch(authUrl + 'login', headersAndBody(payload))
 			.then(res => {
@@ -46,7 +55,15 @@ export const loginUser = (payload, callback) => dispatch => {
 							})
 			})
 }
-
+/**
+ * Create user via password and username.
+ * @param {Object} payload request body
+ * @param {string} payload.username
+ * @param {string} payload.password
+ * @param {function} callback function to call on success
+ * @returns {Promise}
+ * @export
+ */
 export const createUser = (payload, callback) => dispatch => {
 	return fetch(authUrl + 'signup', headersAndBody(payload))
 			.then(res => {
@@ -72,8 +89,11 @@ export const createUser = (payload, callback) => dispatch => {
 							})
 			})
 }
-
-//
+/**
+ * Fetch currently logged in user.
+ * @returns {Promise}
+ * @export
+ */
 export const fetchCurrentUser = () => dispatch => {
 	dispatch(fetchingUser())
 	return fetch(authUrl + 'current_user', {credentials: 'same-origin'})
@@ -102,7 +122,12 @@ export const toggleLoginDialog = value => (dispatch, getState) => {
 		)
 	)
 }
-
+/**
+ * Fetch user by username.
+ * @param {string} username
+ * @returns
+ * @export
+ */
 export const fetchUser = username => dispatch => {
 	dispatch(togglePageLoading())
 	return fetch(`${usersUrl}user/${username}`)
@@ -118,6 +143,7 @@ export const fetchUser = username => dispatch => {
  * update user profile
  * @param {UserId} UserId user identifier
  * @param {object} body profile attributes to update
+ * @export
  */
 export const updateUser = (UserId, body) => dispatch => {
 	// dispatch(fetchingUser())
