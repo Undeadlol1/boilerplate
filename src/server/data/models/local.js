@@ -35,6 +35,26 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     tableName: 'locals',
     freezeTableName: true,
+    /**
+     * In default scope we must exclude emails
+     * and password informaiton so it wont accidentaly be leaked to hackers.
+     */
+    defaultScope: {
+      where: {},
+      attributes: {
+        exclude: ['password', 'email']
+      }
+    },
+    scopes: {
+      /**
+       * This scope allows us to manipulate
+       * sensitive data in APIs.
+       */
+      all: {
+        where: {},
+        attributes: {exclude: []}
+      }
+    }
   })
   // Class Methods
   Local.associate = function (models) {

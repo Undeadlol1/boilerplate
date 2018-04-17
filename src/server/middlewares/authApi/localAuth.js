@@ -16,7 +16,7 @@ router
 
     // TODO add validation tests
     try {
-        const existingUser = await Local.findOne({
+        const existingUser = await Local.scope('all').findOne({
           where: {
             [Op.or]: [{email}, {username}]
           }
@@ -45,7 +45,7 @@ router
         const user =  await User.findOne({
                         where: {},
                         include: [Profile, {
-                          model: Local,
+                          model: Local.scope('all'),
                           where: { [Op.or]: [{email}, {username}] },
                         }],
                       })
@@ -53,7 +53,7 @@ router
           return res.status(401).end('User not exists')
         }
         if (!user.Local.validPassword(password)) {
-          const newLocal = await Local.findById(user.Local.id)
+          const newLocal = await Local.scope('all').findById(user.Local.id)
           return res.status(401).end('Incorrect password')
         }
         req.login(user, error => {

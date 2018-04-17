@@ -13,16 +13,25 @@ export default describe('/users API', function() {
     before(() => server.close())
     after(() => server.close())
 
-    it('get one user', async function() {
-        const user = await User.findOne({order: sequelize.random()})
+    it('get single user', async function() {
+        const { id } = await User.findOne({order: sequelize.random()})
         await request(server)
-            .get(`/api/users/user/${user.id}`)
+            .get(`/api/users/user/${id}`)
             .expect(200)
             .expect('Content-Type', /json/)
-            .then(function({body}) {
-                assert(body.id, 'must have an id')
-                assert(body.Profile, 'must have Profile')
-                expect(body.moods).to.be.a('array')
+            .then(req => {
+                const user = req.body
+                assert.equal(user.id, id)
+                assert.typeOf(user.Profile, 'Object')
+                // "Local' model has passwords hashes and shall not be send over internet.
+                assert.notProperty(user, 'Local.email')
+                assert.notProperty(user, 'Local.password')
+                // Incase "Local" is going to be renamed to "local"
+                // make sure tests will still work.
+                assert.notProperty(user, 'local.email')
+                assert.notProperty(user, 'local.password')
+                expect(user.moods).to.be.a('array')
+
                 // assert(body.moods[0].UserId == body.id)
                 // TODO
                 // assert(!body.Local, 'must not have Local')
