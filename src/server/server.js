@@ -27,6 +27,8 @@ import helmet from 'helmet'
 import createLocaleMiddleware from 'express-locale';
 import RateLimiter from 'express-rate-limit'
 import exphbs from 'express-handlebars'
+import graphqlHTTP from 'express-graphql'
+import schema from './middlewares/graphql'
 
 // const RedisStore = require('connect-redis')(session)
 // const cache = require('express-redis-cache')();
@@ -37,18 +39,19 @@ const port = process.env.PORT,
       publicUrl = path.resolve('./dist', 'public'), // TODO: or use server/public?
       cookieExpires = 100 * 60 * 24 * 100 // 100 days
 
+/**
+ *  Common middlewares.
+ */
+app.use(compression())
+app.use(cookieParser())
+app.use(express.static(publicUrl))
 /*
   Some routes return 304 if multiple calls to same route are made.
   For example: while validating user info in signup form
 */
 app.disable('etag');
-
-// middlewares
 // detect accepted languages for i18n
 app.use(createLocaleMiddleware())
-app.use(compression())
-app.use(express.static(publicUrl))
-app.use(cookieParser())
 app.set('query parser', 'simple');
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -66,8 +69,9 @@ app.use(helmet()) // security
 app.engine('handlebars', engine);
 app.set('view engine', 'handlebars');
 app.set('views', path.resolve(__dirname, './public'));
-
-// development only middlewares
+/**
+ * Development only middlewares.
+ */
 if (process.env.NODE_ENV === 'development') {
   // better request errors
   app.use(errorhandler())
@@ -79,8 +83,9 @@ if (process.env.NODE_ENV === 'development') {
     next();
   })
 }
-
-// production only middlewares
+/**
+ * Production only middlewares.
+ */
 if (process.env.NODE_ENV === 'production') {
   app.use(morgan('dev')) // logger
   // rate limiter
@@ -109,7 +114,18 @@ app.options("/*", function(req, res, next){
   res.send(200);
 });
 
-// REST API
+
+/**
+ * GRAPHQL entry point.
+ */
+app.use('/graphql', graphqlHTTP({
+  rootValue : root,
+  graphiql  : true,
+  schema    : schema,
+}))
+/**
+ * REST API.
+ */
 app.use('/api/auth', authApi)
 app.use('/api/users', usersApi)
 app.use('/api/moods', moodsApi)
@@ -121,8 +137,9 @@ app.use('/api/threads', require('./middlewares/threadsApi').default)
 app.use('/api/comments', require('./middlewares/commentsApi').default)
 app.use('/api/subscriptions', require('./middlewares/subscriptionsApi').default)
 // ⚠️ Hook for cli! Do not remove 💀
-
-// SPA
+/**
+ * SPA.
+ */
 app.use(SSR)
 
 // export app to use in test suits
