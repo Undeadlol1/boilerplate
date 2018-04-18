@@ -6,6 +6,7 @@ import {
 // import * as mutations from './mutations';
 import forum from './types/forum'
 import forums from './types/forums'
+import mutations from './mutations'
 
 const schema = new GraphQLSchema({
     query: new GraphQLObjectType({
@@ -21,8 +22,7 @@ const schema = new GraphQLSchema({
         description: 'Every graphql api must start with a root mutation.',
         // fields: mutations
         fields: () => ({
-            forum,
-            forums,
+            ...mutations
         }),
     }),
 })
