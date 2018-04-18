@@ -9,7 +9,7 @@ import {
 } from 'graphql'
 import {
     resolver,
-    defaultListArgs,
+    defaultArgs as attributesToArgs,
     attributeFields,
 } from 'graphql-sequelize'
 import assign from 'lodash/assign'
@@ -17,7 +17,7 @@ import { Forums } from '../../../data/models'
 
 const forumType = new GraphQLObjectType({
     name: 'forum',
-    description: 'Forum is a container for disscussions.',
+    description: 'Forum is a container for discussions.',
     fields: assign(attributeFields(Forums, { commentToDescription: true }))
     // fields: {
     //     id: {
@@ -48,15 +48,6 @@ export { forumType }
 export default {
     type: forumType,
     description: 'Forum is a container for threads.',
-    args: {
-        id: {
-            type: GraphQLID,
-            description: 'Unique indentifier',
-        },
-        slug: {
-            type: GraphQLString,
-            description: 'Url friendly text made of forum\'s name'
-        },
-    },
+    args: assign(attributesToArgs(Forums)),
     resolve: resolver(Forums)
 }

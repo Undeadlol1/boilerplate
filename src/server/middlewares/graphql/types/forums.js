@@ -34,5 +34,5 @@ export default {
     // Selector and pagination arguments.
     // https://github.com/mickhansen/graphql-sequelize#defaultlistargs
     args: assign(defaultListArgs()),
-    resolve: async (root, where) => await Forums.findAll({where})
+    resolve: resolver(Forums),
 }
