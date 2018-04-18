@@ -48,6 +48,8 @@
     "express-validator": "^5.0.1",
     "font-awesome": "^4.7.0",
     "graphql": "^0.13.2",
+    "graphql-relay": "^0.5.5",
+    "graphql-sequelize": "^8.0.0",
     "helmet": "^3.6.0",
     "immutable": "^3.8.1",
     "intl-locales-supported": "^1.0.0",
