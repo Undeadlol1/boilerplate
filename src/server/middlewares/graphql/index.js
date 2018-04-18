@@ -14,7 +14,7 @@ const schema = new GraphQLSchema({
         fields: () => ({
             forum,
             forums,
-        })
+        }),
     }),
     mutation: new GraphQLObjectType({
         name: 'RootMutation',
@@ -23,8 +23,8 @@ const schema = new GraphQLSchema({
         fields: () => ({
             forum,
             forums,
-        })
-    })
+        }),
+    }),
 })
 
 export default schema
