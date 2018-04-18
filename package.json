@@ -17,7 +17,7 @@
     "check_production": "cross-env NODE_ENV=production parallel-webpack --config ./config/targets.config.js; node dist/server.js"
   },
   "engines": {
-    "node": ">=6.9"
+    "node": ">=9.4"
   },
   "dependencies": {
     "babel-plugin-transform-object-rest-spread": "^6.23.0",
