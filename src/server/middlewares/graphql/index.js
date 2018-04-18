@@ -1,7 +1,5 @@
 import {
-    graphql,
     GraphQLSchema,
-    GraphQLString,
     GraphQLObjectType,
 } from 'graphql';
 // import * as queries from './queries';
