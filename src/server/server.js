@@ -37,7 +37,10 @@ const port = process.env.PORT,
       app = express(),
       { engine } = exphbs.create({}),
       publicUrl = path.resolve('./dist', 'public'), // TODO: or use server/public?
-      cookieExpires = 100 * 60 * 24 * 100 // 100 days
+      cookieExpires = 100 * 60 * 24 * 100, // 100 days,
+      isTest = process.env.NODE_ENV === 'test',
+      isProduction = process.env.NODE_ENV === 'production',
+      isDevelopment = process.env.NODE_ENV === 'development'
 
 /**
  *  Common middlewares.
@@ -69,10 +72,18 @@ app.use(helmet()) // security
 app.engine('handlebars', engine);
 app.set('view engine', 'handlebars');
 app.set('views', path.resolve(__dirname, './public'));
+// Cors permissions.
+// (almost everything is allowed)
+app.options("/*", function (req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
+  res.send(200);
+});
 /**
  * Development only middlewares.
  */
-if (process.env.NODE_ENV === 'development') {
+if (isDevelopment) {
   // better request errors
   app.use(errorhandler())
   // request logger
@@ -86,7 +97,7 @@ if (process.env.NODE_ENV === 'development') {
 /**
  * Production only middlewares.
  */
-if (process.env.NODE_ENV === 'production') {
+if (isProduction) {
   app.use(morgan('dev')) // logger
   // rate limiter
   // only if you're behind a reverse proxy (Heroku, Bluemix, AWS if you use an ELB, custom Nginx setup, etc)
@@ -104,24 +115,26 @@ if (process.env.NODE_ENV === 'production') {
 // http://expressjs.com/en/guide/error-handling.html
 // https://medium.com/@Abazhenov/using-async-await-in-express-with-node-8-b8af872c0016
 
-
-// CORS PERMISSIONS
-// (almost everything is allowed)
-app.options("/*", function(req, res, next){
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
-  res.send(200);
-});
-
-
 /**
  * GRAPHQL entry point.
  */
+/**
+ * Development only degug stack traces for graphQL.
+ * https://www.npmjs.com/package/express-graphql#debugging-tips
+ */
+function formatError(error) {
+  return ({
+    path: error.path,
+    message: error.message,
+    locations: error.locations,
+    stack: error.stack ? error.stack.split('\n') : [],
+  })
+}
 app.use('/graphql', graphqlHTTP({
-  rootValue : root,
-  graphiql  : true,
-  schema    : schema,
+  graphiql    : true,
+  schema      : schema,
+  // Development only debug stack traces.
+  formatError : isDevelopment && formatError
 }))
 /**
  * REST API.
@@ -144,7 +157,7 @@ app.use(SSR)
 
 // export app to use in test suits
 export default app.listen(port, () => {
-    if (process.env.NODE_ENV != 'test') {
+    if (!isTest) {
       console.info(`Environment is: ${process.env.NODE_ENV}!`)
       console.info(`Server listening on port ${port}!`)
     }
