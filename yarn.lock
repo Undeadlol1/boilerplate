@@ -10276,6 +10276,7 @@ uc.micro@^1.0.1:
   resolved "https://registry.yarnpkg.com/uc.micro/-/uc.micro-1.0.5.tgz#0c65f15f815aa08b560a61ce8b4db7ffc3f45376"
 
 "uglify-es@git://github.com/mishoo/UglifyJS2#harmony", uglify-js@3.3.x, "uglify-js@git://github.com/mishoo/UglifyJS2#harmony":
+  name uglify-es
   version "3.3.10"
   resolved "git://github.com/mishoo/UglifyJS2#569757d14dbbe04f66af65d7bf0600b3a75efd96"
   dependencies:

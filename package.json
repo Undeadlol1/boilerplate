@@ -20,6 +20,7 @@
     "node": ">=9.4"
   },
   "dependencies": {
+    "assert-plus": "^1.0.0",
     "babel-plugin-transform-object-rest-spread": "^6.23.0",
     "babel-polyfill": "^6.23.0",
     "babel-runtime": "^6.23.0",

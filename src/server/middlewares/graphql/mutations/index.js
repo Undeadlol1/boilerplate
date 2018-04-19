@@ -8,6 +8,7 @@ import {
     GraphQLObjectType,
     GraphQLInputObjectType
 } from 'graphql'
+import assert from 'assert-plus'
 import { forumType } from '../types/forum'
 import { Forums } from '../../../data/models'
 
@@ -20,18 +21,21 @@ export default {
                 type: new GraphQLNonNull(GraphQLString)
             },
         },
-        resolve: async (source, args, context, info) => {
+        resolve: async (source, args, {user}, info) => {
             try {
+                assert.object(user, "User")
+                assert.string(args.name)
                 // TODO: only logged in users can create forums
                 // TODO: only admins can create forums.
-                throw new Error('penises')
+                if (!user) throw new Error('You must be logged in to do this.')
+                if (user.id !== process.env.ADMIN_ID) throw new Error('You must be an admin to do this.')
                 const payload = extend(args, {
                     UserId: context.user.id
                 })
                 return await Forums.create(payload)
             }
             catch (err) {
-                throw err && err.message
+                throw err.message
             }
         }
     }
