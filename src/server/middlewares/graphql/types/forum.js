@@ -17,7 +17,7 @@ import { Forums } from '../../../data/models'
 
 const forumType = new GraphQLObjectType({
     name: 'forum',
-    description: 'Forum is a container for discussions.',
+    description: 'Forum is a container for threads(discissuons).',
     fields: assign(attributeFields(Forums, { commentToDescription: true }))
     // fields: {
     //     id: {

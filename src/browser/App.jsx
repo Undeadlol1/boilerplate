@@ -21,6 +21,11 @@ import Translator from './containers/Translator'
 import { syncHistoryWithStore } from 'react-router-redux'
 import { actions } from 'browser/redux/actions/UserActions'
 import { CookiesProvider } from 'react-cookie'
+// Apollo-client stuff.
+import { HttpLink } from 'apollo-link-http'
+import { ApolloClient } from 'apollo-client'
+import { ApolloProvider } from 'react-apollo'
+import { InMemoryCache } from 'apollo-cache-inmemory'
 
 /* STYLES */
 if (process.env.BROWSER) require('./styles.scss')
@@ -34,8 +39,23 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 customMuiTheme.userAgent = navigator.userAgent
 const muiTheme = getMuiTheme(customMuiTheme)
 
+const isServer = process.env.SERVER
+const isBrowser = process.env.BROWSER
+
+// Graphql client.
+const client = new ApolloClient({
+  // By default, this client will send queries to the
+  //  `/graphql` endpoint on the same host
+  // Pass the configuration option { uri: YOUR_GRAPHQL_API_URL } to the `HttpLink` to connect
+  // to a different host
+  link: new HttpLink(),
+  cache: new InMemoryCache(),
+  // TODO: implement SSR properly.
+  // https://www.apollographql.com/docs/react/features/server-side-rendering.html
+  ssr: isServer,
+});
 // scroll to top of the page on route change
-function scrollToTop () {
+function scrollToTop() {
   return window.scrollTo(0, 0)
 }
 
@@ -59,13 +79,15 @@ class App extends Component {
                   <ReduxProvider store={store} key="provider">
                     {/* universal cookies */}
                     <CookiesProvider cookies={cookies}>
-                      <Translator>
-                        {
-                          process.env.BROWSER
-                          ? <Router history={syncHistoryWithStore(browserHistory, store)} routes={routesConfig} onUpdate={scrollToTop} />
-                          : <RouterContext {...this.props} />
-                        }
-                      </Translator>
+                      <ApolloProvider client={client}>
+                        <Translator>
+                          {
+                            process.env.BROWSER
+                            ? <Router history={syncHistoryWithStore(browserHistory, store)} routes={routesConfig} onUpdate={scrollToTop} />
+                            : <RouterContext {...this.props} />
+                          }
+                        </Translator>
+                      </ApolloProvider>
                     </CookiesProvider>
                   </ReduxProvider>
                 </ThemeProvider>

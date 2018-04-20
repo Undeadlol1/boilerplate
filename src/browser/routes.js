@@ -36,21 +36,22 @@ const routesConfig = {
     component: IndexPage,
     // fetch data
     onEnter({params}, replace, done) {
+      return done()
       // check if fetching is needed
-      const fetchedForums = store.getState().forum.getIn(['forums', 'values'])
-      if (fetchedForums.size) return done()
-      else {
-        store
-        .dispatch(fetchForums())
-        .then(() => done())
-        // Promise
-        // .all([
-        //   store.dispatch(fetchMoods('new')),
-        //   store.dispatch(fetchMoods('random')),
-        //   store.dispatch(fetchMoods('popular')),
-        // ])
-        // .then(() => done())
-      }
+      // const fetchedForums = store.getState().forum.getIn(['forums', 'values'])
+      // if (fetchedForums.size) return done()
+      // else {
+      //   store
+      //   .dispatch(fetchForums())
+      //   .then(() => done())
+      //   // Promise
+      //   // .all([
+      //   //   store.dispatch(fetchMoods('new')),
+      //   //   store.dispatch(fetchMoods('random')),
+      //   //   store.dispatch(fetchMoods('popular')),
+      //   // ])
+      //   // .then(() => done())
+      // }
     }
   },
   childRoutes: [
