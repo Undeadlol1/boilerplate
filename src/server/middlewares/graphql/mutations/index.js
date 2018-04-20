@@ -1,14 +1,11 @@
 import {
-    graphql,
-    GraphQLID,
     GraphQLString,
-    GraphQLSchema,
     GraphQLNonNull,
-    GraphQLUnionType,
-    GraphQLObjectType,
-    GraphQLInputObjectType
 } from 'graphql'
+import slugify from 'slug'
+import get from 'lodash/get'
 import assert from 'assert-plus'
+import extend from 'lodash/assign'
 import { forumType } from '../types/forum'
 import { Forums } from '../../../data/models'
 
@@ -21,22 +18,25 @@ export default {
                 type: new GraphQLNonNull(GraphQLString)
             },
         },
-        resolve: async (source, args, {user}, info) => {
+        resolve: async (source, args, { user }) => {
             try {
+                // Verify data.
                 assert.object(user, "User")
                 assert.string(args.name)
-                // TODO: only logged in users can create forums
-                // TODO: only admins can create forums.
+                // Prepare variables.
+                const UserId = get(user, 'id')
+                const slug = slugify(args.name)
+                const payload = extend(args, {UserId, slug})
+                // Verify permissions.
+                // TODO: add tests for both permissions.
+                // TODO: add tests for arguments.
                 if (!user) throw new Error('You must be logged in to do this.')
-                if (user.id !== process.env.ADMIN_ID) throw new Error('You must be an admin to do this.')
-                const payload = extend(args, {
-                    UserId: context.user.id
-                })
+                if (UserId !== process.env.ADMIN_ID) throw new Error('You must be an admin to do this.')
                 return await Forums.create(payload)
             }
             catch (err) {
                 throw err.message
             }
-        }
-    }
+        },
+    },
 }

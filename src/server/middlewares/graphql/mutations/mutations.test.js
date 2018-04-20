@@ -7,15 +7,21 @@ import server from '../../../server'
 import { tester } from 'graphql-tester'
 import { User, Forums } from '../../../data/models'
 import { create } from 'graphql-tester/lib/main/servers/express'
+chai.use(require('chai-properties'))
+
 
 const payload = { name: 'This is a test' }
 
 describe('Express Server', () => {
 
-    const ExpressTest = tester({
-        url: '/graphql',
-        server: create(server),
-    });
+    after(async () => {
+        await User.destroy({where: {id: "1"}})
+    })
+
+    // const ExpressTest = tester({
+    //     url: '/graphql',
+    //     server: create(server),
+    // });
 
     describe('Valid Query', () => {
 
@@ -44,19 +50,20 @@ describe('Express Server', () => {
             expect(data.forum).to.have.property("id", forum.id);
         })
         it('example of a mutation', async () => {
-            const user  = await User.findOne({where: {id: 1}, raw: true})
-            const forum = await Forums.findOne({})
+            const user  = await User.create({id: 1})
             const query = `mutation {
                 createForum(name: "${payload.name}") {
                     id
                     name
+                    slug
                     UserId
                 }
             }`
             const { data, errors } = await graphql(schema, query, null, {user})
-            const createdForum = await Forums.findOne({where: payload})
-            expect(errors[0].message).to.be.undefined
+            const createdForum  = await Forums.findOne({where: payload})
+            assert.isUndefined(errors)
             expect(createdForum).to.be.a('object', 'forum should be created')
+            expect(createdForum).to.have.properties(data.forum)
         })
         // it('Returns the correct Status code', () => {
         //     return response.should.eventually.have.property('status').equal(200);

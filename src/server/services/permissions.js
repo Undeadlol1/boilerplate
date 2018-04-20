@@ -1,4 +1,3 @@
-import Boom from 'boom'
 import selectn from 'selectn'
 
 /**
@@ -8,9 +7,8 @@ import selectn from 'selectn'
 export function mustLogin(req, res, next) {
     req.isAuthenticated() ? next() : res.boom.unauthorized('Please, log in to do this')
 }
-
 /**
- * Check if user is an admin permissions.
+ * Check if user has admin permissions.
  * @export
  */
 export function isAdmin(req, res, next) {
