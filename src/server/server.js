@@ -130,11 +130,12 @@ function formatError(error) {
     stack: error.stack ? error.stack.split('\n') : [],
   })
 }
+
 app.use('/graphql', graphqlHTTP({
-  graphiql    : true,
-  schema      : schema,
+  graphiql: true,
+  schema: schema,
   // Development only debug stack traces.
-  formatError : isDevelopment && formatError
+  formatError: isDevelopment && formatError
 }))
 /**
  * REST API.
