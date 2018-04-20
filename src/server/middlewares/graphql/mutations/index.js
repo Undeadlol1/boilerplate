@@ -4,10 +4,13 @@ import {
 } from 'graphql'
 import slugify from 'slug'
 import get from 'lodash/get'
+import logger from 'debug-logger'
 import assert from 'assert-plus'
 import extend from 'lodash/assign'
 import { forumType } from '../types/forum'
 import { Forums } from '../../../data/models'
+
+const debug = logger('mutations')
 
 export default {
     createForum: {
@@ -20,6 +23,9 @@ export default {
         },
         resolve: async (source, args, { user }) => {
             try {
+                debug('source', source)
+                debug('args', args)
+                debug('user && user.id', user && user.id)
                 // Verify data.
                 assert.object(user, "User")
                 assert.string(args.name)
