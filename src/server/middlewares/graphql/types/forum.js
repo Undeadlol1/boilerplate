@@ -17,24 +17,9 @@ import { Forums } from '../../../data/models'
 
 const forumType = new GraphQLObjectType({
     name: 'forum',
-    description: 'Forum is a container for threads(discissuons).',
+    description: 'Forum is a container for threads.',
+    // Get fields from sequelize model.
     fields: assign(attributeFields(Forums, { commentToDescription: true }))
-    // fields: {
-    //     id: {
-    //         type: GraphQLID,
-    //         description: 'Unique indentifier',
-    //     },
-    //     name: {
-    //         type: GraphQLString,
-    //     },
-    //     slug: {
-    //         type: GraphQLString,
-    //         description: 'Url friendly text made of forum\'s name',
-    //     },
-    //     UserId: {
-    //         type: GraphQLString,
-    //     }
-    // }
 })
 /**
  * Graphql type representing a forum object.
@@ -47,7 +32,8 @@ export { forumType }
  */
 export default {
     type: forumType,
-    description: 'Forum is a container for threads.',
+    resolve: resolver(Forums),
+    // All of the models attributes are searchable fields.
     args: assign(attributesToArgs(Forums)),
-    resolve: resolver(Forums)
+    description: 'Forum is a container for threads.',
 }

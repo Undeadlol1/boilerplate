@@ -1,1 +1,1 @@
-export { default, ForumsList } from './ForumsList.jsx'
+export { default, ForumsList, query } from './ForumsList.jsx'
