@@ -19,25 +19,45 @@ import { parseJSON } from'browser/redux/actions/actionHelpers'
 import { insertForum } from 'browser/redux/forum/ForumActions'
 import withGraphQL from 'react-apollo-decorators/lib/withGraphQL'
 import withMutation from 'react-apollo-decorators/lib/withMutation'
-import { Mutation, MutationFunc, graphql, Query } from 'react-apollo'
+import { Mutation, MutationFunc, graphql, Query, withApollo } from 'react-apollo'
 
 class CreateForumForm extends Component {
-
 	static propTypes = {
-		UserId: PropTypes.number,
+		// Current user.
+		viewer: PropTypes.object,
+		// Form reset function.
 		reset: PropTypes.func.isRequired,
-		createForum: PropTypes.func.isRequired,
+		// Appollo client to send mutation query.
+		client: PropTypes.object.isRequired,
 	}
-
+	/**
+	 * On submit use apollo client to
+	 * send mutation, update apollo cache
+	 * and then reset form.
+	 */
 	handleSubmit = variables => {
-		this.props
-		.createForum({ variables })
+		this.props.client
+		.mutate({
+			mutation,
+			variables,
+			update: this.updateCache
+		})
 		.then(() => this.props.reset())
+	}
+	/**
+	 * Update apollo cache to push created forum into "forums" array.
+	 * @param {Object} cache Apollo cache.
+	 * @param {Object} response Mutation response.
+	 */
+	updateCache = (cache, { data: { forum } }) => {
+		const { forums } = cache.readQuery({ query: forumsQuery })
+		return cache.writeQuery({
+			query: forumsQuery,
+			data: { forums: forums.concat([forum]) }
+		});
 	}
 
 	render() {
-		console.log('this.props: ', this.props);
-		console.log('viewer: ', get(this, 'props.data.viewer.id') );
 		// Hide component if user is not admin.
 		if (get(this, 'props.viewer.id') != process.env.ADMIN_ID) return null
 		const { props } = this
@@ -67,7 +87,7 @@ class CreateForumForm extends Component {
 	}
 }
 
-const createForum = gql`
+const mutation = gql`
   mutation createForum($name: String!) {
     forum: createForum(name: $name) {
       id
@@ -85,41 +105,24 @@ const getCurrentUser = gql`
 	  }
   }
 `
-
-// Update apollo cache to push
-// created forum into "forums" array.
-function update(cache, { data: { forum } }) {
-	const { forums } = cache.readQuery({ query: forumsQuery })
-	cache.writeQuery({
-		query: forumsQuery,
-		data: { forums: forums.concat([forum]) }
-	});
-}
-
-const formValidations = reduxForm({
-	form: 'CreateForumForm',
-	validate(values) {
-		let errors = {}
-		const user = store.getState().user.get('id')
-
-		if (!user) errors.name = translate('please_login')
-		if (!values.name) errors.name = translate('name_cant_be_empty')
-		// if (!values.text) errors.text = translate('cant_be_empty')
-
-		return errors
-	}
-})
-
+/**
+ * Compose decorators:
+ * 1) Get current user via apollo-graphql.
+ * 2) Add validations via redux-forms.
+ * 3) Provide apollo client to run mutation query on submit.
+ */
 const enhance = compose(
-	formValidations,
 	withGraphQL(getCurrentUser),
-	withMutation(createForum),
+	reduxForm({
+		form: 'CreateForumForm',
+		validate(values, ownProps) {
+			let errors = {}
+			if (!ownProps.viewer) errors.name = translate('please_login')
+			if (!values.name) errors.name = translate('name_cant_be_empty')
+			return errors
+		}
+	}),
+	withApollo,
 )
 
-const mutation = props => (
-	<Mutation mutation={createForum} update={update}>
-		{(createForum, response) => (<CreateForumForm {...props} {...response} createForum={createForum} />)}
-	</Mutation>
-)
-
-export default enhance(mutation)
+export default enhance(CreateForumForm)
