@@ -4,6 +4,8 @@ import {
 } from 'graphql';
 // import * as queries from './queries';
 // import * as mutations from './mutations';
+import user from './types/user'
+import viewer from './types/viewer'
 import forum from './types/forum'
 import forums from './types/forums'
 import mutations from './mutations'
@@ -13,6 +15,8 @@ const schema = new GraphQLSchema({
         name: 'RootQuery',
         description: 'Every graphql api must start from a root query point.\n This is it.',
         fields: () => ({
+            user,
+            viewer,
             forum,
             forums,
         }),
