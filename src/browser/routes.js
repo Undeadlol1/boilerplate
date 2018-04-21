@@ -35,8 +35,7 @@ const routesConfig = {
   indexRoute: {
     component: IndexPage,
     // fetch data
-    onEnter({params}, replace, done) {
-      return done()
+    // onEnter({params}, replace, done) {
       // check if fetching is needed
       // const fetchedForums = store.getState().forum.getIn(['forums', 'values'])
       // if (fetchedForums.size) return done()
@@ -52,7 +51,7 @@ const routesConfig = {
       //   // ])
       //   // .then(() => done())
       // }
-    }
+    // }
   },
   childRoutes: [
     {
