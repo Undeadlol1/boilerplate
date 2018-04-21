@@ -20,10 +20,9 @@ const NodemonPlugin = require('nodemon-webpack-plugin')
 // https://www.npmjs.com/package/nodemon-browsersync-webpack-plugin
 // https://survivejs.com/webpack/optimizing/minifying/#enabling-a-performance-budget
 
-const NODE_ENV = process.env.NODE_ENV
-const isDevelopment = NODE_ENV === 'development'
-const isProduction = NODE_ENV === 'production'
-const isTest = NODE_ENV === 'test'
+const   NODE_ENV        = process.env.NODE_ENV,
+        isDevelopment   = NODE_ENV === 'development',
+        isProduction    = NODE_ENV === 'production'
 
 // variables to exclude from leaking to client
 const notSafeVariables = [
