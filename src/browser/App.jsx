@@ -22,7 +22,7 @@ import { syncHistoryWithStore } from 'react-router-redux'
 import { actions } from 'browser/redux/actions/UserActions'
 import { CookiesProvider } from 'react-cookie'
 // Apollo-client stuff.
-import { HttpLink } from 'apollo-link-http'
+import { HttpLink, createHttpLink } from 'apollo-link-http'
 import { ApolloClient } from 'apollo-client'
 import { ApolloProvider } from 'react-apollo'
 import { InMemoryCache } from 'apollo-cache-inmemory'
@@ -44,11 +44,11 @@ const isBrowser = process.env.BROWSER
 
 // Graphql client.
 const client = new ApolloClient({
-  // By default, this client will send queries to the
-  //  `/graphql` endpoint on the same host
-  // Pass the configuration option { uri: YOUR_GRAPHQL_API_URL } to the `HttpLink` to connect
-  // to a different host
-  link: new HttpLink(),
+  // To use cookies in request we need to specify credentials.
+  link: createHttpLink({
+    uri: '/graphql',
+    credentials: 'same-origin'
+  }),
   cache: new InMemoryCache(),
   // TODO: implement SSR properly.
   // https://www.apollographql.com/docs/react/features/server-side-rendering.html
