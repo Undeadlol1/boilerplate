@@ -9,12 +9,11 @@ import Link from 'react-router/lib/Link'
 import {List, ListItem} from 'material-ui/List'
 import { Row, Col } from 'react-styled-flexboxgrid'
 import { translate as t } from 'browser/containers/Translator'
+import { graphQLResultHasError } from 'apollo-utilities';
 
 class ForumsList extends Component {
 	render() {
 		const {props} = this
-		console.log('props.data: ', props.data);
-		console.log('props.error: ', props.error);
 		const className = cls(props.className, "ForumsList")
 		const forums = fromJS(props.data.forums)
 		return 	<Row className={className}>
@@ -51,15 +50,17 @@ ForumsList.PropTypes = {
 
 export { ForumsList }
 
-export default graphql(gql`
-  query TodoAppQuery {
+export const query = gql`
+  query getForums {
     forums {
       id
       name
 	  slug
     }
   }
-`)(ForumsList)
+`
+
+export default graphql(query)(ForumsList)
 
 // export default connect(
 // 	// stateToProps
