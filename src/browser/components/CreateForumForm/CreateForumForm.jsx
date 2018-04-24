@@ -44,12 +44,12 @@ export class CreateForumForm extends Component {
 	 */
 	handleSubmit = variables => {
 		return this.props
-		.createForum({variables})
+		.createForum({ variables })
 		.then(() => this.props.reset())
 		// Catch and show errors in redux-form.
-		.catch(error => {
+		.catch(({ message, graphQLErrors}) => {
 			throw new SubmissionError({
-				name: error.graphQLErrors[0].message
+				name: get(graphQLErrors, '[0].message') || message
 			})
 		})
 	}
@@ -115,7 +115,8 @@ const withMutation = ownProps => {
 	 * @param {Object} cache Apollo cache.
 	 * @param {Object} response Mutation response.
 	 */
-	function update() {
+	function update(cache, response) {
+		const { forum } = response.data
 		const { forums } = cache.readQuery({ query: forumsQuery })
 		return cache.writeQuery({
 			query: forumsQuery,
