@@ -9,7 +9,6 @@ import Dialog from 'material-ui/Dialog'
 import React, { Component } from 'react'
 import FlatButton from 'material-ui/FlatButton'
 import { TextField } from 'redux-form-material-ui'
-import { Form, Field, reduxForm } from 'redux-form'
 import RaisedButton from 'material-ui/RaisedButton'
 import { query as forumsQuery } from '../ForumsList'
 import { translate } from 'browser/containers/Translator'
@@ -18,43 +17,41 @@ import { actions } from 'browser/redux/actions/GlobalActions'
 import { parseJSON } from'browser/redux/actions/actionHelpers'
 import { insertForum } from 'browser/redux/forum/ForumActions'
 import withGraphQL from 'react-apollo-decorators/lib/withGraphQL'
-import withMutation from 'react-apollo-decorators/lib/withMutation'
+import { Form, Field, reduxForm, SubmissionError  } from 'redux-form'
+import { getCurrentUser, createForum as mutation } from '../../graphql'
 import { Mutation, MutationFunc, graphql, Query, withApollo } from 'react-apollo'
-
-class CreateForumForm extends Component {
+/**
+ * Form to create a forum.
+ * It is not visible if logged in user is not an admin.
+ * On success a new forum is pushed in cached "forums" array.
+ * On submit failure error message is displayed under input field.
+ * @export
+ */
+export class CreateForumForm extends Component {
 	static propTypes = {
 		// Current user.
 		viewer: PropTypes.object,
 		// Form reset function.
 		reset: PropTypes.func.isRequired,
-		// Appollo client to send mutation query.
-		client: PropTypes.object.isRequired,
+		// Graphql mutation.
+		createForum: PropTypes.func.isRequired,
 	}
 	/**
-	 * On submit use apollo client to
-	 * send mutation, update apollo cache
-	 * and then reset form.
+	 * On submit use apollo yo
+	 * dend mutation, update apollo cache,
+	 * catch errors and then reset form.
+	 * @param {Object} variables Form values.
 	 */
 	handleSubmit = variables => {
-		this.props.client
-		.mutate({
-			mutation,
-			variables,
-			update: this.updateCache
-		})
+		return this.props
+		.createForum({variables})
 		.then(() => this.props.reset())
-	}
-	/**
-	 * Update apollo cache to push created forum into "forums" array.
-	 * @param {Object} cache Apollo cache.
-	 * @param {Object} response Mutation response.
-	 */
-	updateCache = (cache, { data: { forum } }) => {
-		const { forums } = cache.readQuery({ query: forumsQuery })
-		return cache.writeQuery({
-			query: forumsQuery,
-			data: { forums: forums.concat([forum]) }
-		});
+		// Catch and show errors in redux-form.
+		.catch(error => {
+			throw new SubmissionError({
+				name: error.graphQLErrors[0].message
+			})
+		})
 	}
 
 	render() {
@@ -64,52 +61,35 @@ class CreateForumForm extends Component {
 		const { handleSubmit, asyncValidating } = props
 		const classNames = cls(props.className, "CreateForumForm")
 		const isDisabled = asyncValidating == 'name' || props.submitting || props.loading || !props.valid
-		return <Row className={classNames}>
-			<Col xs={12}>
-				<form onSubmit={handleSubmit(this.handleSubmit)}>
-					<Field
-						fullWidth
-						name="name"
-						component={TextField}
-						hidden={asyncValidating}
-						hintText={translate("add_something")}
-					/>
-					<center>
-						<RaisedButton
-							type="submit"
-							primary={true}
-							disabled={isDisabled}
-							label={translate('submit')} />
-					</center>
-				</form>
-			</Col>
-		</Row>
+		return (
+			<Row className={classNames}>
+				<Col xs={12}>
+					<form onSubmit={handleSubmit(this.handleSubmit)}>
+						<Field
+							fullWidth
+							name="name"
+							component={TextField}
+							errorText={props.error}
+							hidden={asyncValidating}
+							hintText={translate("add_something")}
+						/>
+						<center>
+							<RaisedButton
+								type="submit"
+								primary={true}
+								disabled={isDisabled}
+								label={translate('submit')} />
+						</center>
+					</form>
+				</Col>
+			</Row>
+		)
 	}
 }
-
-const mutation = gql`
-  mutation createForum($name: String!) {
-    forum: createForum(name: $name) {
-      id
-      name
-	  UserId
-	  slug
-    }
-  }
-`;
-
-const getCurrentUser = gql`
-  query getCurrentUser {
-	  viewer {
-		  id
-	  }
-  }
-`
 /**
  * Compose decorators:
  * 1) Get current user via apollo-graphql.
  * 2) Add validations via redux-forms.
- * 3) Provide apollo client to run mutation query on submit.
  */
 const enhance = compose(
 	withGraphQL(getCurrentUser),
@@ -122,7 +102,40 @@ const enhance = compose(
 			return errors
 		}
 	}),
-	withApollo,
 )
+/**
+ * Add graphlq mutation functionality to component.
+ * This is the official way of doing mutations in Apollo.
+ * https://www.apollographql.com/docs/react/essentials/mutations.html
+ * @param {Object} ownProps
+ */
+const withMutation = ownProps => {
+	/**
+	 * Update apollo cache to push created forum into "forums" array.
+	 * @param {Object} cache Apollo cache.
+	 * @param {Object} response Mutation response.
+	 */
+	function update() {
+		const { forums } = cache.readQuery({ query: forumsQuery })
+		return cache.writeQuery({
+			query: forumsQuery,
+			data: { forums: forums.concat([forum]) }
+		})
+	}
+	return <Mutation mutation={mutation} update={update}>
+		{
+			(createForum, props) => {
+				const properties = {
+					...props,
+					...ownProps,
+					createForum
+				}
+				return (
+					<CreateForumForm {...properties} />
+				)
+			}
+		}
+	</Mutation>
+}
 
-export default enhance(CreateForumForm)
+export default enhance(withMutation)
