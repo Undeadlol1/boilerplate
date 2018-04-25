@@ -10,19 +10,14 @@ import Avatar from 'material-ui/Avatar'
 import { connect } from 'react-redux'
 import classNames from 'classnames'
 import PropTypes from 'prop-types'
-
+// Styles.
 const LoadingStyles = { marginTop: '1.5px' }
 const titleStyles = { color: alternateTextColor }
 const LoginLogoutButtonStyles = { marginTop: '5.5px' }
-
-const titleLink =   <Link
-                        to="/"
-                        style={titleStyles}
-                        className="NavBar__home-link"
-                    >
-                        {process.env.APP_NAME}
-                    </Link>
-
+/**
+ * Component which displays top navigation bar.
+ * @export
+ */
 export class NavBar extends Component {
     render() {
         const { displayName, UserId, image, loading, className, children, toggleSidebar, ...rest } = this.props
@@ -43,6 +38,14 @@ export class NavBar extends Component {
                               </Link>
                             : <LoginLogoutButton style={LoginLogoutButtonStyles} />
         }
+        // Home link.
+        const titleLink = <Link
+            to="/"
+            style={titleStyles}
+            className="NavBar__home-link"
+        >
+            {process.env.APP_NAME}
+        </Link>
 
         return  <header className={classNames('NavBar ', className)} {...rest}>
                     <AppBar
@@ -61,17 +64,16 @@ NavBar.propTypes = {
     toggleSidebar: PropTypes.func.isRequired,
 }
 
+export const stateToProps = ({ user, global }, ownProps) => {
+    const UserId = user.get('id')
+    const image = user.get('image')
+    const loading = user.get('loading')
+    const displayName = user.get('displayName')
+    return { UserId, displayName, image, loading, ...ownProps }
+}
+
 export const dispatchToProps = dispatch => ({
     toggleSidebar: () => dispatch(actions.toggleSidebar())
 })
 
-export default connect(
-    ({ user, global  }, ownProps) => {
-        const UserId = user.get('id')
-        const image = user.get('image')
-        const loading = user.get('loading')
-        const displayName = user.get('displayName')
-        return { UserId, displayName, image, loading, ...ownProps }
-    },
-    dispatchToProps
-)(NavBar)
+export default connect(stateToProps, dispatchToProps)(NavBar)
