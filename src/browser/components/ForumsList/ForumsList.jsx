@@ -1,21 +1,28 @@
 import cls from 'classnames'
 import gql from 'graphql-tag'
-import PropTypes from 'prop-types'
 import { fromJS } from 'immutable'
+import { object } from 'prop-types'
 import { connect } from 'react-redux'
-import { graphql } from 'react-apollo'
 import React, { Component } from 'react'
 import Link from 'react-router/lib/Link'
+import { getForums } from '../../graphql'
+import { graphql, Query } from 'react-apollo'
 import {List, ListItem} from 'material-ui/List'
 import { Row, Col } from 'react-styled-flexboxgrid'
+import { graphQLResultHasError } from 'apollo-utilities'
 import { translate as t } from 'browser/containers/Translator'
-import { graphQLResultHasError } from 'apollo-utilities';
-
+/**
+ * Simple component to display list of forums.
+ * WIP.
+ * @exports
+ */
 class ForumsList extends Component {
+	// Forums data for rendering.
+	static propTypes = { forums: object.isRequired }
 	render() {
 		const {props} = this
-		const className = cls(props.className, "ForumsList")
 		const forums = fromJS(props.data.forums)
+		const className = cls(props.className, "ForumsList")
 		return 	<Row className={className}>
 					<Col xs={12}>
 						<List>
@@ -39,34 +46,20 @@ class ForumsList extends Component {
 				</Row>
 	}
 }
-
-ForumsList.defaultProps = {
-}
-
-ForumsList.PropTypes = {
-	forums: PropTypes.object.isRequired,
-
-}
-
+/**
+ * Wrap component with data fetching container.
+ * @param {Object} ownProps
+ */
+const withQuery = (ownProps) => (
+	<Query query={getForums}>
+		{response => <ForumsList {...ownProps} {...response} />}
+	</Query>
+)
+/**
+ * Export presentational component for testing.
+ */
 export { ForumsList }
-
-export const query = gql`
-  query getForums {
-    forums {
-      id
-      name
-	  slug
-    }
-  }
-`
-
-export default graphql(query)(ForumsList)
-
-// export default connect(
-// 	// stateToProps
-// 	(state, ownProps) => ({
-// 		forums: state.forum.get('forums')
-// 	}),
-// 	// dispatchToProps
-//     (dispatch, ownProps) => ({})
-// )(ForumsList)
+/**
+ * Export component with containers.
+ */
+export default withQuery
