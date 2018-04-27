@@ -28,6 +28,7 @@ import createLocaleMiddleware from 'express-locale';
 import RateLimiter from 'express-rate-limit'
 import exphbs from 'express-handlebars'
 import graphqlHTTP from 'express-graphql'
+import { graphqlExpress, graphiqlExpress } from 'apollo-server-express'
 import schema from './middlewares/graphql'
 
 // const RedisStore = require('connect-redis')(session)
@@ -117,6 +118,8 @@ if (isProduction) {
 
 /**
  * GRAPHQL entry point.
+ * (NOTE: both express implementations are used to
+ * determine which is performs better)
  */
 /**
  * Development only degug stack traces for graphQL.
@@ -130,13 +133,16 @@ function formatError(error) {
     stack: error.stack ? error.stack.split('\n') : [],
   })
 }
+app.use('/graphql', graphqlExpress({ schema }))
+// if you want GraphiQL enabled
+app.get('/graphiql', graphiqlExpress({ endpointURL: '/graphql' }))
 
-app.use('/graphql', graphqlHTTP({
-  graphiql: true,
-  schema: schema,
-  // Development only debug stack traces.
-  formatError: isDevelopment && formatError
-}))
+// app.use('/graphql', graphqlHTTP({
+//   graphiql: true,
+//   schema: schema,
+//   // Development only debug stack traces.
+//   formatError: isDevelopment && formatError
+// }))
 /**
  * REST API.
  */
