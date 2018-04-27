@@ -95,9 +95,6 @@ export default
                * don't forget to edit context in
                * actual graphql endpoint. (see: server.js)
                */
-              // To avoid network request during SSR
-              // provide client with actual schema.
-              // (and  forget to change config in ser if you are going to change this.)
               link: new SchemaLink({ schema, context: req }),
               // TODO: test make sure this is needed.
               // fetchPolicy: 'cache-and-network',
@@ -111,7 +108,7 @@ export default
               {...renderProps}
               user={req.user}
               cookies={cookies}
-              client={apolloClient}
+              apolloClient={apolloClient}
             />
             // through this promise Apollo gathers graphql data.
             getDataFromTree(PreparedApp)
@@ -119,12 +116,12 @@ export default
               // render App to string
               const markup = renderToString(
                 <StyleSheetManager sheet={sheet.instance}>
-                  <PreparedApp />
+                  {PreparedApp}
                 </StyleSheetManager>
               )
               // get prefetched data from redux and apollo.
               const initialData = JSON.stringify(store.getState())
-              const apolloState = JSON.stringify(apolloClient.extract()))
+              const apolloState = JSON.stringify(apolloClient.extract())
               // reset redux store to make sure next request will have to load fresh data
               store.dispatch({type: 'RESET'})
               // Reset apollo state.

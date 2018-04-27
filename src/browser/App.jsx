@@ -77,7 +77,8 @@ class App extends Component {
   }
 
   render() {
-    const cookies = process.env.SERVER ? this.props.cookies : null
+    const { props } = this
+    const cookies = process.env.SERVER ? props.cookies : null
     return  <MuiThemeProvider muiTheme={muiTheme}>
                 <ThemeProvider theme={BASE_CONF}>
                   <ReduxProvider store={store} key="provider">
@@ -85,12 +86,13 @@ class App extends Component {
                     <CookiesProvider cookies={cookies}>
                       {/* While SSR is active use provided client. */}
                       {/* This way data will be fetched faster and nothing will break. */}
-                      <ApolloProvider client={isBrowser ? apolloClient : this.props.apolloClient}>
+                      <ApolloProvider client={isBrowser ? apolloClient : props.apolloClient}>
                         <Translator>
                           {
                             process.env.BROWSER
                             ? <Router history={syncHistoryWithStore(browserHistory, store)} routes={routesConfig} onUpdate={scrollToTop} />
                             : <RouterContext {...this.props} />
+                            : <RouterContext {...props} />
                           }
                         </Translator>
                       </ApolloProvider>
@@ -105,6 +107,8 @@ if (process.env.BROWSER) ReactDOM.render(<App />, document.getElementById('react
 
 App.propTypes = {
   user: PropTypes.object,
+  // Uiversal cookies passed down from SSR.
+  cookies: PropTypes.object,
   apolloClient: PropTypes.object,
 }
 
