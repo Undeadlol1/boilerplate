@@ -17,8 +17,8 @@ import { translate as t } from 'browser/containers/Translator'
  * @exports
  */
 class ForumsList extends Component {
-	// Forums data for rendering.
-	static propTypes = { forums: object.isRequired }
+	// Apollo request data.
+	static propTypes = { data: object.isRequired }
 	render() {
 		const {props} = this
 		const forums = fromJS(props.data.forums)
