@@ -43,13 +43,16 @@ const isServer = process.env.SERVER
 const isBrowser = process.env.BROWSER
 
 // Graphql client.
-const client = new ApolloClient({
+export const client = new ApolloClient({
   // To use cookies in request we need to specify credentials.
   link: createHttpLink({
-    uri: '/graphql',
-    credentials: 'same-origin'
+    uri: process.env.URL + 'graphql',
+    credentials: 'same-origin',
   }),
-  cache: new InMemoryCache(),
+  // Start appolo client with data from SSR.
+  cache: isServer
+    ? new InMemoryCache()
+    : new InMemoryCache().restore(window.__APOLLO_STATE__),
   // TODO: implement SSR properly.
   // https://www.apollographql.com/docs/react/features/server-side-rendering.html
   ssr: isServer,
@@ -98,7 +101,7 @@ class App extends Component {
 if (process.env.BROWSER) ReactDOM.render(<App />, document.getElementById('react-root'));
 
 App.propTypes = {
-  user: PropTypes.object
+  user: PropTypes.object,
 }
 
 export default App
