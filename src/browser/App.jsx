@@ -44,6 +44,7 @@ const isBrowser = process.env.BROWSER
 
 // Graphql client.
 export const client = new ApolloClient({
+export const apolloClient = new ApolloClient({
   // To use cookies in request we need to specify credentials.
   link: createHttpLink({
     uri: process.env.URL + 'graphql',
@@ -82,7 +83,9 @@ class App extends Component {
                   <ReduxProvider store={store} key="provider">
                     {/* universal cookies */}
                     <CookiesProvider cookies={cookies}>
-                      <ApolloProvider client={client}>
+                      {/* While SSR is active use provided client. */}
+                      {/* This way data will be fetched faster and nothing will break. */}
+                      <ApolloProvider client={isBrowser ? apolloClient : this.props.apolloClient}>
                         <Translator>
                           {
                             process.env.BROWSER
@@ -102,6 +105,7 @@ if (process.env.BROWSER) ReactDOM.render(<App />, document.getElementById('react
 
 App.propTypes = {
   user: PropTypes.object,
+  apolloClient: PropTypes.object,
 }
 
 export default App
