@@ -24,3 +24,16 @@ export const getCurrentUser = gql`
 	  }
   }
 `
+/**
+ * Get forums.
+ * @export
+ */
+export const getForums = gql`
+  query getForums {
+    forums {
+      id
+      name
+	  slug
+    }
+  }
+`
