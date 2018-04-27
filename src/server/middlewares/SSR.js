@@ -12,8 +12,14 @@ import match from 'react-router/lib/match'
 import serialize from 'serialize-javascript'
 import { renderToString } from 'react-dom/server'
 import { CookiesProvider } from 'react-cookie'
+import { getDataFromTree } from "react-apollo"
 import { ServerStyleSheet, StyleSheetManager } from 'styled-components'
+import { ApolloClient } from 'apollo-client';
 // const cache = require('express-redis-cache')();
+import { createHttpLink } from 'apollo-link-http';
+import { InMemoryCache } from "apollo-cache-inmemory";
+import { SchemaLink } from 'apollo-link-schema'
+import schema from '../middlewares/graphql'
 
 export default
   express.Router()
@@ -76,31 +82,49 @@ export default
             global.navigator.userAgent = req.headers['user-agent'] || 'all';
             // require App after userAgent is set
             const App = require('browser/App').default
-            // render App to string
-            const markup = renderToString(
-              <StyleSheetManager sheet={sheet.instance}>
-                  {/* pass down cookies to use universally */}
-                  {/* and pass down user object to prepopulate redux with user data */}
-                  <App user={req.user} cookies={cookies} {...renderProps}/>
-              </StyleSheetManager>
-            )
-            // get prefetched data from redux
-            const initialData = JSON.stringify(store.getState())//.replace(/</g, '\\u003c')
-            // reset redux store to make sure next request will have to load fresh data
-            store.dispatch({type: 'RESET'})
-            // extract css from string
-            const css = sheet.getStyleTags()
-            // extract metaData for <header>
-            let headerTags = []
-            const metaData = Helmet.renderStatic()
-            for (var prop in metaData) {
-              const tag = metaData[prop].toString()
-              tag && headerTags.push(tag)
-            }
-            // send data to handlebars template
-            res.render('index', { markup, css, themeConfig, headerTags, initialData })
+            // Create apollo client to prefetch graphql data in SSR.
+            // https://www.apollographql.com/docs/react/features/server-side-rendering.html
+            const apolloClient = new ApolloClient({
+              ssrMode: true,
+              cache: new InMemoryCache(),
+              // To avoid network request during SSR
+              // provide client with actual schema.
+              link: new SchemaLink({ schema }),
+              // TODO: test make sure this is needed.
+              // fetchPolicy: 'cache-and-network',
+            });
+            // through this promise Apollo gathers graphql data.
+            getDataFromTree(App)
+            .then(() => {
+              // render App to string
+              const markup = renderToString(
+                <StyleSheetManager sheet={sheet.instance}>
+                    {/* pass down cookies to use universally */}
+                    {/* and pass down user object to prepopulate redux with user data */}
+                    <App user={req.user} cookies={cookies} {...renderProps} client={apolloClient} />
+                </StyleSheetManager>
+              )
+              // get prefetched data from redux and apollo.
+              const initialData = JSON.stringify(store.getState())//.replace(/</g, '\\u003c')
+              const apolloState = JSON.stringify(apolloClient.extract())//.replace(/</g, '\\u003c'))
+              // reset redux store to make sure next request will have to load fresh data
+              store.dispatch({type: 'RESET'})
+              // TODO: add this to prevent same state for different users.
+              // apolloClient.resetStore()
+              // extract css from string
+              const css = sheet.getStyleTags()
+              // extract metaData for <header>
+              let headerTags = []
+              const metaData = Helmet.renderStatic()
+              for (var prop in metaData) {
+                const tag = metaData[prop].toString()
+                tag && headerTags.push(tag)
+              }
+              // send data to handlebars template
+              res.render('index', { markup, css, themeConfig, headerTags, initialData, apolloState })
+            })
+            .catch(error => console.log(error))
           }
-
           else res.status(404).send('Not found')
     } );
 })
