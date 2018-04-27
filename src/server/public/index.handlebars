@@ -36,9 +36,10 @@
         <script async="async" src="//cdn.tinymce.com/4/tinymce.min.js"></script>
         {{!--<script src="/vendor.js"></script>--}}
         {{!--<link rel="stylesheet" href="/styles.css">--}}
-        <!-- setup Redux initial data -->
+        <!-- setup Redux and Apollo initial data from SSR -->
         <script charSet="UTF-8">
             window.__data = {{{ initialData }}}
+            window.__APOLLO_STATE__ = {{{ apolloState }}}
         </script>
     </body>
 </html>
