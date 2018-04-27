@@ -125,6 +125,12 @@ if (isProduction) {
  * Development only degug stack traces for graphQL.
  * https://www.npmjs.com/package/express-graphql#debugging-tips
  */
+/**
+ * NOTE: if you are going to change graphql context
+ * don't forget to also change it in SSR middleware.
+ * It is because schema is used directly there without
+ * firing the network requests and context is manually provided.
+ */
 function formatError(error) {
   return ({
     path: error.path,
@@ -133,16 +139,16 @@ function formatError(error) {
     stack: error.stack ? error.stack.split('\n') : [],
   })
 }
-app.use('/graphql', graphqlExpress({ schema }))
-// if you want GraphiQL enabled
-app.get('/graphiql', graphiqlExpress({ endpointURL: '/graphql' }))
+// app.use('/graphql', graphqlExpress({ schema }))
+// // if you want GraphiQL enabled
+// app.get('/graphiql', graphiqlExpress({ endpointURL: '/graphql' }))
 
-// app.use('/graphql', graphqlHTTP({
-//   graphiql: true,
-//   schema: schema,
-//   // Development only debug stack traces.
-//   formatError: isDevelopment && formatError
-// }))
+app.use('/graphql', graphqlHTTP({
+  graphiql: true,
+  schema: schema,
+  // Development only debug stack traces.
+  formatError: isDevelopment && formatError
+}))
 /**
  * REST API.
  */

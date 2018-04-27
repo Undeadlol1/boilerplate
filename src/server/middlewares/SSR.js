@@ -87,30 +87,48 @@ export default
             const apolloClient = new ApolloClient({
               ssrMode: true,
               cache: new InMemoryCache(),
+              /**
+               * To avoid network request during SSR
+               * provide client with actual schema.
+               * Plus, provide request data as context.
+               * NOTE: if context will be changed,
+               * don't forget to edit context in
+               * actual graphql endpoint. (see: server.js)
+               */
               // To avoid network request during SSR
               // provide client with actual schema.
-              link: new SchemaLink({ schema }),
+              // (and  forget to change config in ser if you are going to change this.)
+              link: new SchemaLink({ schema, context: req }),
               // TODO: test make sure this is needed.
               // fetchPolicy: 'cache-and-network',
             });
+            /**
+             * Prepare component for SSR.
+             * This is done by providing logged in user info,
+             * cookies and optimized Apollo client for data fetching.
+             */
+            const PreparedApp = <App
+              {...renderProps}
+              user={req.user}
+              cookies={cookies}
+              client={apolloClient}
+            />
             // through this promise Apollo gathers graphql data.
-            getDataFromTree(App)
+            getDataFromTree(PreparedApp)
             .then(() => {
               // render App to string
               const markup = renderToString(
                 <StyleSheetManager sheet={sheet.instance}>
-                    {/* pass down cookies to use universally */}
-                    {/* and pass down user object to prepopulate redux with user data */}
-                    <App user={req.user} cookies={cookies} {...renderProps} client={apolloClient} />
+                  <PreparedApp />
                 </StyleSheetManager>
               )
               // get prefetched data from redux and apollo.
-              const initialData = JSON.stringify(store.getState())//.replace(/</g, '\\u003c')
-              const apolloState = JSON.stringify(apolloClient.extract())//.replace(/</g, '\\u003c'))
+              const initialData = JSON.stringify(store.getState())
+              const apolloState = JSON.stringify(apolloClient.extract()))
               // reset redux store to make sure next request will have to load fresh data
               store.dispatch({type: 'RESET'})
-              // TODO: add this to prevent same state for different users.
-              // apolloClient.resetStore()
+              // Reset apollo state.
+              apolloClient.resetStore()
               // extract css from string
               const css = sheet.getStyleTags()
               // extract metaData for <header>
