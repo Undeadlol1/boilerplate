@@ -45,6 +45,8 @@ const isBrowser = process.env.BROWSER
 // Graphql client.
 export const apolloClient = new ApolloClient({
   // To use cookies in request we need to specify credentials.
+  // TODO: add request batching
+  // https://www.apollographql.com/docs/link/links/batch-http.html
   link: createHttpLink({
     uri: process.env.URL + 'graphql',
     credentials: 'same-origin',
