@@ -21,6 +21,8 @@ export const getCurrentUser = gql`
   query getCurrentUser {
 	  viewer {
 		  id
+      image
+      displayName
 	  }
   }
 `
