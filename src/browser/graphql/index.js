@@ -8,11 +8,20 @@ export const createForum = gql`
     forum: createForum(name: $name) {
       id
       name
-	  UserId
-	  slug
+      UserId
+      slug
     }
   }
-`;
+`
+/**
+ * Mutation to logout curent user.
+ * @exports
+ */
+export const logoutUser = gql`
+  mutation logoutUser {
+    id
+  }
+`
 /**
  * Query to get current user.
  * @exports
@@ -27,7 +36,7 @@ export const getCurrentUser = gql`
   }
 `
 /**
- * Get forums.
+ * Query to get forums.
  * @export
  */
 export const getForums = gql`

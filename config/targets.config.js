@@ -92,22 +92,22 @@ const serverDevelopmentPlugins = isDevelopment ? [
 : []
 
 const clientDevelopmentPlugins = isDevelopment ? [
-                                    new BrowserSyncPlugin({
-                                        open: false,
-                                        proxy: {
-                                            target: config.URL,
-                                            cookies: { stripDomain: false }
-                                        },
-                                        // reload delay is needed to wait till webpack finishes compiling
-                                        reloadDelay: 2000,
-                                        // rest of config have not been tested carefully.
-                                        // it's here for convenience, it's might be usefull
-                                        watchOptions: {
-                                            ignored: ['*'],
-                                            ignoreInitial: true,
-                                        },
-                                        files: ['../dist/public/scripts.js']
-                                    }),
+                                    // new BrowserSyncPlugin({
+                                    //     open: false,
+                                    //     proxy: {
+                                    //         target: config.URL,
+                                    //         cookies: { stripDomain: false }
+                                    //     },
+                                    //     // reload delay is needed to wait till webpack finishes compiling
+                                    //     reloadDelay: 2000,
+                                    //     // rest of config have not been tested carefully.
+                                    //     // it's here for convenience, it's might be usefull
+                                    //     watchOptions: {
+                                    //         ignored: ['*'],
+                                    //         ignoreInitial: true,
+                                    //     },
+                                    //     files: ['../dist/public/scripts.js']
+                                    // }),
                                 ]
                                 : []
 

@@ -1,1 +1,1 @@
-export { default, passport } from './authApi'
+export { default, passport, logoutUser } from './authApi'

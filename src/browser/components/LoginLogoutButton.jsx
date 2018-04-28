@@ -1,9 +1,9 @@
-import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
-import { connect } from 'react-redux'
-import RaisedButton from 'material-ui/RaisedButton'
 import extend from 'lodash/assignIn'
+import { connect } from 'react-redux'
+import React, { Component } from 'react'
+import RaisedButton from 'material-ui/RaisedButton'
 import { translate } from 'browser/containers/Translator'
 import { toggleLoginDialog, logoutCurrentUser } from 'browser/redux/actions/UserActions'
 /**

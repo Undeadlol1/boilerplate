@@ -1,5 +1,5 @@
-var Nightmare = require('nightmare');
-var expect = require('chai').expect; // jshint ignore:line
+// var Nightmare = require('nightmare');
+// var expect = require('chai').expect; // jshint ignore:line
 
 // TODO make this work.
 // 1) fire up the server on testing start

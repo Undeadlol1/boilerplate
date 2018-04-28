@@ -7,7 +7,9 @@ import get from 'lodash/get'
 import logger from 'debug-logger'
 import assert from 'assert-plus'
 import extend from 'lodash/assign'
+import { userType } from '../types/user'
 import { forumType } from '../types/forum'
+import { logoutUser } from '../../authApi'
 import { Forums } from '../../../data/models'
 
 const debug = logger('mutations')
@@ -45,4 +47,9 @@ export default {
             }
         },
     },
+    logoutUser: {
+        type: userType,
+        description: 'Logout current user.',
+        resolve: (source, args, req) => logoutUser(req),
+    }
 }
