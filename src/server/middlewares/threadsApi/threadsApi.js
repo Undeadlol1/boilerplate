@@ -6,9 +6,9 @@ import { createPagination } from '../../services/utils'
 import { mustLogin } from 'server/services/permissions'
 import { handleValidationErrors } from '../../services/errors'
 import { matchedData, sanitize } from 'express-validator/filter'
-const debug = require('debug-logger')('threadsApi')
 
 const limit = 12
+const debug = require('debug-logger')('threadsApi')
 
 /**
  * Get paginated threads by parentId
