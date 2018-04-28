@@ -43,7 +43,6 @@ const isServer = process.env.SERVER
 const isBrowser = process.env.BROWSER
 
 // Graphql client.
-export const client = new ApolloClient({
 export const apolloClient = new ApolloClient({
   // To use cookies in request we need to specify credentials.
   link: createHttpLink({
@@ -91,7 +90,6 @@ class App extends Component {
                           {
                             process.env.BROWSER
                             ? <Router history={syncHistoryWithStore(browserHistory, store)} routes={routesConfig} onUpdate={scrollToTop} />
-                            : <RouterContext {...this.props} />
                             : <RouterContext {...props} />
                           }
                         </Translator>
