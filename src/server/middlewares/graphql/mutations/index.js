@@ -1,6 +1,7 @@
 import {
     GraphQLString,
     GraphQLNonNull,
+    GraphQLBoolean,
 } from 'graphql'
 import slugify from 'slug'
 import get from 'lodash/get'
@@ -48,7 +49,7 @@ export default {
         },
     },
     logoutUser: {
-        type: userType,
+        type: GraphQLBoolean, // Return nothing.
         description: 'Logout current user.',
         resolve: (source, args, req) => logoutUser(req),
     }
