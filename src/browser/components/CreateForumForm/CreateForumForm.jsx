@@ -30,17 +30,17 @@ import { Mutation, MutationFunc, graphql, Query, withApollo } from 'react-apollo
 export class CreateForumForm extends Component {
 	static propTypes = {
 		// Current user.
-		viewer: PropTypes.object,
+		data: PropTypes.object,
 		// Form reset function.
 		reset: PropTypes.func.isRequired,
 		// Graphql mutation.
 		createForum: PropTypes.func.isRequired,
 	}
 	/**
-	 * On submit use apollo yo
-	 * dend mutation, update apollo cache,
+	 * On submit use apollo to
+	 * send mutation, update apollo cache,
 	 * catch errors and then reset form.
-	 * @param {Object} variables Form values.
+	 * @param {Object} variables Form values from redux-forms decorator.
 	 */
 	handleSubmit = variables => {
 		return this.props
@@ -56,7 +56,7 @@ export class CreateForumForm extends Component {
 
 	render() {
 		// Hide component if user is not admin.
-		if (get(this, 'props.viewer.id') != process.env.ADMIN_ID) return null
+		if (get(this, 'props.data.viewer.id') != process.env.ADMIN_ID) return null
 		const { props } = this
 		const { handleSubmit, asyncValidating } = props
 		const classNames = cls(props.className, "CreateForumForm")
@@ -86,23 +86,6 @@ export class CreateForumForm extends Component {
 		)
 	}
 }
-/**
- * Compose decorators:
- * 1) Get current user via apollo-graphql.
- * 2) Add validations via redux-forms.
- */
-const enhance = compose(
-	withGraphQL(getCurrentUser),
-	reduxForm({
-		form: 'CreateForumForm',
-		validate(values, ownProps) {
-			let errors = {}
-			if (!ownProps.viewer) errors.name = translate('please_login')
-			if (!values.name) errors.name = translate('name_cant_be_empty')
-			return errors
-		}
-	}),
-)
 /**
  * Add graphlq mutation functionality to component.
  * This is the official way of doing mutations in Apollo.
@@ -138,5 +121,27 @@ const withMutation = ownProps => {
 		}
 	</Mutation>
 }
-
-export default enhance(withMutation)
+/**
+ * Add graphql query which feches currentl user.
+ * @param {Object} props
+ */
+const withQuery = props => (
+	<Query query={getCurrentUser}>
+		{({ data, error, loading }) => {
+			const properties = { data, error, loading, ...props }
+			return withMutation(properties)
+		}}
+	</Query>
+)
+/**
+ * Wrap component with redux-form validations.
+ */
+export default reduxForm({
+	form: 'CreateForumForm',
+	validate(values, ownProps) {
+		let errors = {}
+		if (!ownProps.viewer) errors.name = translate('please_login')
+		if (!values.name) errors.name = translate('name_cant_be_empty')
+		return errors
+	}
+})(withQuery)
