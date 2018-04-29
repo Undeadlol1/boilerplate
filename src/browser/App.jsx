@@ -43,26 +43,19 @@ const isServer = process.env.SERVER
 const isBrowser = process.env.BROWSER
 
 // Graphql client.
+// TODO:: https://github.com/apollographql/apollo-link-persisted-queries
 export const apolloClient = new ApolloClient({
   // To use cookies in request we need to specify credentials.
-  // TODO: add request batching
-  // https://www.apollographql.com/docs/link/links/batch-http.html
   link: createHttpLink({
-    uri: process.env.URL + 'graphql',
     credentials: 'same-origin',
+    uri: process.env.URL + 'graphql',
   }),
   // Start appolo client with data from SSR.
   cache: isServer
     ? new InMemoryCache()
     : new InMemoryCache().restore(window.__APOLLO_STATE__),
-  // TODO: implement SSR properly.
-  // https://www.apollographql.com/docs/react/features/server-side-rendering.html
   ssr: isServer,
-});
-// scroll to top of the page on route change
-function scrollToTop() {
-  return window.scrollTo(0, 0)
-}
+})
 
 class App extends Component {
   componentWillMount() {
@@ -90,8 +83,13 @@ class App extends Component {
                       <ApolloProvider client={isBrowser ? apolloClient : props.apolloClient}>
                         <Translator>
                           {
-                            process.env.BROWSER
-                            ? <Router history={syncHistoryWithStore(browserHistory, store)} routes={routesConfig} onUpdate={scrollToTop} />
+                            isBrowser
+                            ? <Router
+                                routes={routesConfig}
+                                // scroll to top of the page on route change
+                                onUpdate={() => window.scrollTo(0, 0)}
+                                history={syncHistoryWithStore(browserHistory, store)}
+                              />
                             : <RouterContext {...props} />
                           }
                         </Translator>
