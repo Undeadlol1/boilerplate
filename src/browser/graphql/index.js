@@ -18,8 +18,8 @@ export const createForum = gql`
  * @exports
  */
 export const logoutUser = gql`
-  mutation logoutUser {
-    id
+  mutation {
+    logoutUser
   }
 `
 /**
@@ -44,7 +44,7 @@ export const getForums = gql`
     forums {
       id
       name
-	  slug
+      slug
     }
   }
 `
