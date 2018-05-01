@@ -9,8 +9,8 @@ import {
 } from 'graphql'
 import {
     resolver,
-    defaultArgs as attributesToArgs,
     attributeFields,
+    defaultArgs as attributesToArgs,
 } from 'graphql-sequelize'
 import assign from 'lodash/assign'
 import { Forums } from '../../../data/models'
