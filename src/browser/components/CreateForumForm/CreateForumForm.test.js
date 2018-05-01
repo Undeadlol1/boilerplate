@@ -9,11 +9,13 @@ chai.should()
 chai.use(chaiEnzyme())
 
 describe('<CreateForumForm />', () => {
-
   const props = {
+    // Self explanatory.
     handleSubmit: () => {},
-    UserId: Number(process.env.ADMIN_ID),
+    // Currently logged in user data fetched via apollo.
+    data: { viewer: { id: Number(process.env.ADMIN_ID) } },
   }
+
   const wrapper = shallow(<CreateForumForm {...props} />)
 
   it('has <Row>', () => {

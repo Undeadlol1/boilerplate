@@ -75,7 +75,7 @@ describe('<Sidebar />', () => {
     })
 
     it('has <LoginLogoutButton>', () => {
-      const button = wrapper.find('Connect(LoginLogoutButton)')
+      const button = wrapper.find('Connect(withQuery)')
       expect(button).to.have.length(1)
       expect(button.props().inline).to.be.true
     })

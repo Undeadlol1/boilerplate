@@ -25,7 +25,7 @@ describe('<IndexPage />', () => {
   })
 
   it('has <ForumsList />', () => {
-    expect(wrapper.find('Connect(ForumsList)')).to.exist
+    expect(wrapper.find('withQuery')).to.exist
   })
 
   it('has <CreateForumForm />', () => {

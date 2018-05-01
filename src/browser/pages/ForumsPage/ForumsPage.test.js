@@ -25,7 +25,7 @@ describe('<ForumsPage />', () => {
   })
 
   it('has <ForumsList>', () => {
-    expect(wrapper.find('Connect(ForumsList)')).to.have.length(1);
+    expect(wrapper.find('withQuery')).to.have.length(1);
   })
 
   it('has <CreateForumForm>', () => {
