@@ -1,3 +1,5 @@
+## Validations
+
 Validation and sanitization is done via [express-validator](https://github.com/ctavan/express-validator).
 
 You can do validations two ways - simple and verbose. Simple one is straightforward:
@@ -11,7 +13,7 @@ You can do validations two ways - simple and verbose. Simple one is straightforw
 
 It will always return same error defined as second parameter of check function.
 
-Or you can checks as schema and special error for each validation:
+Or you can check as schema and special error for each validation:
 
 ```javascript
     parentId: {
