@@ -22,45 +22,45 @@ describe('<LoginLogoutButton />', () => {
     }
 
     describe('default behaviour', () => {
-        const onClick = sinon.spy()
-        const wrapper = createWrapper({onClick})
+        const toggleDialog = sinon.spy()
+        const wrapper = createWrapper({toggleDialog})
         it('has <RaisedButton />', () => {
             const props = wrapper.props()
             assert(wrapper.type(), 'is <RaisedButton />')
             assert(props.label == translate('login'), 'has label')
             assert(typeof props.onClick == 'function', 'has onClick')
             assert(wrapper.hasClass('LoginLogoutButton'), 'has className')
-        });
+        })
 
         it('simulates click', () => {
             wrapper.simulate('click')
-            assert(onClick.calledOnce, 'calls toggleDialog()')
-        });
+            assert(toggleDialog.calledOnce, 'calls toggleDialog()')
+        })
     })
 
     describe('inline behaviour', () => {
-        const onClick = sinon.spy()
-        const wrapper = createWrapper({inline: true, onClick})
+        const toggleDialog = sinon.spy()
+        const wrapper = createWrapper({inline: true, toggleDialog})
         const props = wrapper.props()
         it('has <span>', () => {
             assert(wrapper.type(), 'is <span>')
-            assert(typeof props.style == 'object', 'has style')
-            assert(wrapper.text() == translate('login'), 'has text')
-            assert(typeof props.onClick == 'function', 'has onClick')
-            assert(wrapper.hasClass('LoginLogoutButton'), 'has className')
-        });
+            assert(typeof props.style == 'object', 'no style')
+            assert(wrapper.text() == translate('login'), 'no text')
+            assert(typeof props.onClick == 'function', 'no onClick')
+            assert(wrapper.hasClass('LoginLogoutButton'), 'no className')
+        })
 
         it('simulates click', () => {
             wrapper.simulate('click')
-            assert(onClick.calledOnce, 'calls toggleDialog()')
-        });
+            assert(toggleDialog.calledOnce, 'calls toggleDialog()')
+        })
     })
 
     describe('user logged in behaviour', () => {
-        const wrapper = createWrapper({userId: 123})
+        const wrapper = createWrapper({data: { viewer: {id: 123}}})
         it('has proper text', () => {
-            assert(wrapper.props().label == translate('logout'), 'has text')
-        });
+            expect(wrapper.props().label).to.eql(translate('logout'))
+        })
     })
 
     it('dispatches actions', () => {
@@ -73,4 +73,4 @@ describe('<LoginLogoutButton />', () => {
         assert(toggleDialog.calledOnce, 'called toggleDialog()')
     })
 
-});
+})

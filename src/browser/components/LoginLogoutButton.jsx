@@ -15,6 +15,8 @@ import {
 } from 'browser/redux/actions/UserActions'
 /**
  * Conditionally render 'login' or 'logout' button.
+ * Can be used as inline text or as a block button.
+ * @export
  */
 export class LoginLogoutButton extends Component {
 	render() {
@@ -32,7 +34,6 @@ export class LoginLogoutButton extends Component {
 			// span needs special styles and RaisedButton needs 'label'
 			inline ? {style: inlineStyles} : { label },
 		)
-
 		if (inline) return <span {...properties}>{label}</span>
 		return <RaisedButton {...properties} />
 	}
@@ -62,7 +63,7 @@ export const dispatchToProps = (dispatch, ownProps) => ({
 	toggleDialog: () => dispatch(toggleLoginDialog()),
 })
 /**
- * Add graphlq mutation functionality to component.
+ * Add graphql mutation functionality to component.
  * Mutation logs out current user and then updates apollo cache.
  * @param {Object} ownProps
  */

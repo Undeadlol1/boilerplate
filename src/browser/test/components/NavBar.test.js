@@ -40,7 +40,7 @@ describe('<NavBar />', () => {
     it('has iconElementRight', () => {
       const iconElementRight = wrapper.find('AppBar').props().iconElementRight
       expect(iconElementRight.props.style).to.be.a('object')
-      expect(iconElementRight.type.displayName).to.eq('Connect(LoginLogoutButton)')
+      expect(iconElementRight.type.displayName).to.eq('Connect(withQuery)')
     })
 
     it('simulates click', () => {
@@ -54,9 +54,9 @@ describe('<NavBar />', () => {
     describe('if user logged in', () => {
       const UserId = 12345
       const props = {
-        UserId,
         toggleSidebar: onClick,
         displayName: 'something',
+        data: { viewer: { id: UserId } },
       }
       const navBar = shallow(<NavBar {...props} />)
       const link = navBar.find('AppBar').props().iconElementRight
