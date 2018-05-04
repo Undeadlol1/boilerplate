@@ -1,6 +1,9 @@
 'use strict';
 const bcrypt   = require('bcrypt-nodejs');
 
+// TODO: password hash must not be leaked to client.
+// Add default scope without "password" field.
+
 module.exports = function(sequelize, DataTypes) {
   var Local = sequelize.define('Local', {
     // TODO add checks: must not have spaces
