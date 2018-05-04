@@ -27,8 +27,11 @@ router
   .use(twitter)
   .use(vk)
   .get('/logout', (req, res) => {
-    if (req.user) logoutUser(req) && res.end()
-    else res.status(401).end()
+      if (req.user) {
+        logoutUser(req)
+        res.end()
+      }
+      else res.status(401).end()
   })
   .get('/current_user', (req, res) => {
       res.json(req.user ? req.user : {})
@@ -36,6 +39,9 @@ router
 
 /**
  * Log out current user.
+ * NOTE: this function is going to be used in various places.
+ * For example, in graphql resolver.
+ * Be carefull while changing it.
  * @param {Object} request server request instance.
  * @exports
  */
