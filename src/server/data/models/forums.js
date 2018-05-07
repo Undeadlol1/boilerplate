@@ -24,7 +24,7 @@ module.exports = function(sequelize, DataTypes) {
     UserId: {
       allowNull: false,
       type: DataTypes.INTEGER,
-      comment: 'Unique id of a user who created this forum.'
+      comment: 'Unique id of a user who created this forum.',
     },
   },
   {
