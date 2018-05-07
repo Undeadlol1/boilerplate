@@ -4,10 +4,10 @@ import {
 } from 'graphql';
 // import * as queries from './queries';
 // import * as mutations from './mutations';
-import user from './types/user'
-import viewer from './types/viewer'
-import forum from './types/forum'
-import forums from './types/forums'
+import user from './queries/user'
+import viewer from './queries/viewer'
+import forum from './queries/forum'
+import forums from './queries/forums'
 import mutations from './mutations'
 
 const schema = new GraphQLSchema({

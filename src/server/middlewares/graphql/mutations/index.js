@@ -8,14 +8,18 @@ import get from 'lodash/get'
 import logger from 'debug-logger'
 import assert from 'assert-plus'
 import extend from 'lodash/assign'
-import { userType } from '../types/user'
-import { forumType } from '../types/forum'
 import { logoutUser } from '../../authApi'
+import { userType } from '../queries/user'
+import { forumType } from '../queries/forum'
 import { Forums } from '../../../data/models'
 
 const debug = logger('mutations')
 
 export default {
+    /**
+     * Forum is a container for threads.
+     * Only admins can create forums.
+     */
     createForum: {
         type: forumType,
         description: 'Create a forum.',
@@ -26,16 +30,17 @@ export default {
         },
         resolve: async (source, args, { user }) => {
             try {
-                debug('source', source)
+                // Debug logging.
                 debug('args', args)
+                debug('source', source)
                 debug('user && user.id', user && user.id)
                 // Verify data.
                 assert.object(user, "User")
                 assert.string(args.name)
                 // Prepare variables.
-                const UserId = get(user, 'id')
-                const slug = slugify(args.name)
-                const payload = extend(args, {UserId, slug})
+                const   UserId = get(user, 'id'),
+                        slug = slugify(args.name),
+                        payload = extend(args, {UserId, slug})
                 // Verify permissions.
                 // TODO: add tests for both permissions.
                 // TODO: add tests for arguments.
