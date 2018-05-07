@@ -1,12 +1,4 @@
-import {
-    graphql,
-    GraphQLID,
-    GraphQLString,
-    GraphQLSchema,
-    GraphQLNonNull,
-    GraphQLUnionType,
-    GraphQLObjectType,
-} from 'graphql'
+import { GraphQLObjectType } from 'graphql'
 import {
     resolver,
     attributeFields,
