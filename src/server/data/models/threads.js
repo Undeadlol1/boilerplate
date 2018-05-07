@@ -7,44 +7,51 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.UUID,
       validate: { isUUID: 4 },
       defaultValue: DataTypes.UUIDV4,
+      comment: 'Unique identifier',
     },
     name: {
-        unique: true,
-        allowNull: false,
-        type: DataTypes.STRING,
-        // validate: {
-        //   isLength: {min: 5,}
-        // }
+      comment: 'Human readable name for a thread',
+      unique: true,
+      allowNull: false,
+      type: DataTypes.STRING,
+      // validate: {
+      //   isLength: {min: 5,}
+      // }
     },
     slug: {
-        unique: true,
-        allowNull: false,
-        type: DataTypes.STRING,
-        validate: {
-          trim: true,
-          // i don't know which one works
-          min: 5,
-          max: 100,
-          isLength: {
-            options: { min: 5, max: 100 },
-          }
-      }
+      comment: 'Url friendly name of a forum.',
+      unique: true,
+      allowNull: false,
+      type: DataTypes.STRING,
+      validate: {
+        trim: true,
+        // i don't know which one works
+        min: 5,
+        max: 100,
+        isLength: {
+          options: { min: 5, max: 100 },
+        },
+      },
     },
     text: {
+      comment: 'Thread\'s main text',
       allowNull: false,
       type: DataTypes.TEXT,
     },
     isClosed: {
+      comment: 'Defines if users can post in this thread or not.',
       defaultValue: false,
       type: DataTypes.BOOLEAN,
     },
     parentId: {
+      comment: 'Unique identifier of parent document. Usually it is a Forum.',
       allowNull: false,
       type: DataTypes.UUID,
     },
     UserId: {
       allowNull: false,
-      type: DataTypes.INTEGER
+      type: DataTypes.INTEGER,
+      comment: 'Unique id of a user who created this forum.',
     },
   }, {
     tableName: 'threads',
