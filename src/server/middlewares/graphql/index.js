@@ -8,9 +8,12 @@ import forum from './queries/forum'
 import forums from './queries/forums'
 import thread from './queries/thread'
 import threads from './queries/threads'
-import mutations from './mutations'
+import * as mutations from './mutations'
 
 const schema = new GraphQLSchema({
+    /**
+     * Queries.
+     */
     query: new GraphQLObjectType({
         name: 'RootQuery',
         description: 'Every graphql api must start from a root query point.',
@@ -23,13 +26,14 @@ const schema = new GraphQLSchema({
             threads,
         }),
     }),
+    /**
+     * Mutations.
+     */
     mutation: new GraphQLObjectType({
         name: 'RootMutation',
         description: 'Every graphql api must start with a root mutation.',
         // fields: mutations
-        fields: () => ({
-            ...mutations,
-        }),
+        fields: () => ({...mutations}),
     }),
 })
 
