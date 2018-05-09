@@ -2,6 +2,7 @@ import {
     GraphQLString,
     GraphQLNonNull,
     GraphQLBoolean,
+    GraphQLID,
 } from 'graphql'
 import slugify from 'slug'
 import get from 'lodash/get'
@@ -12,7 +13,8 @@ import isEmpty from 'lodash/isEmpty'
 import { logoutUser as logout } from '../../authApi'
 import { userType } from '../queries/user'
 import { forumType } from '../queries/forum'
-import { Forums } from '../../../data/models'
+import { Forums, Threads } from '../../../data/models'
+import { threadType } from '../queries/thread'
 
 const debug = logger('mutations')
 /**
@@ -35,20 +37,65 @@ export const createForum = {
             // Debug logging.
             debug('args', args)
             debug('source', source)
-            debug('user && user.id', user && user.id)
+            debug('user.id', user && user.id)
             // Prepare variables.
-            const UserId = get(user, 'id'),
-                slug = slugify(args.name),
-                payload = extend(args, {
-                    UserId,
-                    slug
-                })
+            const   UserId  = get(user, 'id'),
+                    slug    = slugify(args.name),
+                    payload = extend(args, {
+                        UserId,
+                        slug,
+                    })
             // Verify permissions.
             // TODO: add tests for both permissions.
             // TODO: add tests for arguments.
             if (isEmpty(user)) throw new Error('You must be logged in to do this.')
             if (UserId !== process.env.ADMIN_ID) throw new Error('You must be an admin to do this.')
             return await Forums.create(payload)
+        } catch (err) {
+            throw err.message
+        }
+    },
+}
+/**
+ * Mutation which creates thread.
+ * Thread is a container for a comments.
+ * @export
+ */
+export const createThread = {
+    type: threadType,
+    description: 'Create a thread.',
+    args: {
+        name: {
+            type: new GraphQLNonNull(GraphQLString)
+        },
+        text: {
+            type: new GraphQLNonNull(GraphQLString)
+        },
+        parentId: {
+            type: new GraphQLNonNull(GraphQLID)
+        },
+    },
+    resolve: async (source, args, {user}) => {
+        try {
+            // Debug logging.
+            debug('args', args)
+            debug('source', source)
+            debug('user.id', user && user.id)
+            // Prepare variables.
+            const   UserId  = get(user, 'id'),
+                    slug    = slugify(args.name),
+                    payload = extend(args, {
+                        UserId,
+                        slug,
+                    })
+            // Verify permissions.
+            // TODO: add tests for permissions.
+            if (isEmpty(user)) throw new Error('You must be logged in to do this.')
+            // Validate input.
+            // TODO: add tests for arguments.
+            if (!args.text || !args.name || !args.parentId) throw new Error('Missing arguments')
+            // Create document and send it back.
+            return await Threads.create(payload)
         } catch (err) {
             throw err.message
         }
