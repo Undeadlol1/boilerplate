@@ -10,13 +10,16 @@ import logger from 'debug-logger'
 import assert from 'assert-plus'
 import extend from 'lodash/assign'
 import isEmpty from 'lodash/isEmpty'
+import trim from 'validator/lib/trim'
 import { logoutUser as logout } from '../../authApi'
 import { userType } from '../queries/user'
 import { forumType } from '../queries/forum'
 import { Forums, Threads } from '../../../data/models'
 import { threadType } from '../queries/thread'
+import condenseWhitespace from 'condense-whitespace'
 
 const debug = logger('mutations')
+
 /**
  * Mutation which reates forum.
  * Forum is a container for threads.
@@ -40,16 +43,21 @@ export const createForum = {
             debug('user.id', user && user.id)
             // Prepare variables.
             const   UserId  = get(user, 'id'),
-                    slug    = slugify(args.name),
-                    payload = extend(args, {
+                    // Remove repeated whitespace and trim.
+                    name = condenseWhitespace(args.name),
+                    slug    = slugify(name),
+                    payload = extend({name}, {
                         UserId,
                         slug,
                     })
             // Verify permissions.
-            // TODO: add tests for both permissions.
-            // TODO: add tests for arguments.
             if (isEmpty(user)) throw new Error('You must be logged in to do this.')
             if (UserId !== process.env.ADMIN_ID) throw new Error('You must be an admin to do this.')
+            // Validate values.
+            if (!name || name == "undefined") throw new Error('Name is required.')
+            if (name.length <= 4 || name.length >= 100) throw new Error('Name must be between 5 and 100 characters long.')
+            // Make sure there will be no duplicates.
+            if (await Forums.findOne({where: {name}})) throw new Error('Forum already exists.')
             return await Forums.create(payload)
         } catch (err) {
             throw err.message
