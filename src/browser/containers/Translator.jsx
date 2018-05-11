@@ -99,7 +99,7 @@ class Translator extends Component {
         if (!messages.hasOwnProperty(languageWithoutRegionCode)) language = 'ru'
         else language = languageWithoutRegionCode
         /**
-         * translates message
+         * Translates message.
          * (does not work with variables, simply returns a string of provided id)
          * @export
          * @param {String} id key in object with translation strings
