@@ -36,8 +36,8 @@
         //   "preventFullImport": true
         // },
         "lodash": {
+            "preventFullImport": true,
             "transform": "lodash/${member}",
-            "preventFullImport": true
         },
     }],
     "transform-runtime",
