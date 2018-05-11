@@ -15,7 +15,7 @@ chai.use(require('chai-properties'))
  */
 const UserId = UUID()
 const payload = { name: 'This is a test' }
-const crerateForumQuery = `mutation {
+const createForumQuery = `mutation {
     forum: createForum(name: "${payload.name}") {
         id
         name
@@ -38,7 +38,7 @@ describe('Mutations:', () => {
             // Run query and get results.
             const { data, errors } = await graphql(
                 schema,
-                crerateForumQuery,
+                createForumQuery,
                 null,
                 // Notice empty user object in context.
                 {user: {}}
@@ -54,7 +54,7 @@ describe('Mutations:', () => {
             // Run query and get results.
             const { data, errors } = await graphql(
                 schema,
-                crerateForumQuery,
+                createForumQuery,
                 null,
                 // Ordinary user passed to context.
                 {user}
@@ -70,7 +70,7 @@ describe('Mutations:', () => {
             // Run query and get results.
             const { data, errors } = await graphql(
                 schema,
-                crerateForumQuery,
+                createForumQuery,
                 null,
                 // Pass administrator as user in context.
                 {user: admin}
@@ -88,6 +88,30 @@ describe('Mutations:', () => {
             })
             // Delete created forum.
             await createdForum.destroy()
+        })
+        /**
+         * INPUT VALIDATION TESTS.
+         */
+        it('errors if params were not provided', async () => {
+            // Get admin user.
+            const admin = await User.findById(1)
+            const { error, errors, data } = await graphql(
+                schema,
+                `mutation {
+                    createForum(name: "") {
+                        id
+                        name
+                        slug
+                        UserId
+                    }
+                }`,
+                null,
+                {user: admin}
+            )
+            expect(data.createForum).to.be.null
+            expect(errors).to.have.properties({
+                name: 'Is required',
+            })
         })
         // TODO: what if forum with this name already exists?
     })
