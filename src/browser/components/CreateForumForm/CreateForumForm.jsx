@@ -10,7 +10,6 @@ import React, { Component } from 'react'
 import FlatButton from 'material-ui/FlatButton'
 import { TextField } from 'redux-form-material-ui'
 import RaisedButton from 'material-ui/RaisedButton'
-import { query as forumsQuery } from '../ForumsList'
 import { translate } from 'browser/containers/Translator'
 import { Grid, Row, Col } from 'react-styled-flexboxgrid'
 import { actions } from 'browser/redux/actions/GlobalActions'
@@ -18,8 +17,8 @@ import { parseJSON } from'browser/redux/actions/actionHelpers'
 import { insertForum } from 'browser/redux/forum/ForumActions'
 import withGraphQL from 'react-apollo-decorators/lib/withGraphQL'
 import { Form, Field, reduxForm, SubmissionError  } from 'redux-form'
-import { getCurrentUser, createForum as mutation } from '../../graphql'
 import { Mutation, MutationFunc, graphql, Query, withApollo } from 'react-apollo'
+import { getCurrentUser, createForum as mutation, getForums } from '../../graphql'
 /**
  * Form to create a forum.
  * It is not visible if logged in user is not an admin.
@@ -100,9 +99,9 @@ const withMutation = ownProps => {
 	 */
 	function update(cache, response) {
 		const { forum } = response.data
-		const { forums } = cache.readQuery({ query: forumsQuery })
+		const { forums } = cache.readQuery({ query: getForums })
 		return cache.writeQuery({
-			query: forumsQuery,
+			query: getForums,
 			data: { forums: forums.concat([forum]) }
 		})
 	}
@@ -140,7 +139,7 @@ export default reduxForm({
 	form: 'CreateForumForm',
 	validate(values, ownProps) {
 		let errors = {}
-		if (!ownProps.viewer) errors.name = translate('please_login')
+		if (get(ownProps, 'data.viewer')) errors.name = translate('please_login')
 		if (!values.name) errors.name = translate('name_cant_be_empty')
 		return errors
 	}
