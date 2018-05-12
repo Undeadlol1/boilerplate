@@ -16,13 +16,16 @@ import get from 'lodash/get'
 import logger from 'debug-logger'
 import assert from 'assert-plus'
 import extend from 'lodash/assign'
+import trim from 'validator/lib/trim'
 import { logoutUser as logout } from '../../authApi'
 import { userType } from '../queries/user'
 import { forumType } from '../queries/forum'
 import { Forums, Threads } from '../../../data/models'
 import { threadType } from '../queries/thread'
+import condenseWhitespace from 'condense-whitespace'
 
 const debug = logger('mutations')
+
 /**
  * Check if exists and throw error if not.
  * This function is used in graphql resolvers.
@@ -46,25 +49,29 @@ export const createForum = {
             type: new GraphQLNonNull(GraphQLString)
         },
     },
-    async resolve(_, args, context) {
+    async resolve(_, args, {user}) {
         try {
             // Debug logging.
             debug.info('createForum')
             debug('args', args)
-            debug('user.id', context.user.id)
+            debug('user.id', user && user.id)
             // Prepare variables.
-            const   UserId  = get(context, 'user.id'),
-                    payload = extend(args, {
+            const   UserId  = get(user, 'id'),
+                    // Remove repeated whitespace and trim.
+                    name = condenseWhitespace(args.name),
+                    slug    = slugify(name),
+                    payload = extend({name}, {
                         UserId,
                         slug: slugify(args.name),
                     })
-            /**
-             * Verify permissions.
-             * User must be logged in and be an admin.
-             */
-            mustLogin(context && context.user)
+            // Verify permissions.
+            if (isEmpty(user)) throw new Error('You must be logged in to do this.')
             if (UserId !== process.env.ADMIN_ID) throw new Error('You must be an admin to do this.')
-            // TODO: add tests for arguments.
+            // Validate values.
+            if (!name || name == "undefined") throw new Error('Name is required.')
+            if (name.length <= 4 || name.length >= 100) throw new Error('Name must be between 5 and 100 characters long.')
+            // Make sure there will be no duplicates.
+            if (await Forums.findOne({where: {name}})) throw new Error('Forum already exists.')
             return await Forums.create(payload)
         } catch (err) {
             throw err.message
