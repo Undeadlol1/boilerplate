@@ -1,5 +1,6 @@
 import slugify from 'slug'
 import { Router } from 'express'
+import logger from 'debug-logger'
 import generateUuid from 'uuid/v4'
 import { Forums } from 'server/data/models'
 import asyncHandler from 'express-async-handler'
@@ -10,6 +11,7 @@ import { matchedData, sanitize } from 'express-validator/filter'
 import { check, validationResult } from 'express-validator/check'
 
 const limit = 12
+const debug = logger('forumsApi')
 
 export default Router()
   /**
@@ -58,6 +60,9 @@ export default Router()
     isAdmin,
     // check('name', ),
     asyncHandler(async ({user, body}, res) => {
+      // Debug logging.
+      debug('user', user)
+      debug('body', body)
       res.json(
         await Forums.create({
           ...body,
