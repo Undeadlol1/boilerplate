@@ -39,6 +39,14 @@
             "preventFullImport": true,
             "transform": "lodash/${member}",
         },
+        "validator": {
+          "preventFullImport": true,
+          "transform": "validator/lib/${member}",
+        },
+        "ramda": {
+          "preventFullImport": true,
+          "transform": "ramda/src/${member}",
+        }
     }],
     "transform-runtime",
     "transform-decorators-legacy",
