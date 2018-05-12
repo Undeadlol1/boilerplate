@@ -5,6 +5,21 @@ import asyncHandler from 'express-async-handler'
 import merge from 'lodash/assignIn'
 import { Router } from 'express'
 
+const everything = [
+  {
+    model: Vk,
+    required: false,
+  },
+  {
+    model: Profile,
+    required: false,
+  },
+  {
+    model: Twitter,
+    required: false,
+  },
+]
+
 // routes
 export default Router()
   /**
@@ -18,7 +33,7 @@ export default Router()
       raw: true,
       nest: true,
       // TODO remove in future when all values will be stored in profile
-      include: [Profile, Local, Vk, Twitter],
+      include: everything,
     })
     const moodsData = await getUsersMoods(user.id)
 
@@ -31,15 +46,19 @@ export default Router()
    */
   // TODO add user validations/permissions
   // NOTE: only owner  can owner can update his user profile.
-  .put('/user/:id', mustLogin, asyncHandler(async function({ params, body }, res) {
+  .put('/user/:id', mustLogin, asyncHandler(async ({ params, body }, res) => {
       const id  = params.id
+      const include = [{
+        model: Profile,
+        required: false,
+      }]
 
       if (!id) return res.badRequest('invalid query')
       // TODO add body validations
       // Check if user exists.
       const user = await User.findOne({
+        include,
         where: {id},
-        include: [Profile],
       })
       if (!user) return res.boom.notFound('user not found')
 
@@ -59,7 +78,7 @@ export default Router()
       // Respond with updated user document.
       res.json(
         await User.findOne({
+          include,
           where: { id },
-          include: [Profile],
       }))
   }))

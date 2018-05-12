@@ -124,14 +124,10 @@ export default describe('/auth', function() {
                 .expect(200)
                 .expect('Content-Type', /json/)
                 .then(function({body}) {
-                    const local = body.Local
+                    const local = body.Local || {}
                     assert(body.id, 'must have an id')
                     assert(local.id, 'musth have Local.id')
-                    // Commented out because i am to lazy to fix it.
-                    // assert(local.email == email, 'must have local.email')
                     assert(local.username == username, 'usernames must match')
-                    // TODO
-                    // assert(!local.password, 'must not have password')
                 })
         }
         catch (error) {

@@ -40,15 +40,35 @@ export async function createUser(authType, payload) {
 export async function normalizePublicInfo(UserId) {
     const user = await User.findById(
         UserId,
-        {include: [Profile, Local, Twitter, Vk]}
+        /**
+         * After update of "sequelize" package
+         * something broke and user were null untill
+         * i specify "required: false" everywhere.
+         */
+        {include: [
+            {
+                model: Profile,
+                required: false,
+            },
+            {
+                model: Local,
+                required: false,
+            },
+            {
+                model: Twitter,
+                required: false,
+            },
+            {
+                model: Vk,
+                required: false,
+            }
+        ]}
     )
-
     const displayName = select('Local.username', user)
         || select('Twitter.username', user)
         || select('Twitter.displayName', user)
         || select('Vk.username', user)
         || select('Vk.displayName', user)
-    console.log('displayName: ', displayName);
 
     if (!user.displayName) user.set('displayName', displayName)
 

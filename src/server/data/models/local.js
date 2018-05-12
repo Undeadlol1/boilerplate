@@ -45,7 +45,7 @@ module.exports = function(sequelize, DataTypes) {
     defaultScope: {
       where: {},
       attributes: {
-        exclude: ['password', 'email']
+        exclude: ['password', 'email'],
       }
     },
     scopes: {

@@ -44,10 +44,16 @@ router
         const email = username
         const user =  await User.findOne({
                         where: {},
-                        include: [Profile, {
-                          model: Local.scope('all'),
-                          where: { [Op.or]: [{email}, {username}] },
-                        }],
+                        include: [
+                          {
+                            model: Profile,
+                            required: false,
+                          },
+                          {
+                            model: Local.scope('all'),
+                            where: { [Op.or]: [{email}, {username}] },
+                          },
+                        ],
                       })
         if (!user) {
           return res.status(401).end('User not exists')

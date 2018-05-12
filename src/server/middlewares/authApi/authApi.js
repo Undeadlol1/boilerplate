@@ -1,4 +1,4 @@
-import { User, Profile, Local, Twitter } from 'server/data/models'
+import { User, Profile, Local, Twitter, Vk } from 'server/data/models'
 import passport from "passport"
 import express from "express"
 import selectn from 'selectn'
@@ -14,7 +14,27 @@ passport.deserializeUser(function(id, done) {
   .findById(id, {
     raw: true,
     nest: true,
-    include: [Profile, Local, Twitter]
+    /**
+     * After update of "sequelize" package
+     * something broke and user were null untill
+     * i specify "required: false" everywhere.
+     */
+    include: [{
+        // Except this one cannot be found with "required: false"
+        // required: false,
+        model: Local,
+      },
+      {
+        model: Profile,
+        required: false,
+      }, {
+        model: Twitter,
+        required: false,
+      }, {
+        model: Vk,
+        required: false,
+      }
+    ]
   })
   .then(user => done(null, user))
   .catch(error => done(error))
