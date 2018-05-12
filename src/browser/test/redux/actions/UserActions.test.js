@@ -14,7 +14,7 @@ chai.use(chaiImmutable);
 const middlewares = [ thunk ]
 const mockStore = configureMockStore(middlewares)
 // TODO add API_PREFIX instead of API_URL?
-const { URL, API_URL } = process.env
+const { URL, API_URL, PORT } = process.env
 const authApi = '/api/auth/'
 const usersApi = '/api/users/'
 const user = {username: 'misha', id: 1}
@@ -31,7 +31,7 @@ const user = {username: 'misha', id: 1}
 function mockRequest(url, action, param, result, method = 'get') {
     // TODO rework this url (last character '/' was causing unmathing of url)
     // create request interceptor
-    nock('http://127.0.0.1:3000')[method](url).reply(200, user)
+    nock('http://127.0.0.1:' + PORT)[method](url).reply(200, user)
     const store = mockStore()
     return store
       // call redux action
