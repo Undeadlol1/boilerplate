@@ -83,7 +83,7 @@ export default describe('/auth', function() {
     // TODO write vk and twitter auth tests
 
     describe('login user', function() {
-        it('logs in', async function() {
+        it('works', async function() {
             await loginUser(username, password)
         })
 
