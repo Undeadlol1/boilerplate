@@ -4,25 +4,21 @@ import {
     GraphQLBoolean,
     GraphQLID,
 } from 'graphql'
-import pipe from 'ramda/src/pipe'
-// TODO: add ramda-babel plugin
-import compose from 'ramda/src/compose'
-import chain from 'ramda/src/chain'
-import useWith from 'ramda/src/useWith'
-import prop from 'ramda/src/prop'
-import isEmpty from 'ramda/src/isEmpty'
 import slugify from 'slug'
 import get from 'lodash/get'
 import logger from 'debug-logger'
-import assert from 'assert-plus'
 import extend from 'lodash/assign'
-import trim from 'validator/lib/trim'
-import { logoutUser as logout } from '../../authApi'
-import { userType } from '../queries/user'
+import isEmpty from 'lodash/isEmpty'
 import { forumType } from '../queries/forum'
-import { Forums, Threads } from '../../../data/models'
 import { threadType } from '../queries/thread'
 import condenseWhitespace from 'condense-whitespace'
+import {
+    logoutUser as logout,
+} from '../../authApi'
+import {
+    Forums,
+    Threads,
+} from '../../../data/models'
 
 const debug = logger('mutations')
 
@@ -59,7 +55,6 @@ export const createForum = {
             const   UserId  = get(user, 'id'),
                     // Remove repeated whitespace and trim.
                     name = condenseWhitespace(args.name),
-                    slug    = slugify(name),
                     payload = extend({name}, {
                         UserId,
                         slug: slugify(args.name),
