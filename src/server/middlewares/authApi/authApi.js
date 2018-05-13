@@ -20,9 +20,8 @@ passport.deserializeUser(function(id, done) {
      * i specify "required: false" everywhere.
      */
     include: [{
-        // Except this one cannot be found with "required: false"
-        // required: false,
         model: Local,
+        required: false,
       },
       {
         model: Profile,
@@ -53,8 +52,8 @@ router
       }
       else res.status(401).end()
   })
-  .get('/current_user', (req, res) => {
-      res.json(req.user ? req.user : {})
+  .get('/current_user', ({user}, res) => {
+      res.json(user || {})
   })
 
 /**
