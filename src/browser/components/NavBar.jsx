@@ -26,8 +26,9 @@ const LoginLogoutButtonStyles = { marginTop: '5.5px' }
 export class NavBar extends Component {
     render() {
         const { loading, className, children, toggleSidebar } = this.props
-        const { displayName, id, image } = get(this, 'props.data.viewer') || {}
-        const UserId = id
+        // Safely extract user data to avoid error if data is missing.
+        const { id: UserId, image } = get(this, 'props.data.viewer') || {}
+        // Link to funny avatar. Used incase user doesn't have a picture.
         const src = `https://api.adorable.io/avatars/100/${UserId}.png`
 
         let loginOrAvatar
@@ -66,9 +67,11 @@ export class NavBar extends Component {
 }
 
 NavBar.propTypes = {
-    // Current user.
+    // Logged in user.
     viewer: PropTypes.object,
-    UserId: PropTypes.number,
+    // Data fetching info provided by Apollo.
+    loading: PropTypes.bool,
+    // Redux action which activates sidebar.
     toggleSidebar: PropTypes.func.isRequired,
 }
 /**
