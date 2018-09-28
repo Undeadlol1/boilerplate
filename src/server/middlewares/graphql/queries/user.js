@@ -1,33 +1,23 @@
 import {
-    graphql,
-    GraphQLID,
-    GraphQLString,
-    GraphQLSchema,
-    GraphQLNonNull,
-    GraphQLUnionType,
-    GraphQLObjectType,
-} from 'graphql'
-import {
     resolver,
-    defaultArgs as attributesToArgs,
     attributeFields,
+    defaultArgs as attributesToArgs,
 } from 'graphql-sequelize'
 import assign from 'lodash/assign'
+import { GraphQLObjectType } from 'graphql'
 import { User } from '../../../data/models'
-
+// Description is used twice in this file.
 const description = 'Registered website user.'
-
-const userType = new GraphQLObjectType({
+/**
+ * Graphql type representing a User object.
+ * @export
+ */
+export const userType = new GraphQLObjectType({
     description,
     name: 'user',
     // Get fields from sequelize model.
     fields: assign(attributeFields(User, { commentToDescription: true }))
 })
-/**
- * Graphql type representing a User object.
- * @export
- */
-export { userType }
 /**
  * This is a full query interface for a User.
  * @export
