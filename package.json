@@ -8,14 +8,14 @@
   "scripts": {
     "cli": "node core/scripts/cli.js",
     "watch-test": "npm test -- --watch",
-    "build": "npx rimraf dist && webpack --config ./config/targets.config.js",
-    "test": "cross-env NODE_ENV=test webpack --config ./config/tests.config.js",
-    "migrate": "cross-env NODE_ENV=test sequelize db:migrate && cross-env NODE_ENV=development sequelize db:migrate",
-    "undo": "cross-env NODE_ENV=test sequelize db:migrate:undo && cross-env NODE_ENV=development sequelize db:migrate:undo",
-    "start": "rimraf dist && cross-env NODE_ENV=development webpack --config ./config/targets.config.js --watch --hide-modules",
-    "production": "git pull && yarn && cross-env NODE_ENV=production NODE_NDEBUG=1 sequelize db:migrate && rimraf dist && cross-env NODE_ENV=production parallel-webpack --config ./config/targets.config.js && npm rebuild node-sass && pm2 stop all && pm2 start dist/server.js --node-args='--expose-gc'",
-    "check_production": "cross-env NODE_ENV=production parallel-webpack --config ./config/targets.config.js; node dist/server.js",
-    "analyze": "cross-env NODE_ENV=production parallel-webpack --config ./config/targets.config.js --watch"
+    "build": "npx rimraf dist && npx webpack --config ./config/targets.config.js",
+    "test": "npx cross-env NODE_ENV=test webpack --config ./config/tests.config.js",
+    "migrate": "npx cross-env NODE_ENV=test npx sequelize db:migrate && npx cross-env NODE_ENV=development npx sequelize db:migrate",
+    "undo": "npx cross-env NODE_ENV=test npx sequelize db:migrate:undo && npx cross-env NODE_ENV=development npx sequelize db:migrate:undo",
+    "start": "npx rimraf dist && npx cross-env NODE_ENV=development npx webpack --config ./config/targets.config.js --watch --hide-modules",
+    "production": "git pull && yarn && npx cross-env NODE_ENV=production NODE_NDEBUG=1 npx sequelize db:migrate && npx rimraf dist && npx cross-env NODE_ENV=production npx parallel-webpack --config ./config/targets.config.js && npm rebuild node-sass && pm2 stop all && pm2 start dist/server.js --node-args='--expose-gc'",
+    "check_production": "npx cross-env NODE_ENV=production npx parallel-webpack --config ./config/targets.config.js; node dist/server.js",
+    "analyze": "npx cross-env NODE_ENV=production npx parallel-webpack --config ./config/targets.config.js --watch"
   },
   "engines": {
     "node": ">=9.4"
@@ -211,6 +211,7 @@
     "url-loader": "^0.5.8",
     "webpack": "^3.0.0",
     "webpack-bundle-analyzer": "^2.3.1",
+    "webpack-cli": "^3.3.2",
     "webpack-merge": "^4.1.0",
     "webpack-node-externals": "^1.5.4",
     "webpack-notifier": "^1.5.0",
