@@ -1,4 +1,4 @@
-const fs = require('fs')
+/* eslint-disable no-console */
 const path = require('path')
 const fse = require('fs-extra')
 const shell = require('shelljs')
@@ -125,8 +125,6 @@ function createProject(name) {
 function createReduxModule(name) {
 
     const firtUpperCase = upperCaseFirst(name)
-    const upperCaseName = upperCase(name)
-
     const firstHook = "// ⚠️ First hook for cli! Do not remove 💀"
     const secondHook = "// ⚠️ Second hook for cli! Do not remove 💀"
     const thirdHook = "// ⚠️ Third hook for cli! Do not remove 💀"
@@ -169,7 +167,6 @@ function createReduxModule(name) {
  * @param {string} name
  */
 function createApi(name) {
-    const upperCase = upperCaseFirst(name)
     const lowerCase = lowerCaseFirst(name)
     /**
      * 1) create model
@@ -297,7 +294,6 @@ function addLineToFile(filePath, regex, replaceText) {
 }
 
 function createPage(pageName, routePath) {
-    const folderName = pageName
     const folderPath = path.resolve(__dirname, '../../src/browser/pages')
     const templatesPath = path.resolve(__dirname, '../templates/page')
     // add route to 'routes.js'
