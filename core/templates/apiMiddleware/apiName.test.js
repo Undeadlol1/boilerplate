@@ -85,7 +85,7 @@ export default describe('/plural API', function() {
             .put('/api/plural/' + singular.id)
             .expect(200)
         assert.isNull(
-            await Plural.findById(singular.id),
+            await Plural.findByPk(singular.id),
             'document was not deleted'
         )
     })

@@ -15,7 +15,7 @@ chai.use(require('chai-properties'))
  * Define UserId to create user object for tests
  * and to delete it after tests are done.
  */
-const UserId = UUID()
+const UserId = 123;
 // Administrator is a user with "id" == 1.
 const admin = { id: 1 }
 const forumNname = 'This is a test'

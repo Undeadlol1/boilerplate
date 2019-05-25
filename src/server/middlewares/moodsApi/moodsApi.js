@@ -25,7 +25,7 @@ router
         limit,
         offset,
         where,
-        include: [{ model: Node, limit: 1 }] // for preview image
+        include: [{ model: Node, limit: 1 }], // for preview image
       }) || []
       res.json({ moods, totalPages })
     }
@@ -50,12 +50,13 @@ router
   // get single mood by slug or name
   .get('/mood/:slug?', async ({params, query}, res) => {
     try {
-      const slug = params.slug
-      const name = query.name
+      // NOTE: if "null" fallback isn't specified Sequelize is going to error.
+      const slug = params.slug || null;
+      const name = query.name || null;
       const mood = await Mood.findOne({
         where: {
-          [Op.or]: [{slug}, {name}]
-        }
+          [Op.or]: [{slug}, {name}],
+        },
       })
       res.json(mood)
     } catch (error) {
@@ -84,7 +85,7 @@ router
           limit: 1,
           model: Node,
           order: sequelize.random(),
-        }]
+        }],
       })
       res.json({ moods, totalPages })
     }
@@ -110,7 +111,7 @@ router
           limit: 1,
           model: Node,
           order: sequelize.random(),
-        }]
+        }],
       })
       res.json({ moods, totalPages })
     }
@@ -137,7 +138,7 @@ router
           limit: 1,
           model: Node,
           order: sequelize.random(),
-        }]
+        }],
       })
       res.json({ moods, totalPages })
     }

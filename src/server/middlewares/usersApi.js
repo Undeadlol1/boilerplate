@@ -29,7 +29,7 @@ export default Router()
     const { id } = req.params
     if (!id) return res.badRequest('invalid query')
 
-    const user = await User.findById(id, {
+    const user = await User.findByPk(id, {
       raw: true,
       nest: true,
       // TODO remove in future when all values will be stored in profile
