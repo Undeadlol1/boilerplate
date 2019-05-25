@@ -85,6 +85,7 @@ fse
             shell.exec('git remote add upstream https://github.com/developer-expirience/boilerplate')
             shell.exec('git pull upstream master --allow-unrelated-histories --squash')
             shell.exec('yarn')
+            shell.exec('yarn test')
             shell.echo('😎  all done 😎')
             break;
         case apiText:
