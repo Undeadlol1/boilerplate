@@ -22,7 +22,7 @@ export async function createUser(authType, payload) {
     if (authType == 'Local') payload.password = Local.generateHash(payload.password)
     await models[authType].create(extend(payload, {UserId: user.id}))
 
-    return await User.findById(user.id, {include: [Profile]})
+    return await User.findByPk(user.id, {include: [Profile]})
 }
 
 // TODO add tests! ⚠️ ✏️️
@@ -38,7 +38,7 @@ export async function createUser(authType, payload) {
  * @returns {object} updated user
  */
 export async function normalizePublicInfo(UserId) {
-    const user = await User.findById(
+    const user = await User.findByPk(
         UserId,
         {include: [Profile, Local, Twitter, Vk]}
     )
@@ -59,7 +59,7 @@ export async function normalizePublicInfo(UserId) {
 
     await user.save()
 
-    return await User.findById(user.id, {raw: true, nest: true})
+    return await User.findByPk(user.id, {raw: true, nest: true})
 }
 /**
  * TODO

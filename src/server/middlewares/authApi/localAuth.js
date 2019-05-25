@@ -59,7 +59,7 @@ router
           return res.status(401).end('User not exists')
         }
         if (!user.Local.validPassword(password)) {
-          const newLocal = await Local.scope('all').findById(user.Local.id)
+          const newLocal = await Local.scope('all').findByPk(user.Local.id)
           return res.status(401).end('Incorrect password')
         }
         req.login(user, error => {

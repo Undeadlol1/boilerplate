@@ -50,7 +50,7 @@ export default describe('/decisions API', function() {
     //                     ? expect(body.NodeRating).above(node.rating)
     //                     : expect(body.NodeRating).below(node.rating)
     //                     // make sure node.rating is updated
-    //                     const updatedNode = await Node.findById(node.id)
+    //                     const updatedNode = await Node.findByPk(node.id)
     //                     expect(updatedNode.rating == body.NodeRating)
     //                 })
     //     })
@@ -68,7 +68,7 @@ export default describe('/decisions API', function() {
     //                                 .findOne({where: {username: user.username} })
     //                                 .then(local => local.UserId),
     //                 decision = await Decision.findOne({where: {UserId}}),
-    //                 node = await Node.findById(decision.NodeId),
+    //                 node = await Node.findByPk(decision.NodeId),
     //                 agent = await loginUser(user.username, user.password)
     //         await agent
     //             .put(apiUrl)
@@ -82,7 +82,7 @@ export default describe('/decisions API', function() {
     //                 ? expect(body.NodeRating).below(node.rating)
     //                 : expect(body.NodeRating).abowe(node.rating)
     //                 // make sure node.rating is updated
-    //                 const updatedNode = await Node.findById(node.id)
+    //                 const updatedNode = await Node.findByPk(node.id)
     //                 expect(updatedNode.rating == body.NodeRating)
     //             })
     //     })

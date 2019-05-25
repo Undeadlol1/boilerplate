@@ -11,7 +11,7 @@ passport.serializeUser((user, done) => done(null, user.id))
 
 passport.deserializeUser(function(id, done) {
   return User
-  .findById(id, {
+  .findByPk(id, {
     raw: true,
     nest: true,
     /**

@@ -188,7 +188,7 @@ export default describe('/nodes API', function() {
     //     // (because node changes on second request to api)
     //     await getNextNode(mood.slug, firstNode.id)
 
-    //     const updatedDecision = await Decision.findById(firstNode.Decision.id)
+    //     const updatedDecision = await Decision.findByPk(firstNode.Decision.id)
     //     // console.log('updatedDecision', updatedDecision.dataValues)
     //     expect(updatedDecision.position).to.not.be.equal("0")
     //     // expect(updatedDecision.lastViewAt).to.be.beforeTime(currentDate) // TODO is this true?

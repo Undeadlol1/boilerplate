@@ -63,7 +63,7 @@ export default Router()
       const UserId = await user && user.id
       const MoodId = await Mood.findIdBySlug(params.moodSlug)
       const previousNode = await params.nodeId
-                              ? await Node.findById(params.nodeId)
+                              ? await Node.findByPk(params.nodeId)
                               : null
       if (!MoodId) return res.status(404).send('mood not found')
 

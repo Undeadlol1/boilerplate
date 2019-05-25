@@ -91,7 +91,7 @@ export default describe('/threads API', function() {
             .expect(200)
             .expect('Content-Type', /json/)
             .then(async ({body}) => {
-                const updatedThread = await Threads.findById(oldThread.id)
+                const updatedThread = await Threads.findByPk(oldThread.id)
                 // make sure response has updated document
                 body.id.should.eq(updatedThread.id)
                 // FIXME: should i move this checks to different test?

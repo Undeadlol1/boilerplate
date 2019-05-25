@@ -27,7 +27,7 @@ export default Router()
   // get single comment
   .get('/comment/:commentsId', async ({params}, res) => {
     try {
-      const comment = await Comments.findById(params.commentsId)
+      const comment = await Comments.findByPk(params.commentsId)
       res.json(comment)
     } catch (error) {
       console.log(error)
@@ -39,7 +39,7 @@ export default Router()
   .put('/:commentsId', mustLogin, async ({user, body, params}, res) => {
     try {
       const UserId = user.id
-      const comment = await Comments.findById(params.commentsId)
+      const comment = await Comments.findByPk(params.commentsId)
 
       // check permissions
       if (Comments.UserId != UserId) return res.status(401).end()
