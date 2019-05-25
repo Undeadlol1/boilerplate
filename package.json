@@ -116,7 +116,7 @@
     "slug": "^0.9.1",
     "string-length": "^2.0.0",
     "styled-components": "^2.0.1",
-    "uglify-es": "git://github.com/mishoo/UglifyJS2#harmony",
+    "uglify-es": "^3.3.9",
     "universal-cookie": "^2.1.2",
     "uuid": "^3.1.0",
     "validator": "^7.0.0"
@@ -205,7 +205,6 @@
     "supertest": "^3.0.0",
     "test": "^0.6.0",
     "typescript": "^2.2.1",
-    "uglify-js": "git://github.com/mishoo/UglifyJS2#harmony",
     "uniqid": "^4.1.1",
     "url-loader": "^0.5.8",
     "webpack": "^3.0.0",
