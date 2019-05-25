@@ -21,7 +21,7 @@ describe('<IndexPage />', () => {
   })
 
   it('has <WelcomeCard>', () => {
-    expect(wrapper.find('withCookies(ReactComponent)')).to.exist
+    expect(wrapper.find('withCookies(WelcomeCard)')).to.exist
   })
 
   it('has <ForumsList />', () => {
