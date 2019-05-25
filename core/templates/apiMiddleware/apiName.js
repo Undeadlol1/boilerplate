@@ -30,7 +30,7 @@ export default Router()
    */
   .get('/singular/:id', asyncHandler(async ({params}, res) => {
     res.json(
-      await Plural.findById(params.id)
+      await Plural.findByPk(params.id)
     )
   }))
   /**
@@ -38,7 +38,7 @@ export default Router()
    */
   .put('/:singularId', mustLogin,
     asyncHandler(async ({user, body, params}, res) => {
-      const singular = await Plural.findById(params.singularId)
+      const singular = await Plural.findByPk(params.singularId)
       // Check document existence.
       if (!singular) res.status(204).end()
       // Check permissions.
@@ -60,7 +60,7 @@ export default Router()
    * Delete singular.
    */
   .delete('/:id', mustLogin, asyncHandler(async ({user, body, params}, res) => {
-      const singular = await Plural.findById(params.id)
+      const singular = await Plural.findByPk(params.id)
       // Document was not found.
       if (!singular) res.status(204).end()
       // User must be documents owner to delete it.

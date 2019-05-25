@@ -45,7 +45,7 @@ export default Router()
     isAdmin,
     asyncHandler(async ({user, body, params}, res) => {
       const UserId = user.id
-      const forum = await Forums.findById(params.forumsId)
+      const forum = await Forums.findByPk(params.forumsId)
 
       // TODO: what if there is no forum?
 

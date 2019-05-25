@@ -92,7 +92,7 @@ export default Router()
         const UserId = req.user.id,
               bodyData = matchedData(req, { locations: ['body'] }),
               {threadsId} = matchedData(req, { locations: ['params'] }),
-              thread = await Threads.findById(threadsId)
+              thread = await Threads.findByPk(threadsId)
         // FIXME: add same checker to "apiName" template
         // FIXME: add tests about this one
         // NOTE: maybe should use customg validator?

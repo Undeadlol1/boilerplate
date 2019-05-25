@@ -12,7 +12,7 @@ export default Router()
     try {
       const { id: UserId } = user,
             { NodeId, vote } = body,
-            node = await Node.findById(NodeId),
+            node = await Node.findByPk(NodeId),
             newRating = Number(node.rating) + (vote ? 1 : -1)
 
       // 1. Create a Decision
@@ -44,8 +44,8 @@ export default Router()
     */
     try {
       const { id: UserId } = user,
-            decision = await Decision.findById(body.id),
-            node = await Node.findById(decision.NodeId),
+            decision = await Decision.findByPk(body.id),
+            node = await Node.findByPk(decision.NodeId),
             newRating = Number(node.rating) + (body.vote ? 1 : -1)
       // Update Node.rating
       await node.increment(

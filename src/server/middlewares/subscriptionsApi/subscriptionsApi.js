@@ -37,7 +37,7 @@ export default Router()
     async (req, res) => {
       try {
         res.json(
-          await Subscriptions.findById(
+          await Subscriptions.findByPk(
             matchedData(req).id
           )
         )
@@ -103,7 +103,7 @@ export default Router()
       try {
         const UserId = req.user.id
         const data = matchedData(req)
-        const subscription = await Subscriptions.findById(data.subscriptionId)
+        const subscription = await Subscriptions.findByPk(data.subscriptionId)
 
         // check permissions
         if (selectn('UserId', subscription) != UserId) return res.status(401).end()
