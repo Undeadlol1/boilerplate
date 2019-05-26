@@ -2,7 +2,6 @@ import {
     GraphQLSchema,
     GraphQLObjectType,
 } from 'graphql';
-import * as mutations from './mutations'
 import fs from 'fs'
 import path from 'path'
 
