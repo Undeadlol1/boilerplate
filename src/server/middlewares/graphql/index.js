@@ -31,8 +31,25 @@ const schema = new GraphQLSchema({
     mutation: new GraphQLObjectType({
         name: 'RootMutation',
         description: 'Every graphql api must start with a root mutation.',
-        // fields: mutations
-        fields: () => ({...mutations}),
+        // Dynamycally require all files from './mutations' folder.
+        fields: () => {
+            let mutations = {};
+            fs
+                .readdirSync(path.resolve(__dirname, '.', 'mutations'))
+                .forEach(file => {
+                    if (file.includes('test')) return
+
+                    const mutationsFile = require(`./mutations/${file}`)
+                    Object
+                    .getOwnPropertyNames(mutationsFile)
+                    .forEach(name => {
+                        // Skip if name includes 'module'.
+                        if (/\module/i.test(name)) return
+                        else mutations[name] = mutationsFile[name]
+                    })
+                })
+            return mutations;
+        },
     }),
 })
 
