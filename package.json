@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "cli": "node core/scripts/cli.js",
-    "watch-test": "npm test -- --watch",
+    "test:watch": "npm test -- --watch",
     "build": "npx rimraf dist && npx webpack --config ./config/targets.config.js",
     "test": "npx cross-env NODE_ENV=test webpack --config ./config/tests.config.js",
     "migrate": "npx cross-env NODE_ENV=test npx sequelize db:migrate && npx cross-env NODE_ENV=development npx sequelize db:migrate",
