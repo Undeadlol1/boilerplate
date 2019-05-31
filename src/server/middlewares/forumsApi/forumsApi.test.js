@@ -6,38 +6,42 @@ import chai, { assert } from 'chai'
 import users from 'server/data/fixtures/users'
 import { loginUser } from 'server/test/middlewares/authApi.test'
 import { Forums, User, Local, sequelize } from 'server/data/models'
+import createDebug from 'debug'
 chai.should()
 
-const   username = users[0].username,
-        password = users[0].password,
-        name = "random name",
-        slug = slugify(name)
+const username = users[0].username,
+    password = users[0].password,
+    name = "random name",
+    slug = slugify(name),
+    debug = createDebug('forumsApi:test')
 
-export default describe('/forums API', function() {
+export default describe('/forums API', function () {
     // Kill supertest server in watch mode to avoid errors.
     before(async () => await server.close())
     // Clean up.
-    after(async () => Forums.destroy({where: {name}}))
+    after(async () => Forums.destroy({ where: { name } }))
 
     it('GET forums', async () => {
         await request(server)
             .get('/api/forums')
             .expect(200)
             .expect('Content-Type', /json/)
-            .then(({body}) => {
+            .then(({ body }) => {
+                debug('body.totalPages: ', body.totalPages);
+                debug('body.currentPage: ', body.currentPage);
                 body.totalPages.should.eq(1)
                 body.currentPage.should.eq(1)
                 body.values.should.be.a('array')
             })
     })
 
-    it('GET single forum', async function() {
-        const forum = await Forums.findOne({order: sequelize.random()})
+    it('GET single forum', async function () {
+        const forum = await Forums.findOne({ order: sequelize.random() })
         await request(server)
-            .get('/api/forums/forum/' + forum.slug )
+            .get('/api/forums/forum/' + forum.slug)
             .expect(200)
             .expect('Content-Type', /json/)
-            .then(function(res) {
+            .then(function (res) {
                 const { name, threads } = res.body
                 // has forum
                 name.should.be.equal(forum.name)
@@ -72,14 +76,14 @@ export default describe('/forums API', function() {
 
     // TODO PUT test
 
-    it('fail to POST if not authorized', async function() {
+    it('fail to POST if not authorized', async function () {
         await request(server)
             .post('/api/forums')
             .send({ name })
             .expect(401)
     })
 
-    it('fail to POST if user is not an admin', async function() {
+    it('fail to POST if user is not an admin', async function () {
         const user = await loginUser(username, password)
         await user
             .post('/api/forums')
@@ -87,13 +91,13 @@ export default describe('/forums API', function() {
             .expect(401)
     })
 
-    it('fail to PUT if user is not an admin', async function() {
+    it('fail to PUT if user is not an admin', async function () {
         const user = await loginUser(username, password)
         await user
             .put('/api/forums/' + 'random name')
             .send({ name })
             .expect(401)
-            .catch(error => {throw error})
+            .catch(error => { throw error })
     })
 
 })

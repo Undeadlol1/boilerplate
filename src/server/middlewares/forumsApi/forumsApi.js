@@ -19,6 +19,7 @@ export default Router()
    * This endpoint returns paginated data of all created forums.
    */
   .get('/:page?', asyncHandler(async (req, res) => {
+    debug('req.params.page', req.params.page)
     res.json(
       await createPagination({
         limit,
@@ -30,7 +31,7 @@ export default Router()
   /**
    * Get single forum.
    */
-  .get('/forum/:slug', asyncHandler(async ({params}, res) => {
+  .get('/forum/:slug', asyncHandler(async ({ params }, res) => {
     const forum = await Forums.findOne({
       where: { slug: params.slug },
     })
@@ -43,7 +44,7 @@ export default Router()
   .put(
     '/:forumsId',
     isAdmin,
-    asyncHandler(async ({user, body, params}, res) => {
+    asyncHandler(async ({ user, body, params }, res) => {
       const UserId = user.id
       const forum = await Forums.findByPk(params.forumsId)
 
@@ -52,14 +53,14 @@ export default Router()
       // check permissions
       if (Forums.UserId != UserId) return res.status(401).end()
       else res.json(await forum.update(body))
-  }))
+    }))
   /**
    * Create forum.
    */
   .post('/',
     isAdmin,
     // check('name', ),
-    asyncHandler(async ({user, body}, res) => {
+    asyncHandler(async ({ user, body }, res) => {
       // Debug logging.
       debug('user', user)
       debug('body', body)
@@ -70,4 +71,4 @@ export default Router()
           slug: slugify(body.name),
         })
       )
-  }))
+    }))
