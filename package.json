@@ -10,7 +10,7 @@
     "watch-test": "npm test -- --watch",
     "install_types": "npx typesync && yarn",
     "build": "npx rimraf dist && npx webpack --config ./config/targets.config.js",
-    "test": "npx cross-env NODE_ENV=test webpack --config ./config/tests.config.js",
+    "test": "npx cross-env NODE_ENV=test npx webpack --config ./config/tests.config.js",
     "migrate": "npx cross-env NODE_ENV=test npx sequelize db:migrate && npx cross-env NODE_ENV=development npx sequelize db:migrate",
     "undo": "npx cross-env NODE_ENV=test npx sequelize db:migrate:undo && npx cross-env NODE_ENV=development npx sequelize db:migrate:undo",
     "start": "npx rimraf dist && npx cross-env NODE_ENV=development npx webpack --config ./config/targets.config.js --watch --hide-modules",
