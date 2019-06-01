@@ -1,18 +1,16 @@
-import React from 'react'
-import sinon from 'sinon'
-import chaiEnzyme from 'chai-enzyme'
-import chai, { expect, assert } from 'chai'
-import { shallow, mount, render } from 'enzyme'
-import { IndexPage } from 'browser/pages/IndexPage'
-import { translate } from 'browser/containers/Translator'
+import { IndexPage } from 'browser/pages/IndexPage';
+import chai, { expect } from 'chai';
+import chaiEnzyme from 'chai-enzyme';
+import { shallow } from 'enzyme';
+import React from 'react';
 chai.should()
 chai.use(chaiEnzyme())
 
 describe('<IndexPage />', () => {
   const props = {
-                  loading: false,
-                  location: {pathname: 'some'},
-                }
+    loading: false,
+    location: { pathname: 'some' },
+  }
   const wrapper = shallow(<IndexPage {...props} />)
 
   it('has className and tagName', () => {

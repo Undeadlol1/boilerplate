@@ -1,1 +1,1 @@
-export { default, IndexPage } from './IndexPage.jsx'
+export { default, IndexPage } from './IndexPage'
