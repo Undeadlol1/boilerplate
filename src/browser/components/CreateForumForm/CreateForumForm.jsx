@@ -8,13 +8,12 @@ import { Mutation, Query } from "react-apollo";
 import { Col, Row } from "react-styled-flexboxgrid";
 import { Field, reduxForm, SubmissionError } from "redux-form";
 import { TextField } from "redux-form-material-ui";
-
 import {
   createForum as mutation,
   getCurrentUser,
   getForums,
 } from "../../graphql";
-
+const debug = require("debug")("CreateForumForm");
 /**
  * Form to create a forum.
  * It is not visible if logged in user is not an admin.
@@ -55,6 +54,8 @@ export class CreateForumForm extends Component {
     // Hide component if user is not admin.
     if (get(this, "props.data.viewer.id") != process.env.ADMIN_ID) return null;
     const { props } = this;
+    debug("createForum: ", props.createForum);
+    debug("reset: ", props.reset);
     const { handleSubmit, asyncValidating } = props;
     const classNames = cls(props.className, "CreateForumForm");
     const isDisabled =

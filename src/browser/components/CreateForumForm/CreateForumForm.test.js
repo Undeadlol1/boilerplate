@@ -1,17 +1,18 @@
-import React from 'react'
-import sinon from 'sinon'
-import { shallow } from 'enzyme'
-import chaiEnzyme from 'chai-enzyme'
-import chai, { expect, assert } from 'chai'
-import { translate as t } from 'browser/containers/Translator'
-import { CreateForumForm } from 'browser/components/CreateForumForm'
+import { CreateForumForm } from 'browser/components/CreateForumForm';
+import chai, { expect } from 'chai';
+import chaiEnzyme from 'chai-enzyme';
+import { shallow } from 'enzyme';
+import React from 'react';
 chai.should()
 chai.use(chaiEnzyme())
 
 describe('<CreateForumForm />', () => {
   const props = {
-    // Self explanatory.
-    handleSubmit: () => {},
+    // This "handleSubmit" must return a function on call to
+    // pass typechecking of redux-forms.
+    handleSubmit: () => () => { },
+    createForum: () => { },
+    reset: () => { },
     // Currently logged in user data fetched via apollo.
     data: { viewer: { id: Number(process.env.ADMIN_ID) } },
   }
@@ -32,13 +33,14 @@ describe('<CreateForumForm />', () => {
 
 
   it('must return nothing if UserId is not admin', () => {
-    const props = {
+    const payload = Object.assign(props, {
+      data: {},
       UserId: 23554536,
-      handleSubmit: () => {},
-    }
-    const el = shallow(<CreateForumForm {...props} />)
+      handleSubmit: () => { },
+    })
+    const el = shallow(<CreateForumForm {...payload} />)
     expect(el).to.be.empty
-    // had alot of problems with 'UserId' PropType errors
+    // had a lot of problems with 'UserId' PropType errors
     expect(props)
       .to.have.property('UserId', props.UserId)
       .a('number')

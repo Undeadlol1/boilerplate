@@ -19,8 +19,11 @@ describe('<NodesInsert />', () => {
     dialogIsOpen: true,
     moodSlug: 'penises',
     // TODO change handleSubmit to fix this shit
-    handleSubmit: () => {},
-    toggleDialog: () => {},
+    // This "handleSubmit" must return a function on call to
+    // pass typechecking of redux-forms.
+    handleSubmit: () => () => { },
+    onSubmit: () => { },
+    toggleDialog: () => { },
   }
 
   const wrapper = shallow(<NodesInsert {...props} />);
