@@ -21,6 +21,10 @@
   "engines": {
     "node": ">=9.4"
   },
+  "resolutions": {
+    "@types/react": "15.6.25",
+    "@types/react-dom": "15.5.10"
+  },
   "dependencies": {
     "apollo-client-preset": "^1.0.8",
     "apollo-link-schema": "^1.1.0",
