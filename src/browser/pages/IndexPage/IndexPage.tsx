@@ -1,6 +1,6 @@
 // dependencies
+import * as React from "react";
 import { connect } from "react-redux";
-import React, { Component } from "react";
 // project files
 import { t } from "browser/containers/Translator";
 import ForumsList from "browser/components/ForumsList";
@@ -8,7 +8,7 @@ import PageWrapper from "browser/components/PageWrapper";
 import WelcomeCard from "browser/components/WelcomeCard";
 import CreateForumForm from "browser/components/CreateForumForm";
 
-class IndexPage extends Component {
+export class IndexPage extends React.Component {
   render() {
     return (
       <PageWrapper className="IndexPage">
@@ -20,9 +20,5 @@ class IndexPage extends Component {
     );
   }
 }
-
-IndexPage.propTypes = {};
-
-export { IndexPage };
 
 export default connect((state, ownProps) => ({ ...ownProps }))(IndexPage);
