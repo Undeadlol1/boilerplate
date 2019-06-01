@@ -2,13 +2,8 @@ import {
     GraphQLSchema,
     GraphQLObjectType,
 } from 'graphql';
-import user from './queries/user'
-import viewer from './queries/viewer'
-import forum from './queries/forum'
-import forums from './queries/forums'
-import thread from './queries/thread'
-import threads from './queries/threads'
-import * as mutations from './mutations'
+import fs from 'fs'
+import path from 'path'
 
 const schema = new GraphQLSchema({
     /**
@@ -17,14 +12,17 @@ const schema = new GraphQLSchema({
     query: new GraphQLObjectType({
         name: 'RootQuery',
         description: 'Every graphql api must start from a root query point.',
-        fields: () => ({
-            user,
-            viewer,
-            forum,
-            forums,
-            thread,
-            threads,
-        }),
+        // Dynamycally require all files from './queries' folder.
+        fields: () => {
+            let queries = {};
+            fs
+                .readdirSync(path.resolve(__dirname, '.', 'queries'))
+                .forEach(file => {
+                    queries[file.replace('.js', '')] = require(`./queries/${file}`).default
+                })
+            return queries;
+        },
+
     }),
     /**
      * Mutations.
@@ -32,8 +30,25 @@ const schema = new GraphQLSchema({
     mutation: new GraphQLObjectType({
         name: 'RootMutation',
         description: 'Every graphql api must start with a root mutation.',
-        // fields: mutations
-        fields: () => ({...mutations}),
+        // Dynamycally require all files from './mutations' folder.
+        fields: () => {
+            let mutations = {};
+            fs
+                .readdirSync(path.resolve(__dirname, '.', 'mutations'))
+                .forEach(file => {
+                    if (file.includes('test')) return
+
+                    const mutationsFile = require(`./mutations/${file}`)
+                    Object
+                    .getOwnPropertyNames(mutationsFile)
+                    .forEach(name => {
+                        // Skip if name includes 'module'.
+                        if (/\module/i.test(name)) return
+                        else mutations[name] = mutationsFile[name]
+                    })
+                })
+            return mutations;
+        },
     }),
 })
 
