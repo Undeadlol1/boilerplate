@@ -5,6 +5,7 @@ process.stdout.isTTY = true
 // https://www.npmjs.com/package/loud-rejection
 if (process.env.NODE_ENV != 'production') require('loud-rejection')()
 // this prevents babel to parse css as javascript
+// eslint-disable-next-line no-unused-vars
 import csshook from 'css-modules-require-hook/preset'
 import path from 'path'
 import express from 'express'
@@ -22,10 +23,8 @@ import 'source-map-support/register' // do we actually need this?
 import morgan from 'morgan'
 import helmet from 'helmet'
 import createLocaleMiddleware from 'express-locale';
-import RateLimiter from 'express-rate-limit'
 import exphbs from 'express-handlebars'
 import graphqlHTTP from 'express-graphql'
-import { graphqlExpress, graphiqlExpress } from 'apollo-server-express'
 import schema from './middlewares/graphql'
 
 // const RedisStore = require('connect-redis')(session)
@@ -72,7 +71,7 @@ app.set('view engine', 'handlebars');
 app.set('views', path.resolve(__dirname, './public'));
 // Cors permissions.
 // (almost everything is allowed)
-app.options("/*", function (req, res, next) {
+app.options("/*", function (req, res) {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
@@ -98,6 +97,7 @@ if (isDevelopment) {
 if (isProduction) {
   app.use(morgan('dev')) // logger
   // rate limiter
+  // import RateLimiter from 'express-rate-limit'
   // only if you're behind a reverse proxy (Heroku, Bluemix, AWS if you use an ELB, custom Nginx setup, etc)
   // app.enable('trust proxy');
   // app.use(
@@ -165,7 +165,9 @@ app.use(SSR)
 // export app to use in test suits
 export default app.listen(port, () => {
   if (!isTest) {
+    // eslint-disable-next-line no-console
     console.info(`Environment is: ${process.env.NODE_ENV}!`)
+    // eslint-disable-next-line no-console
     console.info(`Server listening on port ${port}!`)
   }
 })
