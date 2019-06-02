@@ -14,15 +14,15 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       username: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
       },
       image: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
       },
       role: {
         allowNull: false,
@@ -34,12 +34,12 @@ module.exports = {
       vk_id: Sequelize.STRING,
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     })
   },
 
@@ -53,5 +53,5 @@ module.exports = {
     */
     return queryInterface.dropTable('users');
 
-  }
+  },
 };
