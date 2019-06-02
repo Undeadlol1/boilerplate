@@ -16,6 +16,10 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
+      displayName: {
+        allowNull: true,
+        type: Sequelize.STRING,
+      },
       username: {
         type: Sequelize.STRING,
         allowNull: false,
@@ -23,16 +27,13 @@ module.exports = {
       },
       image: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       role: {
         allowNull: false,
         defaultValue: 'user',
         type: Sequelize.STRING,
       },
-      facebook_id: Sequelize.STRING,
-      twitter_id: Sequelize.STRING,
-      vk_id: Sequelize.STRING,
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
