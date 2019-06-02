@@ -1,12 +1,5 @@
-var fs = require("fs");
 var path = require("path");
-var webpack = require("webpack");
-var WebpackNotifierPlugin = require("webpack-notifier");
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
-var FriendlyErrorsWebpackPlugin = require("friendly-errors-webpack-plugin");
-var BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
-  .BundleAnalyzerPlugin;
-var HappyPack = require("happypack");
 var isTest = process.env.NODE_ENV === "test";
 var isDevelopment = process.env.NODE_ENV === "development";
 var isProduction = process.env.NODE_ENV === "production";
@@ -66,7 +59,7 @@ var baseConfig = {
       {
         test: /.jsx?$/,
         // loader: "happypack/loader",
-        loader : 'babel-loader',
+        loader: 'babel-loader',
         exclude: /node_modules/,
       },
       {
