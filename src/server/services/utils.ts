@@ -24,7 +24,9 @@ export interface pagination {
 }
 /**
  * Create typical paginated data for API response.
- * @returns paginated data object
+ * @type [config.page=1]
+ * @type [config.limit=10]
+ * @returns pagination
  */
 export async function createPagination({
   model,
