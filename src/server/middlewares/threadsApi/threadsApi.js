@@ -16,12 +16,12 @@ const debug = require('debug-logger')('threadsApi')
  * @param {Number} [currentPage=1] page number
  * @export
  */
-export async function getThreads(parentId, currentPage=1) {
+export async function getThreads(parentId, currentPage = 1) {
   return await createPagination({
     limit,
     model: Threads,
     page: currentPage,
-    where: {parentId},
+    where: { parentId },
   })
 }
 
@@ -48,7 +48,7 @@ export default Router()
         console.log(error)
         res.status(500).end(error.message)
       }
-  })
+    })
   /*
     Get threads by parentId.
     Response with paginated results.
@@ -72,7 +72,7 @@ export default Router()
         console.log(error);
         res.status(500).end(error)
       }
-  })
+    })
   /*
     Update thread.
   */
@@ -90,9 +90,9 @@ export default Router()
       try {
         // TODO: validated data
         const UserId = req.user.id,
-              bodyData = matchedData(req, { locations: ['body'] }),
-              {threadsId} = matchedData(req, { locations: ['params'] }),
-              thread = await Threads.findByPk(threadsId)
+          bodyData = matchedData(req, { locations: ['body'] }),
+          { threadsId } = matchedData(req, { locations: ['params'] }),
+          thread = await Threads.findByPk(threadsId)
         // FIXME: add same checker to "apiName" template
         // FIXME: add tests about this one
         // NOTE: maybe should use customg validator?
@@ -105,7 +105,7 @@ export default Router()
         console.log(error)
         res.status(500).end(error)
       }
-  })
+    })
   /*
     Create thread.
   */
@@ -122,6 +122,9 @@ export default Router()
     async (req, res) => {
       try {
         const payload = matchedData(req)
+        debug('POST')
+        debug('payload: ', payload);
+        debug('req.user.id', req.user.id)
         res.json(
           await Threads.create({
             ...payload,
@@ -134,4 +137,4 @@ export default Router()
         console.log(error)
         res.status(500).end(error)
       }
-  })
+    })

@@ -13,22 +13,22 @@ const { parseUrl } = require('shared/parsers.js')
 const userFixtures = require('server/data/fixtures/users.js')
 const getRandomDate = require('random-date-generator').getRandomDate
 const models = require('server/data/models/index.js')
-const { User, Local, Forums, Threads, Mood, Node, Decision, Profile } = require('server/data/models/index.js')
+const { User, Local, Forums, Threads, Profile } = require('server/data/models/index.js')
 chai.should()
 
 // TODO move this to fixtures
 const urls = [
-            "https://www.youtube.com/watch?v=nBwHtgQH2EQ",
-            "https://www.youtube.com/watch?v=l5-gja10qkw",
-            "https://www.youtube.com/watch?v=M3B5U1S-I4Y",
-            "https://www.youtube.com/watch?v=P027oGJy2n4",
-            "https://www.youtube.com/watch?v=VoA9tLkrgHY",
-            "https://www.youtube.com/watch?v=7CPH5L7ip3A",
-            "https://www.youtube.com/watch?v=Jwglgn1mo3M",
-            "https://www.youtube.com/watch?v=3Pv7jAKIPa0",
-            "https://www.youtube.com/watch?v=KrCMWS_fB4o",
-            "https://www.youtube.com/watch?v=W7mNmiW9qts",
-        ]
+    "https://www.youtube.com/watch?v=nBwHtgQH2EQ",
+    "https://www.youtube.com/watch?v=l5-gja10qkw",
+    "https://www.youtube.com/watch?v=M3B5U1S-I4Y",
+    "https://www.youtube.com/watch?v=P027oGJy2n4",
+    "https://www.youtube.com/watch?v=VoA9tLkrgHY",
+    "https://www.youtube.com/watch?v=7CPH5L7ip3A",
+    "https://www.youtube.com/watch?v=Jwglgn1mo3M",
+    "https://www.youtube.com/watch?v=3Pv7jAKIPa0",
+    "https://www.youtube.com/watch?v=KrCMWS_fB4o",
+    "https://www.youtube.com/watch?v=W7mNmiW9qts",
+]
 
 const randomNames = casual.array_of_words(10)
 
@@ -41,7 +41,7 @@ const randomNames = casual.array_of_words(10)
     avoid duplicates and infinite cycles in node fetching api)
 */
 function randomIntFromInterval(min, max) {
-    const randomNumber = Math.floor(Math.random()*(max-min+1)+min)
+    const randomNumber = Math.floor(Math.random() * (max - min + 1) + min)
     let now = ('0.' + Date.now().toString()).split('')
     const dateLastDigit = now.pop()
     now.push(Number(dateLastDigit) + Math.abs(Number(randomNumber))) // sometimes adds two digits instead of one
@@ -51,7 +51,7 @@ function randomIntFromInterval(min, max) {
 }
 
 // insert fixtures into database
-before(async function() {
+before(async function () {
     try {
         // Clean up DB just in case, to avoid possible bugs.
         await cleanUpDB()
@@ -59,13 +59,13 @@ before(async function() {
         await require('server/server.js').default.close()
 
         const moods = [],
-                nodes = [],
-                locals = [],
-                profiles = [],
-                decisions = [],
-                createdUsers = [],
-                forums = [],
-                threads = []
+            nodes = [],
+            locals = [],
+            profiles = [],
+            decisions = [],
+            createdUsers = [],
+            forums = [],
+            threads = []
 
         const localsWithHashedPassword = userFixtures.map(user => {
             // create new object to avoid object mutablity
@@ -81,75 +81,41 @@ before(async function() {
             .then(() => User.findAll())
             // create moods fixtures array
             .each((user, index) => {
-                const   name = uniqid(),
-                        language = 'ru',
-                        slug = slugify(name),
-                        UserId = user.get('id'),
-                        // mood rating
-                        rating = randomIntFromInterval(1, 100000)
+                const name = uniqid(),
+                    language = 'ru',
+                    slug = slugify(name),
+                    UserId = user.get('id'),
+                    // mood rating
+                    rating = randomIntFromInterval(1, 100000)
                 const local = localsWithHashedPassword[index]
                 local.UserId = user.id
                 locals.push(local)
                 createdUsers.push(user)
-                profiles.push({UserId, language})
-                moods.push({name, UserId, slug, rating, createdAt: getRandomDate()})
-                forums.push({id: name, name, slug, UserId})
+                profiles.push({ UserId, language })
+                forums.push({ id: name, name, slug, UserId })
             })
-            // create locals
-            .then(() => Local.bulkCreate(locals))
-            // create profiles
-            .then(() => Profile.bulkCreate(profiles))
             // create forums
             .then(() => Forums.bulkCreate(forums))
-            .then(() => Forums.findAll({where: {}}))
+            .then(() => Forums.findAll({ where: {} }))
             .each(forum => {
                 randomNames.forEach(() => {
                     const name = uniqid()
                     threads.push({
-                            name,
-                            slug: slugify(name),
-                            text: casual.description,
-                            parentId: forum.id,
-                            UserId: forum.UserId,
-                        }
+                        name,
+                        slug: slugify(name),
+                        text: casual.description,
+                        parentId: forum.id,
+                        UserId: forum.UserId,
+                    }
                     )
                 })
             })
             // create threads
             .then(() => Threads.bulkCreate(threads))
-            // create moods
-            .then(() => Mood.bulkCreate(moods))
-            .then(() => Mood.findAll({where: {}}))
-            .each(mood => {
-                urls.forEach(url => {
-                    const rating = randomIntFromInterval(-3, 20)
-                    nodes.push(
-                        extend(
-                            parseUrl(url), {
-                            rating,
-                            MoodId: mood.id,
-                            UserId: mood.UserId,
-                        })
-                    )
-                })
-            })
-            // create nodes
-            .then(() => Node.bulkCreate(nodes))
-            .then(() => Node.findAll({raw: true}))
-            // .each((node, index) => {
-            //     return createdUsers.forEach((user, index2) => {
-            //         decisions.push({
-            //             position: index,
-            //             NodeId: node.id,
-            //             MoodId: node.MoodId,
-            //             UserId: user.id,
-            //             NodeRating: node.rating,
-            //             rating: Number(randomIntFromInterval(-3, 20)),
-            //         })
-            //     })
-            // })
-            // create decisions
-            .then(() => Decision.bulkCreate(decisions))
+            // create locals
+            .then(() => Local.bulkCreate(locals))
+            // create profiles
+            .then(() => Profile.bulkCreate(profiles))
             .catch(error => {
                 console.error(error)
                 throw error
@@ -174,68 +140,29 @@ async function cleanUpDB() {
             }
         )
         // destroy everything in every model
-        await Promise.all(modelNames.map(name => models[name].destroy({where: {}})))
+        await Promise.all(modelNames.map(name => models[name].destroy({ where: {} })))
     }
-    catch(error) {
+    catch (error) {
         console.log(error)
         throw new Error(error)
     }
 }
 
 // TODO make proper names
-describe('fixture data setup', function() {
-    it('added fixtures properly', async function(){
+describe('fixture data setup', function () {
+    it('added fixtures properly', async function () {
         try {
-            const users = await User.findAll({raw: true})
-            const locals = await Local.findAll({raw: true})
-            const moods = await Mood.findAll({raw: true})
-            const nodes = await Node.findAll({raw: true})
-            const profiles = await Profile.findAll({raw: true})
-            const decisions = await Decision.findAll({raw: true})
-            const forums = await Forums.findAll({raw: true})
-            const threads = await Threads.findAll({raw: true})
+            const users = await User.findAll({ raw: true })
+            const locals = await Local.findAll({ raw: true })
+            const profiles = await Profile.findAll({ raw: true })
+            const forums = await Forums.findAll({ raw: true })
+            const threads = await Threads.findAll({ raw: true })
 
             expect(users).to.have.length(10, '10 users')
             expect(locals).to.have.length(10, '10 local profiles')
-            expect(moods).to.have.length(10, '10 moods')
-            expect(nodes).to.have.length(100, '100 nodes') // 10 moods * 10 nodes
             expect(profiles).to.have.length(10, '10 profiles')
             expect(forums).to.have.length(10, '10 forums')
             expect(threads).to.have.length(100, '100 threads') // 10 forums * 10 threads
-            // expect(decisions).to.have.length(1000) // 10 moods * 10 nodes * 10 decisions
-
-            moods.forEach(mood => {
-                const moodNodes = nodes.filter(
-                    node => node.MoodId == mood.id
-                )
-                expect(
-                    moodNodes.length,
-                    'each mood must have 10 nodes'
-                ).to.be.equal(10)
-            })
-
-            // nodes.forEach(async node => {
-            //     const nodeDecisions = decisions.filter(
-            //         decision => decision.NodeId == node.id
-            //     )
-            //     expect(
-            //         nodeDecisions.length,
-            //         'each node must have 10 decisions'
-            //     ).to.be.equal(10)
-            // })
-
-            // users.forEach(user => {
-            //     nodes.forEach(node => {
-            //         const userDecisions = decisions.filter(
-            //             decision => (decision.MoodId == node.MoodId
-            //                         && decision.UserId == user.id)
-            //         )
-            //         expect(
-            //             userDecisions.length,
-            //             'each user in mood must have 10 decisions'
-            //         ).to.be.equal(10)
-            //     })
-            // })
         } catch (error) {
             console.log(error)
             throw new Error(error)

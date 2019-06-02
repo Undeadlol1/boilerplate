@@ -15,10 +15,7 @@ import errorhandler from 'errorhandler'
 import cookieParser from 'cookie-parser'
 import cookieSession from 'cookie-session'
 import SSR from './middlewares/SSR'
-import moodsApi from './middlewares/moodsApi'
-import nodesApi from './middlewares/nodesApi'
 import usersApi from './middlewares/usersApi'
-import decisionsApi from './middlewares/decisionsApi'
 import externalsApi from './middlewares/externalsApi'
 import authApi, { passport } from './middlewares/authApi'
 import 'source-map-support/register' // do we actually need this?
@@ -35,13 +32,13 @@ import schema from './middlewares/graphql'
 // const cache = require('express-redis-cache')();
 
 const port = process.env.PORT,
-      app = express(),
-      { engine } = exphbs.create({}),
-      publicUrl = path.resolve('./dist', 'public'), // TODO: or use server/public?
-      cookieExpires = 100 * 60 * 24 * 100, // 100 days,
-      isTest = process.env.NODE_ENV === 'test',
-      isProduction = process.env.NODE_ENV === 'production',
-      isDevelopment = process.env.NODE_ENV === 'development'
+  app = express(),
+  { engine } = exphbs.create({}),
+  publicUrl = path.resolve('./dist', 'public'), // TODO: or use server/public?
+  cookieExpires = 100 * 60 * 24 * 100, // 100 days,
+  isTest = process.env.NODE_ENV === 'test',
+  isProduction = process.env.NODE_ENV === 'production',
+  isDevelopment = process.env.NODE_ENV === 'development'
 
 /**
  *  Common middlewares.
@@ -147,16 +144,13 @@ app.use('/graphql', graphqlHTTP({
   graphiql: true,
   schema: schema,
   // Development only debug stack traces.
-  formatError: isDevelopment && formatError
+  formatError: isDevelopment && formatError,
 }))
 /**
  * REST API.
  */
 app.use('/api/auth', authApi)
 app.use('/api/users', usersApi)
-app.use('/api/moods', moodsApi)
-app.use('/api/nodes', nodesApi)
-app.use('/api/decisions', decisionsApi)
 app.use('/api/externals', externalsApi)
 app.use('/api/forums', require('./middlewares/forumsApi').default)
 app.use('/api/threads', require('./middlewares/threadsApi').default)
@@ -170,8 +164,8 @@ app.use(SSR)
 
 // export app to use in test suits
 export default app.listen(port, () => {
-    if (!isTest) {
-      console.info(`Environment is: ${process.env.NODE_ENV}!`)
-      console.info(`Server listening on port ${port}!`)
-    }
+  if (!isTest) {
+    console.info(`Environment is: ${process.env.NODE_ENV}!`)
+    console.info(`Server listening on port ${port}!`)
+  }
 })
