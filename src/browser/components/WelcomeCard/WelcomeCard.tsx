@@ -8,8 +8,14 @@ import FlatButton from "material-ui/FlatButton";
 import { Row, Col } from "react-styled-flexboxgrid";
 import { translate as t } from "browser/containers/Translator";
 import { Card, CardText, CardActions } from "material-ui/Card";
-
-class WelcomeCard extends Component<{}, {}> {
+interface State {
+  isHidden: boolean;
+}
+interface Props {
+  className: string;
+  cookies: any;
+}
+class WelcomeCard extends Component<Props, State> {
   state = { isHidden: false };
 
   handleClick = () => {
@@ -24,7 +30,7 @@ class WelcomeCard extends Component<{}, {}> {
     return (
       <Row className={className}>
         <Col xs={12}>
-          <Paper zDepth={5}>
+          {/* <Paper zDepth={5}>
             <Card>
               <CardText>
                 <p>{t("welcome_to_our_awesome_boilerplate")}</p>
@@ -39,16 +45,12 @@ class WelcomeCard extends Component<{}, {}> {
                 />
               </CardActions>
             </Card>
-          </Paper>
+          </Paper> */}
         </Col>
       </Row>
     );
   }
 }
-
-WelcomeCard.defaultProps = {};
-
-WelcomeCard.PropTypes = {};
 
 export { WelcomeCard };
 export default withCookies(WelcomeCard);

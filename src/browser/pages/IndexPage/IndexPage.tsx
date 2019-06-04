@@ -8,7 +8,7 @@ import PageWrapper from "browser/components/PageWrapper";
 import WelcomeCard from "browser/components/WelcomeCard";
 import CreateForumForm from "browser/components/CreateForumForm";
 
-export class IndexPage extends React.Component {
+export class IndexPage extends React.Component<{}, {}> {
   render() {
     return (
       <PageWrapper className="IndexPage">
