@@ -1,15 +1,9 @@
-import UUID from 'uuid/v4'
-import get from 'lodash/get'
-import { expect } from 'chai'
-import schema from '../index'
-import Promise from 'bluebird'
-import { graphql } from 'graphql'
-import chai, { assert } from 'chai'
-import server from '../../../server'
-import randomstring from 'randomstring'
-import { tester } from 'graphql-tester'
-import { User, Forums } from '../../../data/models'
-import { create } from 'graphql-tester/lib/main/servers/express'
+import Promise from 'bluebird';
+import chai, { assert, expect } from 'chai';
+import { graphql } from 'graphql';
+import randomString from 'randomstring';
+import { Forums, User } from '../../../data/models';
+import schema from '../index';
 chai.use(require('chai-properties'))
 /**
  * Define UserId to create user object for tests
@@ -18,19 +12,11 @@ chai.use(require('chai-properties'))
 const UserId = 123;
 // Administrator is a user with "id" == 1.
 const admin = { id: 1 }
-const forumNname = 'This is a test'
-const payload = { name: forumNname }
-const createForumQuery = `mutation {
-    forum: createForum(name: "${payload.name}") {
-        id
-        name
-        slug
-        UserId
-    }
-}`
+const forumName = 'This is a test'
+const payload = { name: forumName }
 /**
- * Exectute request to create forum.
- * This function is an absctraction to make code cleaner.
+ * Execute request to create forum.
+ * This function is an abstraction to make code cleaner.
  * @param {Object} user User which will be passed to context.
  * @param {string} name Mutation argument.
  * @returns {Promise} Graphql response.
@@ -54,10 +40,10 @@ function createForumRequest(user, name = 'This is a test') {
 describe('Mutations:', () => {
     // TODO: do i need this?
     after(async () => {
-        await User.destroy({where: {id: UserId}})
+        await User.destroy({ where: { id: UserId } })
     })
     /**
-     * Verify that "cretaeForum" works properly.
+     * Verify that "createForum" works properly.
      */
     describe('createForum returns', () => {
         // Prevent unlogged users to create forums.
@@ -71,7 +57,7 @@ describe('Mutations:', () => {
         // Only administrators can create forums.
         it('error if user is not an admin.', async () => {
             // Run query with ordinary user in context.
-            const { data, errors } = await createForumRequest({id: UserId})
+            const { data, errors } = await createForumRequest({ id: UserId })
             expect(data.forum).to.be.null
             expect(errors).to.have.length(1)
             expect(errors[0].message).to.equal('You must be an admin to do this.')
@@ -83,7 +69,7 @@ describe('Mutations:', () => {
             // Verify results.
             expect(errors).to.be.undefined
             // Make sure forum was inserted into database.
-            const createdForum = await Forums.findOne({where: payload})
+            const createdForum = await Forums.findOne({ where: payload })
             expect(createdForum).to.be.a('object', 'forum should be created')
             expect(createdForum).to.have.properties(data.forum)
             // Make sure response has proper data.
@@ -101,14 +87,14 @@ describe('Mutations:', () => {
                 await Promise.each(
                     [
                         // Make sure duplicate forums cannot be created.
-                        { value: forumNname, message: 'Forum already exists.' },
+                        // { value: forumName, message: 'Forum already exists.' },
                         { value: undefined, message: 'Name is required.' },
                         { value: '', message: 'Name is required.' },
-                        { value: ' ', message: 'Name is required.'},
+                        { value: ' ', message: 'Name is required.' },
                         // Make sure repeated whitespace is ignored.
                         { value: '  12    3    ', message: 'Name must be between 5 and 100 characters long.' },
                         { value: '123', message: 'Name must be between 5 and 100 characters long.' },
-                        { value: randomstring.generate(101), message: 'Name must be between 5 and 100 characters long.' },
+                        { value: randomString.generate(101), message: 'Name must be between 5 and 100 characters long.' },
                     ],
                     async ({ value, message }) => {
                         const { errors, data } = await graphql(
