@@ -2,6 +2,8 @@
   "compilerOptions": {
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "outDir": "./dist/",
     "sourceMap": true,
     "noImplicitAny": true,
