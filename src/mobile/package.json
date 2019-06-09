@@ -15,6 +15,10 @@
       "node_modules/(?!((jest-)?react-native|react-clone-referenced-element|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|sentry-expo|native-base))"
     ]
   },
+  "resolutions": {
+    "@types/react": "16.8.3",
+    "@types/react-native": "0.57.60"
+  },
   "dependencies": {
     "expo": "^33.0.0",
     "react": "16.8.3",
