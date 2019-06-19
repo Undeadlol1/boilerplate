@@ -4,6 +4,7 @@ This is a fullstack javascript boilerplate based on React, Express and Sequelize
 
 - Predefined user system with signup/login flows. Also supports 3d party providers like Twitter or Facebook.
 - Command Line Interface with various usefull commands like pulling updates from boilerplate, creating Components and Api's.
+- Both REST and GraphQL are available.
 - TDD/BDD is available. Project has ~250 tests.
 - Simple forum functionality is implemented.
 - Robust i18n.
