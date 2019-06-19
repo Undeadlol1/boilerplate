@@ -48,8 +48,10 @@ var clientConfig = merge(commonConfig, {
             // TODO: use this for cli arguments
             // https://www.npmjs.com/package/command-line-args
             onBuildEnd: hasFlag('w') || hasFlag('watch')
-                ? "mocha dist/*.test.js --opts ./mocha.opts"
-                : "mocha dist/*.test.js",
+                // ? "mocha dist/*.test.js --opts ./mocha.opts"
+                // : "mocha dist/*.test.js",
+                ? "npx jest --watch"
+                : "npx jest",
         }),
     ],
     // nodeExternals required for client because some modules throw errors otherwise
