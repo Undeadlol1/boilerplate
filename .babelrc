@@ -1,0 +1,68 @@
+{
+  // TODO "compact": false,
+  "presets": [
+    "es2016",
+    ["es2015", { "modules": false }],
+    "stage-3",
+    "react",
+    "node6",
+    "latest"
+    //, {
+    //   "es2015": {
+    //     "loose": true,
+    //     "modules": false
+    //   }
+    // }
+  ],
+  // include white space and line trails
+  // https://stackoverflow.com/a/29857361
+  "compact": false,
+
+  "plugins": [
+    // TODO try this
+    // https://www.npmjs.com/package/babel-plugin-material-ui
+    // TODO this works, but mocha is not accepting "import" token.
+    // solution: "es2015", { modules: true }
+    // but this is not acceptable clientside (bundle size will be bigger)
+    // this might help
+    // ["transform-es2015-modules-commonjs", {
+    //   "allowTopLevelThis": true
+    // }],
+    /*
+      transform-imports helps reducing bundle size and code readability
+      by transforming "import { isEmpty } from 'lodash'"
+      to "import isEmpty from 'lodash/isEmpty'"
+      thus not importing full 'lodash' library
+      (not all libraries support this feature, google "es6 imports bundle size")
+    */
+    [
+      "transform-imports",
+      {
+        // "redux-form": {
+        //   "transform": "redux-form/es/${member}",
+        //   "preventFullImport": true
+        // },
+        "lodash": {
+          "preventFullImport": true,
+          "transform": "lodash/${member}"
+        },
+        "validator": {
+          "preventFullImport": true,
+          "transform": "validator/lib/${member}"
+        },
+        "ramda": {
+          "preventFullImport": true,
+          "transform": "ramda/src/${member}"
+        }
+      }
+    ],
+    "transform-runtime",
+    "transform-decorators-legacy",
+    "transform-class-properties",
+    "transform-object-rest-spread",
+    "transform-object-rest-spread",
+    "transform-react-jsx-source"
+  ]
+  //,
+  // "experimentalDecorators": true
+}
