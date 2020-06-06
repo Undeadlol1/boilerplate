@@ -28,7 +28,7 @@
   "dependencies": {
     "apollo-client-preset": "^1.0.8",
     "apollo-link-schema": "^1.1.0",
-    "apollo-server-express": "^1.3.6",
+    "apollo-server-express": "^2.14.2",
     "assert-plus": "^1.0.0",
     "babel-plugin-transform-object-rest-spread": "^6.23.0",
     "babel-polyfill": "^6.23.0",
