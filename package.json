@@ -294,7 +294,7 @@
     "mocha.parallel": "^0.15.2",
     "morgan": "^1.8.1",
     "nock": "^9.0.13",
-    "node-sass": "^4.5.2",
+    "node-sass": "^4.13.1",
     "nodemon": "^1.17.4",
     "nodemon-webpack-plugin": "^0.1.6",
     "parallel-webpack": "^1.6.1",
