@@ -88,7 +88,7 @@
     "react-click-outside": "^2.2.0",
     "react-cookie": "^2.1.2",
     "react-dom": "^15.4.2",
-    "react-draft-wysiwyg": "^1.10.7",
+    "react-draft-wysiwyg": "^1.14.6",
     "react-fontawesome": "^1.5.0",
     "react-ga": "^2.4.1",
     "react-helmet": "^5.1.3",
